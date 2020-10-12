@@ -121,6 +121,7 @@ in {
       rustup
       spotify
       feh
+      tdesktop
     ];
   };
   virtualisation.docker.enable = true;

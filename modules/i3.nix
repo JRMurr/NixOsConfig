@@ -56,6 +56,11 @@ in {
         ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
       };
+      extraConfig = ''
+        workspace 1 output DP-1
+        workspace 2 output DP-3
+        workspace 3 output DP-4
+      '';
     };
   };
 }
