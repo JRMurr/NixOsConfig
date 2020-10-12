@@ -43,6 +43,8 @@ in {
   networking.interfaces.enp42s0.useDHCP = true;
   networking.interfaces.wlp39s0.useDHCP = true;
 
+  networking.firewall.allowedTCPPorts = [ 57621 ]; # for spotify
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -69,7 +71,10 @@ in {
   # Enable sound.
   sound.enable = true;
   hardware = {
-    pulseaudio = { enable = true; };
+    pulseaudio = { 
+      enable = true;
+      support32Bit = true;
+    };
     opengl = { enable = true; };
   };
 
@@ -111,8 +116,14 @@ in {
       pcmanfm
       discord
       bat
+      docker-compose
+      python3
+      rustup
+      spotify
+      feh
     ];
   };
+  virtualisation.docker.enable = true;
 
   home-manager.users.jr = {
     xdg.configFile = {

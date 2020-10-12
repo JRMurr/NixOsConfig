@@ -5,7 +5,7 @@
   users.users.jr = {
     isNormalUser = true;
 
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "docker" ];
     hashedPassword = lib.fileContents /etc/nixos/secrets/jr-pass;
 
     shell = pkgs.fish;

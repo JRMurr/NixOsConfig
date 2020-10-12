@@ -1,6 +1,9 @@
 { pkgs, lib, config, ... }:
 
-let modifier = "Mod4"; # windows key
+let
+  modifier = "Mod4"; # windows key
+  xcfg = config.services.xserver;
+  cfg = xcfg.desktopManager;
 in {
 
   services.xserver.videoDrivers = [ "Nouveau" ];
@@ -13,8 +16,19 @@ in {
         noDesktop = true;
         enableXfwm = false;
       };
+      wallpaper = {
+        mode = "scale";
+        combineScreens = true;
+      };
     };
     windowManager.i3.enable = true;
+  };
+
+  # set to normal display setup, maybe use xrandr to get size?
+  services.fractalart = {
+    enable = true;
+    width = 4137;
+    height = 4080;
   };
 
   home-manager.users.jr = {
@@ -28,10 +42,18 @@ in {
           "${modifier}+Shift+e" = "exec xfce4-session-logout";
           "${modifier}+Shift+a" = "exec autorandr --load normal";
         };
-        startup = [{
-          command = "autorandr --load normal";
-          notification = true;
-        }]; # i think i need notification to add the no--startup-id
+        startup = [
+          {
+            command = "autorandr --load normal";
+            notification = true;
+          }
+          {
+            command = "feh --bg-${cfg.wallpaper.mode} ${
+                lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
+              } $HOME/.background-image";
+            notification = true;
+          }
+        ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
       };
     };
