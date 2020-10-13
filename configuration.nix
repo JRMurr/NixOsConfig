@@ -20,6 +20,7 @@ in {
     ./modules/fonts.nix
     ./modules/kitty.nix
     ./modules/autorandr.nix
+    ./modules/devlopment.nix
   ];
 
   # Use the GRUB 2 boot loader.
@@ -118,10 +119,11 @@ in {
       bat
       docker-compose
       python3
-      rustup
       spotify
       feh
       tdesktop
+
+      rustup
     ];
   };
   virtualisation.docker.enable = true;

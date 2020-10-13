@@ -41,6 +41,7 @@ in {
         keybindings = lib.mkOptionDefault {
           "${modifier}+Shift+e" = "exec xfce4-session-logout";
           "${modifier}+Shift+a" = "exec autorandr --load normal";
+          "${modifier}+F2" = "exec firefox";
         };
         startup = [
           {
