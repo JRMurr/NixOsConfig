@@ -71,10 +71,12 @@ in {
 
   # Enable sound.
   sound.enable = true;
+  sound.mediaKeys.enable = true;
   hardware = {
     pulseaudio = { 
       enable = true;
       support32Bit = true;
+      package = pkgs.pulseaudioFull;
     };
     opengl = { enable = true; };
   };
@@ -111,23 +113,22 @@ in {
       wget
       mkpasswd
       nixfmt
-      vscode
       kitty
       arandr
       pcmanfm
       discord
       bat
-      docker-compose
-      python3
+
       spotify
       feh
       tdesktop
-
-      rustup
+      pavucontrol
+      # manix
+      lxappearance-gtk3
     ];
   };
   virtualisation.docker.enable = true;
-
+  programs.fish.enable = true;
   home-manager.users.jr = {
     xdg.configFile = {
       fish = {

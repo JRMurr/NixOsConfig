@@ -20,7 +20,7 @@
             position = "1080x2160";
             mode = "2560x1440";
             # gamma = "1.0:0.909:0.833";
-            rate = "120";
+            rate = "120.00";
           };
           # 4k monitor above main
           DP-3 = {
