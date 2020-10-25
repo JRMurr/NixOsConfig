@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
   home-manager.users.jr.programs.kitty = {
     enable = true;
     settings = {
@@ -6,6 +6,9 @@
       bold_font = "auto";
       italic_font = "auto";
       bold_italic_font = "auto";
+      enable_audio_bell = false;
     };
+    # theme
+    extraConfig = lib.fileContents /etc/nixos/dotFiles/kitty/kitty-themes/Dracula.conf;
   };
 }

@@ -1,0 +1,1 @@
+run `lorri init` in the desired folder, then `direnv allow`. More info https://github.com/target/lorri

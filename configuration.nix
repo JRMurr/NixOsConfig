@@ -78,11 +78,13 @@ in {
       support32Bit = true;
       package = pkgs.pulseaudioFull;
     };
+    bluetooth.enable = true;
     opengl = { enable = true; };
   };
 
   services = {
     fstrim.enable = true;
+    blueman.enable = true;
     #  fwupd.enable = true;
     # acpid.enable = true;
     #tlp.enable = true;
@@ -118,6 +120,7 @@ in {
       pcmanfm
       discord
       bat
+      killall
 
       spotify
       feh
