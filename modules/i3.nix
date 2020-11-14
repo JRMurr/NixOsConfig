@@ -13,8 +13,8 @@ in {
     # screenSection = ''
     #   Option "metamodes" "nvidia-auto-select +0+0 { ForceCompositionPipeline = On }"
     # '';
-    displayManager.lightdm = {
-      enable = true;
+    displayManager.lightdm.enable = true;
+    displayManager = {
       autoLogin.enable = true;
       autoLogin.user = "jr";
     };

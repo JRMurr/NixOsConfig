@@ -13,7 +13,7 @@ in {
     #<home-manager/nixos>
     (import "${
         builtins.fetchTarball
-        "https://github.com/rycee/home-manager/archive/release-20.03.tar.gz"
+        "https://github.com/rycee/home-manager/archive/release-20.09.tar.gz"
       }/nixos")
     ./modules/users.nix
     ./modules/i3.nix
@@ -85,6 +85,7 @@ in {
   services = {
     fstrim.enable = true;
     blueman.enable = true;
+    ratbagd.enable = true; # for mouse
     #  fwupd.enable = true;
     # acpid.enable = true;
     #tlp.enable = true;
@@ -98,6 +99,11 @@ in {
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.03"; # Did you read the comment?
   nixpkgs.config.allowUnfree = true;
+
+  # auto upgrade with nixos-rebuild switch --upgrade
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.allowReboot = true;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-20.09;
 
   # nix = {
   #   package = pkgs.nixUnstable;
@@ -121,13 +127,13 @@ in {
       discord
       bat
       killall
-
+      piper
       spotify
       feh
       tdesktop
       pavucontrol
       # manix
-      lxappearance-gtk3
+      lxappearance
     ];
   };
   virtualisation.docker.enable = true;

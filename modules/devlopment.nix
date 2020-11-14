@@ -9,6 +9,6 @@
     python3
     rustup
     vscode
-
+    dbeaver
   ];
 }
