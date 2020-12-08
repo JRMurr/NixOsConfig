@@ -7,7 +7,7 @@ let
 in {
 
   programs.nm-applet.enable = true;
-  services.xserver.videoDrivers = [ "Nouveau" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver = {
     enable = true;
     # screenSection = ''
@@ -78,9 +78,9 @@ in {
         floating = { criteria = [{ class = "Pavucontrol"; }]; };
       };
       extraConfig = ''
-        workspace 1 output DP-1
-        workspace 2 output DP-3
-        workspace 3 output DP-4
+        workspace 1 output DP-2
+        workspace 2 output DP-0
+        workspace 3 output USB-C-0
       '';
     };
 
