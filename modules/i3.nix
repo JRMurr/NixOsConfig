@@ -6,6 +6,7 @@ let
   cfg = xcfg.desktopManager;
 in {
 
+  environment.variables.XCURSOR_SIZE = "10";
   programs.nm-applet.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver = {
@@ -13,7 +14,13 @@ in {
     # screenSection = ''
     #   Option "metamodes" "nvidia-auto-select +0+0 { ForceCompositionPipeline = On }"
     # '';
-    displayManager.lightdm.enable = true;
+    displayManager.lightdm = {
+      enable = true;
+      greeters.gtk.cursorTheme = {
+        package = pkgs.gnome3.adwaita-icon-theme;
+        size = 10;
+      };
+    };
     displayManager = {
       autoLogin.enable = true;
       autoLogin.user = "jr";
@@ -81,6 +88,7 @@ in {
         workspace 1 output DP-2
         workspace 2 output DP-0
         workspace 3 output USB-C-0
+        title_align center
       '';
     };
 

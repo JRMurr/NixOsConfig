@@ -124,7 +124,7 @@ in {
       kitty
       arandr
       pcmanfm
-      discord
+      ripcord
       bat
       killall
       piper
