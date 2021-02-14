@@ -11,6 +11,7 @@ in {
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver = {
     enable = true;
+    dpi = 100;
     # screenSection = ''
     #   Option "metamodes" "nvidia-auto-select +0+0 { ForceCompositionPipeline = On }"
     # '';
@@ -85,9 +86,9 @@ in {
         floating = { criteria = [{ class = "Pavucontrol"; }]; };
       };
       extraConfig = ''
-        workspace 1 output DP-2
-        workspace 2 output DP-0
-        workspace 3 output USB-C-0
+        workspace 1 output DP-4
+        workspace 2 output DP-2
+        workspace 3 output HMDI-0
         title_align center
       '';
     };

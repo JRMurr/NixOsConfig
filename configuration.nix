@@ -41,8 +41,8 @@ in {
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp42s0.useDHCP = true;
-  networking.interfaces.wlp39s0.useDHCP = true;
+  networking.interfaces.enp10s0.useDHCP = true;
+  networking.interfaces.wlp8s0.useDHCP = true;
 
   networking.firewall.allowedTCPPorts = [ 57621 ]; # for spotify
 
