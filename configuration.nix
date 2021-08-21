@@ -73,7 +73,7 @@ in {
   sound.enable = true;
   sound.mediaKeys.enable = true;
   hardware = {
-    pulseaudio = { 
+    pulseaudio = {
       enable = true;
       support32Bit = true;
       package = pkgs.pulseaudioFull;
@@ -103,7 +103,7 @@ in {
   # auto upgrade with nixos-rebuild switch --upgrade
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-20.09;
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-20.09";
 
   # nix = {
   #   package = pkgs.nixUnstable;
@@ -134,6 +134,7 @@ in {
       pavucontrol
       # manix
       lxappearance
+      exa
     ];
   };
   virtualisation.docker.enable = true;
