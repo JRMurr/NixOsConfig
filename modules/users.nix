@@ -11,7 +11,7 @@
     shell = pkgs.fish;
   };
 
-  services.mingetty.autologinUser = "jr";
+  services.getty.autologinUser = "jr";
 
   security.sudo = { enable = true; };
 }

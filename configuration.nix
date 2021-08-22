@@ -10,10 +10,10 @@ in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # (import "${home-manager}/nixos")    
-    #<home-manager/nixos>
+    # <home-manager/nixos>
     (import "${
         builtins.fetchTarball
-        "https://github.com/rycee/home-manager/archive/release-20.09.tar.gz"
+        "https://github.com/rycee/home-manager/archive/release-21.05.tar.gz"
       }/nixos")
     ./modules/users.nix
     ./modules/i3.nix
@@ -103,7 +103,7 @@ in {
   # auto upgrade with nixos-rebuild switch --upgrade
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-20.09";
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-21.05";
 
   # nix = {
   #   package = pkgs.nixUnstable;

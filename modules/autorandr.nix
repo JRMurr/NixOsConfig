@@ -27,7 +27,7 @@
             enable = true;
             # crtc = 1;
             primary = false;
-            position = "297x0";
+            position = "0x0";
             mode = "3840x2160";
             rate = "60.00";
             dpi = 100;
