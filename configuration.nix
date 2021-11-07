@@ -130,12 +130,15 @@ in {
       piper
       spotify
       feh
-      tdesktop
+      tdesktop # telegram
       pavucontrol
       # manix
       lxappearance
       exa
       zoxide
+      streamlink-twitch-gui-bin
+      streamlink
+      vlc
     ];
   };
   virtualisation.docker.enable = true;
