@@ -135,6 +135,7 @@ in {
       # manix
       lxappearance
       exa
+      zoxide
     ];
   };
   virtualisation.docker.enable = true;
