@@ -67,8 +67,7 @@ in {
           "${modifier}+Shift+a" = "exec autorandr --load normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+F2" = "exec firefox";
-          "${modifier}+d" =
-            "exec ${pkgs.dmenu}/bin/dmenu_run -i"; # run case insensitive
+          "${modifier}+d" = ''exec "rofi -show window"''; # run case insensitive
         };
         startup = [
           {
@@ -91,6 +90,11 @@ in {
         workspace 3 output USB-C-0
         title_align center
       '';
+    };
+
+    programs.rofi = {
+      enable = true;
+      theme = "Arc-Dark";
     };
 
     xdg.configFile = {

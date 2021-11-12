@@ -21,6 +21,7 @@ in {
     ./modules/kitty.nix
     ./modules/autorandr.nix
     ./modules/devlopment.nix
+    ./modules/gaming.nix
   ];
 
   # Use the GRUB 2 boot loader.
@@ -124,10 +125,9 @@ in {
       kitty
       arandr
       pcmanfm
-      ripcord
       bat
       killall
-      piper
+      piper # add mouse hotkeys
       spotify
       feh
       tdesktop # telegram
@@ -139,6 +139,9 @@ in {
       streamlink-twitch-gui-bin
       streamlink
       vlc
+      jq
+
+      gparted
     ];
   };
   virtualisation.docker.enable = true;
