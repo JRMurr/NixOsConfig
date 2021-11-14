@@ -140,6 +140,7 @@ in {
       streamlink
       vlc
       jq
+      fzf
 
       gparted
     ];

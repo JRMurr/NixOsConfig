@@ -98,9 +98,12 @@ in {
       theme = "Arc-Dark";
       terminal = "${pkgs.kitty}/bin/kitty";
       extraConfig = {
-        modi = "drun,window,run";
+        # https://github.com/davatorium/rofi/blob/next/doc/rofi.1.markdown
+        modi = "run,window,ssh";
         cache-dir = "${xdgConfig.cacheHome}/rofi";
         matching = "fuzzy";
+        run-shell-command =
+          "{terminal} --hold {cmd}"; # this is kitty only option on terminal, need to hit shift+return for shell commands to run
       };
     };
 

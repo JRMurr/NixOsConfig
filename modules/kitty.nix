@@ -10,6 +10,7 @@
       scrollback_lines = -1;
     };
     # theme
-    extraConfig = lib.fileContents /etc/nixos/dotFiles/kitty/kitty-themes/Dracula.conf;
+    extraConfig =
+      lib.fileContents /etc/nixos/dotFiles/kitty/kitty-themes/Dracula.conf;
   };
 }
