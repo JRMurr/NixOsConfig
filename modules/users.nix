@@ -14,4 +14,6 @@
   services.getty.autologinUser = "jr";
 
   security.sudo = { enable = true; };
+
+  home-manager.users.jr = { xdg.enable = true; };
 }
