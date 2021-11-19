@@ -18,8 +18,7 @@ in {
     ./modules/users.nix
     ./modules/fonts.nix
     ./modules/kitty.nix
-    ./modules/desktop/autorandr.nix
-    ./modules/desktop/i3.nix
+    ./modules/desktop/module.nix
     ./modules/devlopment.nix
     ./modules/gaming.nix
   ];

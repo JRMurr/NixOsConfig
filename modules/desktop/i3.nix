@@ -7,38 +7,7 @@ let
   xdgConfig = config.home-manager.users.jr.xdg;
 in {
 
-  environment.variables.XCURSOR_SIZE = "10";
   programs.nm-applet.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver = {
-    enable = true;
-    dpi = 100;
-    # screenSection = ''
-    #   Option "metamodes" "nvidia-auto-select +0+0 { ForceCompositionPipeline = On }"
-    # '';
-    displayManager.lightdm = {
-      enable = true;
-      greeters.gtk.cursorTheme = {
-        package = pkgs.gnome3.adwaita-icon-theme;
-        size = 10;
-      };
-    };
-    displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = "jr";
-    };
-    #     displayManager.sessionCommands = ''${pkgs.xlibs.xrandr}/bin/xrandr --fb 4137x4080 --output DP-3 --gamma 1.0:1.0:1.0 --mode 3840x2160 --pos 297x0 --rate 60.00 --reflect normal --rotate normal --output DP-4 --gamma 1.0:1.0:1.0 --mode 1920x1080 --pos 0x2160 --rate 60.00 --reflect normal --rotate left
-    # xrandr --fb 4137x4080 --output DP-1 --gamma 1.0:1.0:1.0 --mode 2560x1440 --pos 1080x2160 --primary --rate 120 --reflect normal --rotate normal'';
-    desktopManager.xterm.enable = false;
-    desktopManager = {
-      wallpaper = {
-        mode = "scale";
-        combineScreens = true;
-      };
-    };
-    windowManager.i3.enable = true;
-    displayManager.defaultSession = "none+i3";
-  };
 
   # services.picom = {
   #   enable = true;
@@ -57,7 +26,7 @@ in {
   };
 
   home-manager.users.jr = {
-
+    xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
       enable = true;
       config = {
@@ -93,25 +62,90 @@ in {
       '';
     };
 
-    programs.rofi = {
-      enable = true;
-      theme = "Arc-Dark";
-      terminal = "${pkgs.kitty}/bin/kitty";
-      extraConfig = {
-        # https://github.com/davatorium/rofi/blob/next/doc/rofi.1.markdown
-        modi = "run,window,ssh";
-        cache-dir = "${xdgConfig.cacheHome}/rofi";
-        matching = "fuzzy";
-        run-shell-command =
-          "{terminal} --hold {cmd}"; # this is kitty only option on terminal, need to hit shift+return for shell commands to run
+    services = {
+      polybar = {
+        enable = true;
+        package = pkgs.polybarFull;
+        script = "polybar myBar &";
+        settings = {
+          "bar/myBar" = {
+            bottom = true;
+            modules-center = "title";
+            modules-right = "eth-speed ram cpu date time";
+          };
+
+          "module/date" = {
+            type = "internal/date";
+            interval = 1;
+            date = " %Y-%m-%d";
+            label = "%date%";
+            format-prefix = " ";
+          };
+
+          "module/time" = {
+            type = "internal/date";
+            interval = 1;
+            time = "%H:%M";
+            label = "%time%";
+            format-prefix = " ";
+          };
+
+          "module/title" = {
+            type = "internal/xwindow";
+            label = "%title%";
+            format = "<label>";
+            format-font = 4;
+          };
+
+          "module/cpu" = {
+            type = "internal/cpu";
+            interval = "0.5";
+            format = "<label>";
+            label = "﬙ %percentage%%";
+          };
+
+          "module/ram" = {
+            type = "internal/memory";
+            interval = 3;
+            format = "<label>";
+            label = " %gb_free%/%gb_total%";
+          };
+
+          "module/eth" = {
+            type = "internal/network";
+            interface = "enp10s0";
+            interval = 2;
+            ping-interval = 2;
+
+            format-connected = "<label-connected>";
+            format-disconnected = "<label-disconnected>";
+            format-packetloss = "<label-connected>";
+
+            label-connected = " %ifname% %local_ip%  (%linkspeed%)";
+            label-disconnected = "%ifname: not connected";
+          };
+
+          "module/eth-speed" = {
+            type = "internal/network";
+            interface = "enp10s0";
+            interval = "0.5";
+            ping-interval = 1;
+
+            format-connected = "<label-connected>";
+            format-disconnected = "";
+            format-packetloss = "";
+            label-connected = " %downspeed%   %upspeed%";
+          };
+
+        };
       };
     };
 
-    xdg.configFile = {
-      i3status = {
-        source = ./i3status.conf;
-        target = "../.i3status.conf";
-      };
-    };
+    # xdg.configFile = {
+    #   i3status = {
+    #     source = ./i3status.conf;
+    #     target = "../.i3status.conf";
+    #   };
+    # };
   };
 }
