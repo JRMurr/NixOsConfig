@@ -2,6 +2,7 @@
 let xdgConfig = config.home-manager.users.jr.xdg;
 in {
 
+  # try to use stuff from https://github.com/adi1090x/rofi
   home-manager.users.jr = {
     programs.rofi = {
       enable = true;

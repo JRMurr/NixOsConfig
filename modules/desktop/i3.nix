@@ -5,13 +5,7 @@ let
   xcfg = config.services.xserver;
   cfg = xcfg.desktopManager;
   xdgConfig = config.home-manager.users.jr.xdg;
-
-  mainMonitor = "DP-4";
-  topMonitor = "HDMI-0";
-  sideMonitor = "USB-C-0";
-
 in {
-
   programs.nm-applet.enable = true;
 
   # services.picom = {
@@ -72,106 +66,5 @@ in {
         title_align center
       '';
     };
-
-    services = {
-      polybar = {
-        enable = true;
-        package = pkgs.polybarFull;
-        script = ''
-          polybar --reload main & disown;
-          polybar --reload top & disown;
-          polybar --reload side & disown;
-        '';
-        settings = rec {
-
-          barConf = {
-            bottom = true;
-            modules-left = "i3";
-            modules-center = "title";
-            modules-right = "eth-speed ram cpu date time";
-          };
-
-          "bar/main" = barConf // { monitor = "${mainMonitor}"; };
-          "bar/side" = barConf // { monitor = "${sideMonitor}"; };
-          "bar/top" = barConf // { monitor = "${topMonitor}"; };
-
-          "module/date" = {
-            type = "internal/date";
-            interval = 1;
-            date = " %Y-%m-%d";
-            label = "%date%";
-            format-prefix = " ";
-          };
-
-          "module/time" = {
-            type = "internal/date";
-            interval = 1;
-            time = "%H:%M";
-            label = "%time%";
-            format-prefix = " ";
-          };
-
-          "module/title" = {
-            type = "internal/xwindow";
-            label = "%title%";
-            format = "<label>";
-            format-font = 4;
-          };
-
-          "module/cpu" = {
-            type = "internal/cpu";
-            interval = "0.5";
-            format = "<label>";
-            label = "﬙ %percentage%%";
-          };
-
-          "module/ram" = {
-            type = "internal/memory";
-            interval = 3;
-            format = "<label>";
-            label = " %gb_free%/%gb_total%";
-          };
-
-          "module/eth" = {
-            type = "internal/network";
-            interface = "enp10s0";
-            interval = 2;
-            ping-interval = 2;
-
-            format-connected = "<label-connected>";
-            format-disconnected = "<label-disconnected>";
-            format-packetloss = "<label-connected>";
-
-            label-connected = " %ifname% %local_ip%  (%linkspeed%)";
-            label-disconnected = "%ifname: not connected";
-          };
-
-          "module/eth-speed" = {
-            type = "internal/network";
-            interface = "enp10s0";
-            interval = "0.5";
-            ping-interval = 1;
-
-            format-connected = "<label-connected>";
-            format-disconnected = "";
-            format-packetloss = "";
-            label-connected = " %downspeed%   %upspeed%";
-          };
-
-          "module/i3" = {
-            type = "internal/i3";
-            pin-workspaces = true;
-          };
-
-        };
-      };
-    };
-
-    # xdg.configFile = {
-    #   i3status = {
-    #     source = ./i3status.conf;
-    #     target = "../.i3status.conf";
-    #   };
-    # };
   };
 }
