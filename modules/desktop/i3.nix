@@ -5,6 +5,11 @@ let
   xcfg = config.services.xserver;
   cfg = xcfg.desktopManager;
   xdgConfig = config.home-manager.users.jr.xdg;
+
+  mainMonitor = "DP-4";
+  topMonitor = "HDMI-0";
+  sideMonitor = "USB-C-0";
+
 in {
 
   programs.nm-applet.enable = true;
@@ -30,6 +35,7 @@ in {
     xsession.windowManager.i3 = {
       enable = true;
       config = {
+        bars = [ ];
         modifier = "${modifier}";
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
@@ -40,6 +46,11 @@ in {
           "${modifier}+d" = "exec rofi -show run";
         };
         startup = [
+          {
+            command = "systemctl --user restart polybar";
+            always = true;
+            notification = false;
+          }
           {
             command = "autorandr --load normal";
             notification = true;
@@ -66,13 +77,23 @@ in {
       polybar = {
         enable = true;
         package = pkgs.polybarFull;
-        script = "polybar myBar &";
-        settings = {
-          "bar/myBar" = {
+        script = ''
+          polybar --reload main & disown;
+          polybar --reload top & disown;
+          polybar --reload side & disown;
+        '';
+        settings = rec {
+
+          barConf = {
             bottom = true;
+            modules-left = "i3";
             modules-center = "title";
             modules-right = "eth-speed ram cpu date time";
           };
+
+          "bar/main" = barConf // { monitor = "${mainMonitor}"; };
+          "bar/side" = barConf // { monitor = "${sideMonitor}"; };
+          "bar/top" = barConf // { monitor = "${topMonitor}"; };
 
           "module/date" = {
             type = "internal/date";
@@ -135,6 +156,11 @@ in {
             format-disconnected = "";
             format-packetloss = "";
             label-connected = " %downspeed%   %upspeed%";
+          };
+
+          "module/i3" = {
+            type = "internal/i3";
+            pin-workspaces = true;
           };
 
         };
