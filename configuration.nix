@@ -16,10 +16,10 @@ in {
         "https://github.com/rycee/home-manager/archive/release-21.05.tar.gz"
       }/nixos")
     ./modules/users.nix
-    ./modules/i3.nix
     ./modules/fonts.nix
     ./modules/kitty.nix
-    ./modules/autorandr.nix
+    ./modules/desktop/autorandr.nix
+    ./modules/desktop/i3.nix
     ./modules/devlopment.nix
     ./modules/gaming.nix
   ];
