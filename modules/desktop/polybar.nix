@@ -47,18 +47,23 @@ in {
             ];
           };
 
-          barConf = formatting // {
+          commonBarOpts = formatting // {
             bottom = true;
             enable-ipc = true;
-
             modules-left = "i3";
-            modules-center = "title";
-            modules-right = "eth-speed ram cpu date time";
           };
 
-          "bar/main" = barConf // { monitor = "${mainMonitor}"; };
-          "bar/side" = barConf // { monitor = "${sideMonitor}"; };
-          "bar/top" = barConf // { monitor = "${topMonitor}"; };
+          # barConf = commonBarOpts // {
+          #   # modules-center = "title";
+          #   modules-right = "eth-speed ram cpu date time";
+          # };
+
+          "bar/main" = commonBarOpts // {
+            monitor = "${mainMonitor}";
+            modules-right = "eth-speed ram cpu date time";
+          };
+          "bar/side" = commonBarOpts // { monitor = "${sideMonitor}"; };
+          "bar/top" = commonBarOpts // { monitor = "${topMonitor}"; };
 
           "module/date" = {
             type = "internal/date";
@@ -126,6 +131,32 @@ in {
           "module/i3" = {
             type = "internal/i3";
             pin-workspaces = true;
+            index-sort = true;
+            label = {
+
+              format = "<label-state> <label-mode>";
+
+              mode = "%mode";
+              mode-padding = 2;
+              mode-background = "#e60053";
+
+              focused = "%index%";
+              focused-foreground = "#ffffff";
+              focused-background = "#3f3f3f";
+              focused-underline = "#fba922";
+              focused-padding = 4;
+
+              unfocused = "%index%";
+              unfocused-padding = 4;
+
+              visible = "%index%";
+              visible-underline = "#555555";
+              visible-padding = 4;
+            };
+
+            # label-separator = "|";
+            # label-separator-padding = 2;
+            # label-separator-foreground = "#ffb52a";
           };
 
         };

@@ -47,13 +47,13 @@ in {
           }
           {
             command = "autorandr --load normal";
-            notification = true;
+            notification = false;
           }
           {
             command = "feh --bg-${cfg.wallpaper.mode} ${
                 lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
               } $HOME/.background-image";
-            notification = true;
+            notification = false;
           }
         ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
