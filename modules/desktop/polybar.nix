@@ -22,6 +22,7 @@ in {
 
           colors = {
             background = "#1F1F1F";
+            background-alt = "#3f3f3f";
             foreground = "#FFFFFF";
             foreground-alt = "#8F8F8F";
             module-fg = "#1F1F1F";
@@ -31,6 +32,7 @@ in {
           };
 
           formatting = {
+            fixed-center = true;
             background = "${colors.background}";
             foreground = "${colors.foreground}";
             line-size = 2;
@@ -58,12 +60,14 @@ in {
           #   modules-right = "eth-speed ram cpu date time";
           # };
 
+          simpleBar = commonBarOpts // { modules-right = "time"; };
+
           "bar/main" = commonBarOpts // {
             monitor = "${mainMonitor}";
             modules-right = "eth-speed ram cpu date time";
           };
-          "bar/side" = commonBarOpts // { monitor = "${sideMonitor}"; };
-          "bar/top" = commonBarOpts // { monitor = "${topMonitor}"; };
+          "bar/side" = simpleBar // { monitor = "${sideMonitor}"; };
+          "bar/top" = simpleBar // { monitor = "${topMonitor}"; };
 
           "module/date" = {
             type = "internal/date";
@@ -86,6 +90,7 @@ in {
             label = "%title%";
             format = "<label>";
             format-font = 4;
+            label-maxlen = 30;
           };
 
           "module/cpu" = {
@@ -141,16 +146,16 @@ in {
               mode-background = "#e60053";
 
               focused = "%index%";
-              focused-foreground = "#ffffff";
-              focused-background = "#3f3f3f";
-              focused-underline = "#fba922";
+              focused-foreground = "${colors.foreground}";
+              focused-background = "${colors.background-alt}";
+              focused-underline = "${colors.primary}";
               focused-padding = 4;
 
               unfocused = "%index%";
               unfocused-padding = 4;
 
               visible = "%index%";
-              visible-underline = "#555555";
+              visible-underline = "${colors.foreground-alt}";
               visible-padding = 4;
             };
 
