@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 let
   # TODO: make these declared in module.nix and use them in i3, polybar, and autorandr
-  mainMonitor = "DP-4";
+  mainMonitor = "DP-0";
   topMonitor = "HDMI-0";
   sideMonitor = "USB-C-0";
 in {
