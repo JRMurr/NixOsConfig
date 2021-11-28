@@ -76,15 +76,15 @@ in {
   # networking.firewall.enable = false;
 
   # Enable sound.
-  sound.enable = true;
-  sound.mediaKeys.enable = true;
+  # sound.enable = true;
+  # sound.mediaKeys.enable = true;
   hardware = {
-    pulseaudio = {
-      enable = true;
-      support32Bit = true;
-      package = pkgs.pulseaudioFull;
-    };
-    bluetooth.enable = true;
+    # pulseaudio = {
+    #   enable = true;
+    #   support32Bit = true;
+    #   package = pkgs.pulseaudioFull;
+    # };
+    # bluetooth.enable = true;
     opengl = { enable = true; };
   };
 
