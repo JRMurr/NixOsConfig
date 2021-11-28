@@ -64,7 +64,7 @@ in {
 
           "bar/main" = commonBarOpts // {
             monitor = "${mainMonitor}";
-            modules-right = "eth-speed ram cpu date time";
+            modules-right = "filesystem eth-speed ram cpu date time";
           };
           "bar/side" = simpleBar // { monitor = "${sideMonitor}"; };
           "bar/top" = simpleBar // { monitor = "${topMonitor}"; };
@@ -131,6 +131,15 @@ in {
             format-disconnected = "";
             format-packetloss = "";
             label-connected = " %downspeed%   %upspeed%";
+          };
+
+          "module/filesystem" = {
+            type = "internal/fs";
+            mount-0 = "/";
+            format-mounted = "<label-mounted>";
+            format-mounted-prefix = "";
+
+            label-mounted = " %free%";
           };
 
           "module/i3" = {
