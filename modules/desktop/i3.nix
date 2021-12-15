@@ -18,11 +18,11 @@ in {
   # };
 
   # set to normal display setup, maybe use xrandr to get size?
-  services.fractalart = {
-    enable = true;
-    width = 4137;
-    height = 4080;
-  };
+  # services.fractalart = {
+  #   enable = true;
+  #   width = 4137;
+  #   height = 4080;
+  # };
 
   home-manager.users.jr = {
     xsession.numlock.enable = true;

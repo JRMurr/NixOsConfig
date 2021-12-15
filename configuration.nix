@@ -148,6 +148,7 @@ in {
       fzf
 
       gparted
+      rnix-lsp # nix lang server
     ];
   };
   virtualisation.docker.enable = true;

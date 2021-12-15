@@ -24,7 +24,7 @@
     desktopManager = {
       wallpaper = {
         mode = "scale";
-        combineScreens = true;
+        combineScreens = false;
       };
     };
     windowManager.i3.enable = true;
