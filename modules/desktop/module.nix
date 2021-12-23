@@ -6,6 +6,7 @@
     ./rofi.nix
     ./autorandr.nix
     ./audio.nix
+    ./redshift.nix
   ];
 }
 

@@ -65,6 +65,7 @@ in {
           "bar/main" = commonBarOpts // {
             monitor = "${mainMonitor}";
             modules-right = "filesystem eth-speed ram cpu date time";
+            tray-position = "right";
           };
           "bar/side" = simpleBar // { monitor = "${sideMonitor}"; };
           "bar/top" = simpleBar // { monitor = "${topMonitor}"; };
