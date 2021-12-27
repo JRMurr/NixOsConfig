@@ -24,6 +24,8 @@ in {
   #   height = 4080;
   # };
 
+  environment.systemPackages = with pkgs; [ xorg.xwininfo ];
+
   home-manager.users.jr = {
     xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
@@ -58,7 +60,13 @@ in {
         ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
         floating = {
-          criteria = [ { class = "Pavucontrol"; } { title = "bevy"; } ];
+          criteria = [
+            { class = "Pavucontrol"; }
+            {
+              title = "bevy";
+              class = "insta-gib";
+            }
+          ];
         };
       };
       extraConfig = ''
