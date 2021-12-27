@@ -1,5 +1,11 @@
-{ pkgs ? import <nixpkgs> {} }:
-
+{ pkgs ? import <nixpkgs> {
+  overlays = [
+    (import (builtins.fetchTarball
+      "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"))
+  ];
+} }:
+with pkgs;
 pkgs.mkShell {
-  buildInputs = with pkgs; [ gcc cmake openssl zlib pkgconfig postgresql_12 ];
+  buildInputs = with pkgs;
+    [ (rust-bin.fromRustupToolchainFile ./rust-toolchain) ];
 }

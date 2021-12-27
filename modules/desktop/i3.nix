@@ -57,7 +57,9 @@ in {
           }
         ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
-        floating = { criteria = [{ class = "Pavucontrol"; }]; };
+        floating = {
+          criteria = [ { class = "Pavucontrol"; } { title = "bevy"; } ];
+        };
       };
       extraConfig = ''
         workspace 1 output DP-0

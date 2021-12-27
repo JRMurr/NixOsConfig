@@ -85,7 +85,10 @@ in {
     #   package = pkgs.pulseaudioFull;
     # };
     # bluetooth.enable = true;
-    opengl = { enable = true; };
+    opengl = {
+      enable = true;
+      setLdLibraryPath = true;
+    };
   };
 
   services = {
