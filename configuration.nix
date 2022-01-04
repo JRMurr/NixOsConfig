@@ -40,18 +40,6 @@ in {
   # Define on which hard drive you want to install Grub.
   # boot.loader.grub.device = "/dev/disk/by-uuid/BC77-ADCA"; # or "nodev" for efi only
 
-  networking.hostName = "nixos-john"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp10s0.useDHCP = true;
-  networking.interfaces.wlp8s0.useDHCP = true;
-
-  networking.firewall.allowedTCPPorts = [ 57621 ]; # for spotify
-
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -75,16 +63,7 @@ in {
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # Enable sound.
-  # sound.enable = true;
-  # sound.mediaKeys.enable = true;
   hardware = {
-    # pulseaudio = {
-    #   enable = true;
-    #   support32Bit = true;
-    #   package = pkgs.pulseaudioFull;
-    # };
-    # bluetooth.enable = true;
     opengl = {
       enable = true;
       setLdLibraryPath = true;
@@ -149,6 +128,7 @@ in {
       vlc
       jq
       fzf
+      lsof
 
       gparted
       rnix-lsp # nix lang server

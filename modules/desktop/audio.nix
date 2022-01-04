@@ -8,7 +8,7 @@
       support32Bit = true;
       package = pkgs.pulseaudioFull;
     };
-    bluetooth.enable = true;
+    # bluetooth.enable = true;
   };
 
   # security.rtkit.enable = true;

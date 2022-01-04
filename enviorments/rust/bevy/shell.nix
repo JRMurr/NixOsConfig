@@ -11,8 +11,8 @@ mkShell {
   shellHook = ''
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${
       lib.makeLibraryPath [
-        # alsaLib
-        # udev
+        alsaLib
+        udev
         vulkan-loader
         xlibs.libXcursor
         xlibs.libXi
@@ -22,7 +22,9 @@ mkShell {
     }"'';
 
   buildInputs = [
-    (rust-bin.fromRustupToolchainFile ./rust-toolchain)
+    ((rust-bin.fromRustupToolchainFile ./rust-toolchain).override {
+      extensions = [ "rust-src" ];
+    })
     # https://blog.thomasheartman.com/posts/bevy-getting-started-on-nixos
     lld
     clang

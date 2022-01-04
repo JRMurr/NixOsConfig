@@ -7,6 +7,7 @@
     ./autorandr.nix
     ./audio.nix
     ./redshift.nix
+    ./networking.nix
   ];
 }
 
