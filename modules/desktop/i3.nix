@@ -6,8 +6,6 @@ let
   cfg = xcfg.desktopManager;
   xdgConfig = config.home-manager.users.jr.xdg;
 in {
-  programs.nm-applet.enable = true;
-
   # services.picom = {
   #   enable = true;
   #   # fade = true;
@@ -61,6 +59,7 @@ in {
         window = { titlebar = false; };
         floating = {
           criteria = [
+            { title = "Steam - Update News"; }
             { class = "Pavucontrol"; }
             {
               title = "bevy";
