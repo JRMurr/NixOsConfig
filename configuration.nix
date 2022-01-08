@@ -13,7 +13,7 @@ in {
     # <home-manager/nixos>
     (import "${
         builtins.fetchTarball
-        "https://github.com/rycee/home-manager/archive/release-21.05.tar.gz"
+        "https://github.com/rycee/home-manager/archive/release-21.11.tar.gz"
       }/nixos")
     ./modules/users.nix
     ./modules/fonts.nix
