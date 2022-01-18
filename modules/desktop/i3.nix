@@ -55,6 +55,10 @@ in {
               } $HOME/.background-image";
             notification = false;
           }
+          {
+            command = "pa-applet";
+            notification = false;
+          }
         ]; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
         floating = {
@@ -63,7 +67,7 @@ in {
             { class = "Pavucontrol"; }
             {
               title = "bevy";
-              class = "insta-gib";
+              class = "insta-client";
             }
           ];
         };

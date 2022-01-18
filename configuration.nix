@@ -130,6 +130,8 @@ in {
       fzf
       lsof
 
+      gimp
+
       gparted
       rnix-lsp # nix lang server
     ];

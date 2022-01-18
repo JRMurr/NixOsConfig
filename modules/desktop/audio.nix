@@ -24,4 +24,8 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+  environment = { systemPackages = with pkgs; [ pa_applet playerctl ]; };
+
+  home-manager.users.jr = { services.playerctld.enable = true; };
 }

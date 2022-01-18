@@ -1,14 +1,31 @@
 { pkgs, lib, config, ... }:
+# TODO: add https://github.com/PrayagS/polybar-spotify
 let
   # TODO: make these declared in module.nix and use them in i3, polybar, and autorandr
   mainMonitor = "DP-0";
   topMonitor = "HDMI-0";
   sideMonitor = "USB-C-0";
 in {
+  environment = { systemPackages = with pkgs; [ zscroll ]; };
+
   # try to use stuff from https://github.com/adi1090x/polybar-themes
   # this looks good https://github.com/adi1090x/polybar-themes/tree/master/simple/material
-  # environment.systemPackages = [ pkgs.pywal ];
+  # environment.systemPackages = " pkgs.pywal " {;
   home-manager.users.jr = {
+
+    xdg.configFile = {
+      "poly-get-spotify-status" = {
+        source = ./scripts/poly-get-spotify-status.sh;
+        target = "polybar/scripts/poly-get-spotify-status.sh";
+        executable = true;
+      };
+      "poly-scroll-spotify" = {
+        source = ./scripts/poly-scroll-spotify.sh;
+        target = "polybar/scripts/poly-scroll-spotify.sh";
+        executable = true;
+      };
+    };
+
     services = {
       polybar = {
         enable = true;
@@ -67,7 +84,12 @@ in {
             modules-right = "filesystem eth-speed ram cpu date time";
             tray-position = "right";
           };
-          "bar/side" = simpleBar // { monitor = "${sideMonitor}"; };
+          "bar/side" = simpleBar // {
+            monitor = "${sideMonitor}";
+            enable-ipc = true;
+            # modules-center =
+            #   "spotify spotify-prev spotify-play-pause spotify-next";
+          };
           "bar/top" = simpleBar // { monitor = "${topMonitor}"; };
 
           "module/date" = {
@@ -172,6 +194,37 @@ in {
             # label-separator = "|";
             # label-separator-padding = 2;
             # label-separator-foreground = "#ffb52a";
+          };
+
+          "module/spotify" = {
+            type = "custom/script";
+            tail = true;
+            format-prefix = "<prefix-symbol>";
+            format = "<label>";
+            exec = ''
+              ${pkgs.bash}/bin/bash -c "~/.config/polybar/scripts/poly-scroll-spotify.sh"'';
+          };
+
+          "module/spotify-prev" = {
+            type = "custom/script";
+            exec = ''echo "<previous-song-symbol>"'';
+            format = "<label>";
+            click-left = "playerctl previous -p spotify";
+          };
+
+          "module/spotify-play-pause" = {
+            type = "custom/ipc";
+            hook-0 = ''echo "<playing-symbol>"'';
+            hook-1 = ''echo "<pause-symbol>"'';
+            initial = 1;
+            click-left = "playerctl play-pause - p spotify";
+          };
+
+          "module/spotify-next" = {
+            type = "custom/script";
+            exec = ''echo "next-song-symbol"'';
+            format = "<label>";
+            click-left = "playerctl next -p spotify";
           };
 
         };

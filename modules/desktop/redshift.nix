@@ -10,7 +10,6 @@
   services.redshift = {
     enable = true;
     brightness = {
-      # Note the string values below.
       day = "1";
       night = "1";
     };
