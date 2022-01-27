@@ -21,6 +21,7 @@ in {
     ./modules/desktop/module.nix
     ./modules/devlopment.nix
     ./modules/gaming.nix
+    ./modules/programs.nix
   ];
 
   nix.gc = {
@@ -100,42 +101,11 @@ in {
   #   '';
   # };
 
-  environment = {
-    systemPackages = with pkgs; [
-      git
-      htop
-      firefox
-      vim
-      wget
-      mkpasswd
-      nixfmt
-      kitty
-      arandr
-      pcmanfm
-      bat
-      killall
-      piper # add mouse hotkeys
-      spotify
-      feh
-      tdesktop # telegram
-      pavucontrol
-      # manix
-      lxappearance
-      exa
-      zoxide
-      streamlink-twitch-gui-bin
-      streamlink
-      vlc
-      jq
-      fzf
-      lsof
+  # environment = {
+  #   systemPackages = with pkgs; [
 
-      gimp
-
-      gparted
-      rnix-lsp # nix lang server
-    ];
-  };
+  #   ];
+  # };
   virtualisation.docker.enable = true;
   programs.fish.enable = true;
   home-manager.users.jr = {
