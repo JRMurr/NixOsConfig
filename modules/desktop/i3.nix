@@ -22,7 +22,7 @@ in {
   #   height = 4080;
   # };
 
-  environment.systemPackages = with pkgs; [ xorg.xwininfo ];
+  environment.systemPackages = with pkgs; [ xorg.xwininfo scrot ];
 
   home-manager.users.jr = {
     xsession.numlock.enable = true;

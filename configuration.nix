@@ -10,11 +10,13 @@ in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # (import "${home-manager}/nixos")    
-    # <home-manager/nixos>
-    (import "${
-        builtins.fetchTarball
-        "https://github.com/rycee/home-manager/archive/release-21.11.tar.gz"
-      }/nixos")
+    # https://nix-community.github.io/home-manager/index.html#sec-install-nixos-module
+    # run nix-channel commands as sudo
+    <home-manager/nixos>
+    # (import "${
+    #     builtins.fetchTarball
+    #     "https://github.com/rycee/home-manager/archive/release-21.11.tar.gz"
+    #   }/nixos")
     ./modules/users.nix
     ./modules/fonts.nix
     ./modules/kitty.nix
@@ -23,6 +25,14 @@ in {
     ./modules/gaming.nix
     ./modules/programs.nix
   ];
+
+  # enable flakes
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   nix.gc = {
     automatic = true;
