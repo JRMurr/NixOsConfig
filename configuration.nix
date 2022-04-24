@@ -18,18 +18,19 @@ in {
     ./modules/programs.nix
   ];
 
-  # enable flakes
   nix = {
+    # enable flakes
     package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-  };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+    autoOptimiseStore = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   # Use the GRUB 2 boot loader.

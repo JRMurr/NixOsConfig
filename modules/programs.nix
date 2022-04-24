@@ -34,6 +34,7 @@
 
     gparted
     rnix-lsp # nix lang server
+    baobab # space sniffer alternative
   ];
   services.clipcat.enable = true;
   # home-manager.users.jr = { services.clipmenu.enable = true; };

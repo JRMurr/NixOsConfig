@@ -162,7 +162,8 @@ in {
             format-mounted = "<label-mounted>";
             format-mounted-prefix = "";
 
-            label-mounted = " %free%";
+            # label-mounted = " %free%";
+            label-mounted = "%free% free of %total%";
           };
 
           "module/i3" = {

@@ -9,12 +9,7 @@
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
-    # dotFiles = {
-    #   url = "path:./dotfiles";
-    #   flake = false;
-    # };
   };
-  # , dotFiles
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
     nixosConfigurations.nixos-john = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
