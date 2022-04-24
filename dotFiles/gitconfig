@@ -1,0 +1,39 @@
+# This is Git's per-user configuration file.
+[user]
+	name = John Murray
+	email = 5672686+JRMurr@users.noreply.github.com
+[core]
+	editor = code --wait
+[alias]
+    a = "add"
+    ai = "add -i"
+    c = "commit"
+    ca = "commit --amend"
+    can = "commit --amend --no-edit"
+    co = "checkout"
+    cob = "checkout -b"
+    d = "diff"
+    r = "rebase"
+    ri = "rebase -i"
+    s = "status"
+    undo = "reset HEAD~"
+    yoink = "pull"
+    yeet = "push"
+    gh = !"open `fish -c git_repo_url`"
+    lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
+    rbm = !"git fetch origin && git rebase origin/master"
+    tmp = !"git add -A && git commit --no-verify -m 'tmp'"
+    pub = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+    scary = !"git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)"
+    forget = "update-index --skip-worktree"
+    remember = "update-index --no-skip-worktree"
+    destroy = !"git push -d origin $@ && git branch -d"
+    gone = !"git remote prune origin; git branch --merged | grep -Ev \"(\\*|master)\" | xargs git branch -d"
+    l = log --oneline --decorate --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --a
+[pager]
+	branch = false
+[pull]
+	ff = only
+[includeIf "gitdir:~/immuta/"]
+    path = ~/.immuta.gitconfig
