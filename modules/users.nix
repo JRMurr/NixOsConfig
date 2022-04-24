@@ -1,4 +1,6 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, inputs, ... }:
+let passwords = import inputs.passwords;
+in {
 
   users.mutableUsers = false;
 
@@ -7,7 +9,7 @@
 
     extraGroups = [ "wheel" "networkmanager" "audio" "docker" ];
     # https://nixos.org/manual/nixos/stable/options.html#opt-users.users._name_.hashedPassword
-    hashedPassword = lib.fileContents /etc/nixos/secrets/jr-pass;
+    hashedPassword = passwords.jr;
 
     shell = pkgs.fish;
   };

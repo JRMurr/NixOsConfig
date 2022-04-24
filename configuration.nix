@@ -2,21 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, home-manager, ... }:
 
 let
   # home-manager = builtins.fetchTarBall "https://github.com/rycee/home-manager/archive/master.tar.gz"
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    # (import "${home-manager}/nixos")    
-    # https://nix-community.github.io/home-manager/index.html#sec-install-nixos-module
-    # run nix-channel commands as sudo
-    <home-manager/nixos>
-    # (import "${
-    #     builtins.fetchTarball
-    #     "https://github.com/rycee/home-manager/archive/release-21.11.tar.gz"
-    #   }/nixos")
     ./modules/users.nix
     ./modules/fonts.nix
     ./modules/kitty.nix
