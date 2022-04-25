@@ -1,5 +1,5 @@
 { pkgs, config, lib, ... }: {
-  home-manager.users.jr.programs.kitty = {
+  programs.kitty = {
     enable = true;
     settings = {
       font_family = "FiraCode Nerd Font";

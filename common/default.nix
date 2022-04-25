@@ -1,8 +1,8 @@
 {
   imports = [
-    ./users.nix
+    ./users
+
     ./fonts.nix
-    ./kitty.nix
     ./desktop
     ./devlopment.nix
     ./gaming.nix
