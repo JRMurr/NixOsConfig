@@ -9,13 +9,13 @@ let
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./modules/users.nix
-    ./modules/fonts.nix
-    ./modules/kitty.nix
-    ./modules/desktop/module.nix
-    ./modules/devlopment.nix
-    ./modules/gaming.nix
-    ./modules/programs.nix
+    ./common/users.nix
+    ./common/fonts.nix
+    ./common/kitty.nix
+    ./common/desktop
+    ./common/devlopment.nix
+    ./common/gaming.nix
+    ./common/programs.nix
   ];
 
   nix = {
