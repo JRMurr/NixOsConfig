@@ -10,18 +10,21 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations.nixos-john = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-        }
-      ];
-      specialArgs = { inherit inputs; };
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      mkSystem = extraModules:
+        nixpkgs.lib.nixosSystem rec {
+          system = "x86_64-linux";
+          modules = [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+            }
+          ] ++ extraModules;
+          specialArgs = { inherit inputs; };
+        };
+    in {
+      nixosConfigurations = { nixos-john = mkSystem [ ./hosts/desktop ]; };
     };
-  };
 }

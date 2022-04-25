@@ -5,17 +5,11 @@
 { config, pkgs, home-manager, ... }:
 
 let
-  # home-manager = builtins.fetchTarBall "https://github.com/rycee/home-manager/archive/master.tar.gz"
+
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./common/users.nix
-    ./common/fonts.nix
-    ./common/kitty.nix
-    ./common/desktop
-    ./common/devlopment.nix
-    ./common/gaming.nix
-    ./common/programs.nix
+    ../../common
   ];
 
   nix = {
@@ -115,15 +109,15 @@ in {
     xdg.configFile = {
       fish = {
         recursive = true;
-        source = ./dotFiles/fish;
+        source = ../../dotFiles/fish;
       };
       gitconfig = {
-        source = ./dotFiles/gitconfig;
+        source = ../../dotFiles/gitconfig;
         target = "../.gitconfig";
       };
       asciiArt = {
         recursive = true;
-        source = ./dotFiles/asciiArt;
+        source = ../../dotFiles/asciiArt;
         target = "../asciiArt"; # puts it in ~/asciiArt
       };
     };
