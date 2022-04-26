@@ -1,9 +1,9 @@
-{ pkgs, lib, config, systemConfig, ... }:
+{ pkgs, lib, config, nixosConfig, ... }:
 
 let
   modifier = "Mod4"; # windows key
-  xcfg = systemConfig.services.xserver;
-  cfg = (builtins.trace xcfg.desktopManager xcfg.desktopManager);
+  xcfg = nixosConfig.services.xserver;
+  cfg = xcfg.desktopManager;
 in {
   # services.picom = {
   #   enable = true;
@@ -21,7 +21,7 @@ in {
   #   height = 4080;
   # };
 
-  home.packages = with pkgs; [ xorg.xwininfo scrot ];
+  home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet ];
 
   xsession.numlock.enable = true;
   xsession.windowManager.i3 = {

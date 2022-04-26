@@ -1,2 +1,2 @@
-{ imports = [ ./polybar.nix ./autorandr.nix ./audio.nix ./redshift.nix ]; }
+{ imports = [ ./autorandr.nix ./audio.nix ./redshift.nix ]; }
 
