@@ -1,7 +1,7 @@
 { config, lib, ... }:
 with lib;
 let
-
+  # TODO: add assertion to make sure workspace is set
   graphicsCfg = config.myOptions.graphics;
   # mostly stolen from https://github.com/nix-community/home-manager/blob/778af87a981eb2bfa3566dff8c3fb510856329ef/modules/programs/autorandr.nix#L50
   # main changes are monitor option has a name param and fingerprint on it

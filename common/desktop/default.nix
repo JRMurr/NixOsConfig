@@ -1,2 +1,0 @@
-{ imports = [ ./autorandr.nix ]; }
-
