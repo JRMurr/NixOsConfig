@@ -14,4 +14,4 @@ Basing most of the organization from based Xe https://tulpa.dev/cadey/nixos-conf
 ## TODO
 - figure out agenix for secrets
 - Move pkgs in `programs.nix` around to files that use it. Mainly dev tools to home-manager or something
-- add root option to configure monitors/check if graphical to turn graphics stuff off
+- go through and make sure all graphical stuff is behind the `gcfg.enable` flag
