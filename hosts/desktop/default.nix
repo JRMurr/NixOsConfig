@@ -8,6 +8,7 @@
     ../../common
     ./networking.nix
     ./xserver.nix
+    ./redshift.nix
   ];
 
   # Use the GRUB 2 boot loader.
