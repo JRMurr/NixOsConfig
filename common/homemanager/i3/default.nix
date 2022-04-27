@@ -27,7 +27,7 @@ in {
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
           # "${modifier}+Shift+e" = "exec xfce4-session-logout";
-          "${modifier}+Shift+a" = "exec autorandr --load normal";
+          "${modifier}+Shift+a" = "exec autorandr --change";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+F2" = "exec firefox";
           "${modifier}+d" = "exec rofi -show run";
@@ -39,8 +39,7 @@ in {
             notification = false;
           }
           {
-            # TODO: figure out how to run autorandr on monitor plug/unplug for laptop
-            command = "autorandr --load normal";
+            command = "autorandr --change";
             notification = false;
           }
           {
