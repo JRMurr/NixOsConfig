@@ -2,8 +2,18 @@
 
 let
   modifier = "Mod4"; # windows key
+  gcfg = nixosConfig.myOptions.graphics;
   xcfg = nixosConfig.services.xserver;
   cfg = xcfg.desktopManager;
+
+  monitorToWorkspaceCfg = with lib;
+    config:
+    if config.enable then
+      "workspace ${toString config.workspace} output ${config.name}"
+    else
+      "";
+  monitorWorkspaceConfigs =
+    lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
 in {
   # services.picom = {
   #   enable = true;
@@ -71,9 +81,7 @@ in {
       };
     };
     extraConfig = ''
-      workspace 1 output DP-0
-      workspace 2 output HDMI-0
-      workspace 3 output USB-C-0
+      ${monitorWorkspaceConfigs}
       title_align center
     '';
   };

@@ -1,7 +1,9 @@
 { pkgs, ... }: {
   imports = [
-    ./users
+    # where all my custom options are defined (system wide)
+    ./myOptions
 
+    ./users
     ./audio.nix
     ./fonts.nix
     ./desktop

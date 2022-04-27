@@ -5,6 +5,7 @@
 { config, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
+    ./graphics.nix
     ../../common
     ./networking.nix
     ./xserver.nix
