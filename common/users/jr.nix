@@ -12,4 +12,5 @@ in {
   };
 
   services.getty.autologinUser = "jr";
+  home-manager.users.jr = (import ./jr);
 }
