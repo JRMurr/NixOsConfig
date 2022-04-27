@@ -6,15 +6,6 @@
     keep-outputs = true
     keep-derivations = true
   '';
-  home-manager.users.jr = {
-    programs.direnv = {
-      enable = true;
-      nix-direnv = {
-        enable = true;
-        enableFlakes = true;
-      };
-    };
-  };
 
   environment.systemPackages = with pkgs; [
     niv

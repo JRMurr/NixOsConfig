@@ -9,6 +9,7 @@
     ./networking.nix
     ./xserver.nix
     ./redshift.nix
+    ./gaming.nix
   ];
 
   # Use the GRUB 2 boot loader.

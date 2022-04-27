@@ -7,6 +7,7 @@ let
   imageStuff = [ feh gimp ];
   messaging = [
     tdesktop # telegram
+    discord
   ];
   desktopEnviorment = [ lxappearance arandr ];
   video = [ streamlink-twitch-gui-bin streamlink vlc ];
