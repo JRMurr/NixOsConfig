@@ -2,32 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, home-manager, ... }:
-
-let
-
-in {
-  imports = [ # Include the results of the hardware scan.
+{ config, pkgs, ... }: {
+  imports = [
     ./hardware-configuration.nix
     ../../common
     ./networking.nix
     ./xserver.nix
   ];
-
-  nix = {
-    # enable flakes
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
-    autoOptimiseStore = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-  };
 
   # Use the GRUB 2 boot loader.
   # boot.loader.grub.enable = true;
@@ -86,7 +67,6 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.03"; # Did you read the comment?
-  nixpkgs.config.allowUnfree = true;
 
   # auto upgrade with nixos-rebuild switch --upgrade
   system.autoUpgrade.enable = true;
@@ -107,22 +87,5 @@ in {
   # };
   virtualisation.docker.enable = true;
   programs.fish.enable = true;
-  home-manager.users.jr = {
-    xdg.configFile = {
-      fish = {
-        recursive = true;
-        source = ../../dotFiles/fish;
-      };
-      gitconfig = {
-        source = ../../dotFiles/gitconfig;
-        target = "../.gitconfig";
-      };
-      asciiArt = {
-        recursive = true;
-        source = ../../dotFiles/asciiArt;
-        target = "../asciiArt"; # puts it in ~/asciiArt
-      };
-    };
-  };
 }
 
