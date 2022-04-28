@@ -1,11 +1,10 @@
 { pkgs, config, ... }:
 with pkgs;
-# move some of these like bat jq exa etc to home.packages
+
 let
   gcfg = config.myOptions.graphics;
 
-  cliPrograms =
-    [ git htop vim wget mkpasswd bat killall exa zoxide jq fzf lsof unzip ];
+  cliPrograms = [ git htop vim wget mkpasswd lsof unzip ];
   imageStuff = [ feh gimp ];
   messaging = [
     tdesktop # telegram
