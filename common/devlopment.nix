@@ -8,12 +8,10 @@
   '';
 
   environment.systemPackages = with pkgs; [
-    niv
     docker-compose
     python3
     rustup
-    vscode
-    dbeaver
+
   ];
 
   programs.java.enable = true;

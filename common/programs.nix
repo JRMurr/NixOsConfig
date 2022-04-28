@@ -23,6 +23,8 @@ let
     gparted
     baobab # space sniffer alternative
     pcmanfm
+    vscode
+    dbeaver
   ];
 in {
   environment.systemPackages = with pkgs;

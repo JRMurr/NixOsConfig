@@ -1,4 +1,5 @@
 { pkgs, lib, config, nixosConfig, ... }:
+# TODO: switch this to services.autorandr on unstable / nix 22.05 version. That will enable the serivce so autorandr SHOULD detect monitor change events
 with lib;
 let
   gcfg = nixosConfig.myOptions.graphics;
