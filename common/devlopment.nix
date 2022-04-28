@@ -11,7 +11,8 @@
     docker-compose
     python3
     rustup
-
+    nixfmt
+    rnix-lsp # nix lang server
   ];
 
   programs.java.enable = true;

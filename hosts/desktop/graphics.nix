@@ -1,4 +1,6 @@
 {
+  environment.variables.XCURSOR_SIZE = "10";
+  services.xserver.videoDrivers = [ "nvidia" ];
   myOptions.graphics = {
     enable = true;
     monitors = [

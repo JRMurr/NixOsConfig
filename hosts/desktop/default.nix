@@ -8,7 +8,6 @@
     ./graphics.nix
     ../../common
     ./networking.nix
-    ./xserver.nix
     ./redshift.nix
     ./gaming.nix
   ];
