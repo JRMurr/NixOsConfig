@@ -37,27 +37,6 @@
         "type": "github"
       }
     },
-    "nix-ld": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "utils": "utils"
-      },
-      "locked": {
-        "lastModified": 1649665804,
-        "narHash": "sha256-g475am1T55nDIU5GqkmkATdw+qxLyIMsNN0Sk/PbOoE=",
-        "owner": "Mic92",
-        "repo": "nix-ld",
-        "rev": "e528b353e78bde92a9fa8d0fe30ea65b6ea29e77",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "nix-ld",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1651093906,
@@ -89,11 +68,10 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nix-ld": "nix-ld",
         "nixpkgs": "nixpkgs",
         "passwords": "passwords",
         "unstable": "unstable",
-        "utils": "utils_2",
+        "utils": "utils",
         "wsl": "wsl"
       }
     },
@@ -113,21 +91,6 @@
       }
     },
     "utils": {
-      "locked": {
-        "lastModified": 1610051610,
-        "narHash": "sha256-U9rPz/usA1/Aohhk7Cmc2gBrEEKRzcW4nwPWMPwja4Y=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "3982c9903e93927c2164caa727cd3f6a0e6d14cc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "utils_2": {
       "locked": {
         "lastModified": 1649676176,
         "narHash": "sha256-OWKJratjt2RW151VUlJPRALb7OU2S5s+f0vLj4o1bHM=",

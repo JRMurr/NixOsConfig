@@ -1,8 +1,6 @@
 { config, pkgs, ... }: {
-  imports = [
-    ../../common
-    # ./nix-ld-vscode.nix
-  ];
+  # setup vscode with the flake from https://github.com/sonowz/vscode-remote-wsl-nixos
+  imports = [ ../../common ];
   networking.hostName = "wsl";
   myOptions.graphics.enable = false;
   wsl = {

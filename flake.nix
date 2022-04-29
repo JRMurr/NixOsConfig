@@ -12,14 +12,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
-    nix-ld.url = "github:Mic92/nix-ld";
-    nix-ld.inputs.nixpkgs.follows = "nixpkgs";
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, wsl, nix-ld, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, wsl, ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -36,11 +34,7 @@
     in {
       nixosConfigurations = {
         nixos-john = mkSystem [ ./hosts/desktop ];
-        wsl = mkSystem [
-          wsl.nixosModules.wsl
-          nix-ld.nixosModules.nix-ld
-          ./hosts/wsl
-        ];
+        wsl = mkSystem [ wsl.nixosModules.wsl ./hosts/wsl ];
       };
     };
 }
