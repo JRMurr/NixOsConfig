@@ -56,7 +56,7 @@
     "passwords": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-Zq3lXDUgEqYfJoOHj+xe7yPpA/B6E5M3pHDBviWQgvQ=",
+        "narHash": "sha256-efxsjpeoUNQfW1tvUoobuwWYKVhP2FuOELq+NvGdRUA=",
         "path": "/etc/nixos/secrets/passwords.nix",
         "type": "path"
       },
