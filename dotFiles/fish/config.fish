@@ -7,6 +7,10 @@ if type -q zoxide
     set -g _ZO_ECHO 1
 end
 
+if type -q direnv
+    eval (direnv hook fish)
+end
+
 # load all the custom funcs 
 for file in ~/.config/fish/customFuncs/common/*
     source $file
@@ -23,12 +27,19 @@ source ~/.config/fish/config/bobTheFish.fish
 #aliases
 source ~/.config/fish/aliases.fish
 
+set my_host (hostname)
+
+if string match -q "*DESKTOP-251DD4K*" $my_host
+    # wsl hostname is weird on boot
+    set my_host wsl
+end
+
 # Load additional config based on hostname
-set host_config ~/.config/fish/config.(hostname).fish
+set host_config ~/.config/fish/config.(echo $my_host).fish
 test -r $host_config; and source $host_config
 
-if test -d  ~/.config/fish/customFuncs/(hostname)
-    for file in ~/.config/fish/customFuncs/(hostname)/*
+if test -d ~/.config/fish/customFuncs/(echo $my_host)
+    for file in ~/.config/fish/customFuncs/(echo $my_host)/*
         source $file
     end
 end
