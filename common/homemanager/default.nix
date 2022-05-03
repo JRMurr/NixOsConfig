@@ -9,6 +9,7 @@
     ./rofi.nix
     ./i3
     ./polybar
+    ./xsession.nix
   ];
 
   # adds home-manager-help tool

@@ -4,8 +4,8 @@ with lib;
 let
   gcfg = nixosConfig.myOptions.graphics;
   monitors = gcfg.monitors;
-  monitorsByName = attrsets.mapAttrs (name: value: head value)
-    (lists.groupBy (x: x.name) monitors);
+  monitorsByName =
+    attrsets.mapAttrs (_: head) (lists.groupBy (x: x.name) monitors);
 
   # monitor values to autorander config values
   monitorConfigMap = config: {
