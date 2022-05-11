@@ -39,7 +39,7 @@ in {
             notification = false;
           }
           {
-            command = "autorandr load --normal || autorandr --change";
+            command = "autorandr load --normal";
             notification = false;
           }
           {
