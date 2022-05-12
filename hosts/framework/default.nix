@@ -1,5 +1,10 @@
 { config, pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ../../common ./networking.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./graphics.nix
+    ../../common
+    ./networking.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
