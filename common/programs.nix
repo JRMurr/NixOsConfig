@@ -22,6 +22,7 @@ let
     pcmanfm
     vscode
     dbeaver
+    deluge
   ];
 
   allGraphicalPrograms = if gcfg.enable then
