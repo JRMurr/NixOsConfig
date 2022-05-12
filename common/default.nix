@@ -3,6 +3,7 @@
     # where all my custom options are defined (system wide)
     ./myOptions
 
+    ./gestures
     ./xserver.nix
     ./users
     ./audio.nix

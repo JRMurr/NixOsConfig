@@ -3,6 +3,7 @@
 let
   modifier = "Mod4"; # windows key
   gcfg = nixosConfig.myOptions.graphics;
+  gesturesEnable = nixosConfig.myOptions.gestures.enable;
   xcfg = nixosConfig.services.xserver;
   cfg = xcfg.desktopManager;
 
@@ -52,7 +53,10 @@ in {
             command = "pa-applet";
             notification = false;
           }
-        ]; # i think i need notification to add the no--startup-id
+        ] ++ lib.lists.optional gesturesEnable {
+          command = "fusuma -d -c ~/.config/fusuma/config.yml";
+          notification = false;
+        }; # i think i need notification to add the no--startup-id
         window = { titlebar = false; };
         floating = {
           criteria = [
