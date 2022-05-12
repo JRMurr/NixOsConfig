@@ -1,12 +1,13 @@
 { config, pkgs, lib, inputs, ... }:
-let passwords = import inputs.passwords;
-
+let
+  passwords = import inputs.passwords;
+  tmp = lib.lists.optional config.myOptions.gestures.enable "input";
+  groups = [ "wheel" "networkmanager" "audio" "docker" ] ++ tmp;
 in {
   users.users.jr = {
     isNormalUser = true;
 
-    extraGroups = [ "wheel" "networkmanager" "audio" "docker" ]
-      ++ lib.lists.optional config.myOptions.gestures.enable "login";
+    extraGroups = groups;
     # https://nixos.org/manual/nixos/stable/options.html#opt-users.users._name_.hashedPassword
     hashedPassword = passwords.jr;
 
