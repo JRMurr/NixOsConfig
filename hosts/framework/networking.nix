@@ -6,7 +6,7 @@
     # Per-interface useDHCP will be mandatory in the future, so this generated config
     # replicates the default behaviour.
     useDHCP = false;
-    interfaces.w1p170s0.useDHCP = true;
+    interfaces.wlp170s0.useDHCP = true;
 
     firewall.allowedTCPPorts = [ 57621 ]; # for spotify
   };

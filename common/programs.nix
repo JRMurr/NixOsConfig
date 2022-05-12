@@ -4,7 +4,7 @@ with pkgs;
 let
   gcfg = config.myOptions.graphics;
 
-  cliPrograms = [ git htop vim wget mkpasswd lsof unzip ];
+  cliPrograms = [ git gh htop vim wget mkpasswd lsof unzip ];
   imageStuff = [ feh gimp ];
   messaging = [
     tdesktop # telegram

@@ -5,7 +5,6 @@ in {
   config = lib.mkIf gcfg.enable {
     services.xserver = {
       enable = true;
-      dpi = 100;
 
       # write config to /etc/X11/xorg.conf for easy debugging
       exportConfiguration = true;
