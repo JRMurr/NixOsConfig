@@ -42,8 +42,13 @@ let
   };
   simpleBar = commonBarOpts // { modules-right = "time"; };
   mainBar = commonBarOpts // {
-    modules-right = "filesystem eth-speed ram cpu date time";
+    modules-right = "filesystem eth-speed ram cpu date time "
+      + (if nixosConfig.networking.hostName == "framework" then
+        "battery"
+      else
+        "");
     tray-position = "right";
+    dpi = nixosConfig.services.xserver.dpi;
   };
 
   monitorToBarCfg = monitorConfig:
@@ -94,6 +99,13 @@ in {
           #   # modules-center = "title";
           #   modules-right = "eth-speed ram cpu date time";
           # };
+
+          "module/battery" = {
+            type = "internal/battery";
+            # https://github.com/polybar/polybar/wiki/Module%3A-battery#basic-settings
+            battery = "BAT1";
+            adapter = "ACAD";
+          };
 
           "module/date" = {
             type = "internal/date";
