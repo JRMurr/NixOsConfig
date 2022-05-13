@@ -32,6 +32,8 @@ in {
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+F2" = "exec firefox";
           "${modifier}+d" = "exec rofi -show run";
+          "${modifier}+Shift+Escape" =
+            "exec rofi -show p -modi p:rofi-power-menu";
         };
         startup = [
           {

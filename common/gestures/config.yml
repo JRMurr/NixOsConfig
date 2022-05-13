@@ -1,0 +1,7 @@
+# https://github.com/iberianpig/fusuma/wiki/i3
+swipe:
+    4:
+        left:
+            command: "i3-msg 'workspace next'"
+        right:
+            command: "i3-msg 'workspace prev'"

@@ -5,14 +5,7 @@ in {
     environment.systemPackages = with pkgs; [ fusuma ];
     home-manager.users.jr = {
       xdg.configFile."fusuma" = {
-        text = ''
-          swipe:
-              4:
-                  left:
-                      command: "i3-msg 'workspace next'"
-                  right:
-                      command: "i3-msg 'workspace prev'"
-        '';
+        source = ./config.yml;
         target = "fusuma/config.yml";
       };
     };
