@@ -14,6 +14,7 @@ in {
     #   };
     #   # bluetooth.enable = true;
     # };
+    sound.mediaKeys.enable = true;
     security.rtkit.enable = true;
     services.pipewire = {
       enable = true;
