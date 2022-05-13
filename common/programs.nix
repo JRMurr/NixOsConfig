@@ -44,5 +44,9 @@ let
   else
     [ ];
 in {
+  # these two are for vscode to stop yelling at me
+  programs.dconf.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+
   environment.systemPackages = with pkgs; cliPrograms ++ allGraphicalPrograms;
 }
