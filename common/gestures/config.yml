@@ -1,5 +1,14 @@
 # https://github.com/iberianpig/fusuma/wiki/i3
 swipe:
+    3:
+        left:
+            command: exec i3 focus right
+        right:
+            command: exec i3 focus left
+        up:
+            command: exec i3 focus down
+        down:
+            command: exec i3 focus up
     4:
         left:
             command: "i3-msg 'workspace next'"
