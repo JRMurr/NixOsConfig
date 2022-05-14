@@ -59,7 +59,11 @@ in {
           command = "fusuma -d -c ~/.config/fusuma/config.yml";
           notification = false;
         }; # i think i need notification to add the no--startup-id
-        window = { titlebar = false; };
+        window = {
+          titlebar = false;
+          hideEdgeBorders = "smart";
+        };
+        workspaceLayout = "tabbed";
         floating = {
           criteria = [
             { title = "Steam - Update News"; }
