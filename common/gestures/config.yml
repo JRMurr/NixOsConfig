@@ -2,7 +2,7 @@
 swipe:
     3:
         left:
-            command: exec i3 focus right
+            command: exec i3 focus left
         right:
             command: exec i3 focus left
         up:
@@ -11,6 +11,6 @@ swipe:
             command: exec i3 focus up
     4:
         left:
-            command: "i3-msg 'workspace next'"
-        right:
             command: "i3-msg 'workspace prev'"
+        right:
+            command: "i3-msg 'workspace next'"
