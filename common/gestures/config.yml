@@ -4,7 +4,7 @@ swipe:
         left:
             command: exec i3 focus left
         right:
-            command: exec i3 focus left
+            command: exec i3 focus right
         up:
             command: exec i3 focus down
         down:

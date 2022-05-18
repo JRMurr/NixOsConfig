@@ -57,6 +57,7 @@ in {
           }
         ] ++ lib.lists.optional gesturesEnable {
           command = "fusuma -d -c ~/.config/fusuma/config.yml";
+          always = true;
           notification = false;
         }; # i think i need notification to add the no--startup-id
         window = {
