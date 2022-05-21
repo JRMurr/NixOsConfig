@@ -10,6 +10,7 @@
     ./fonts.nix
     ./devlopment.nix
     ./programs.nix
+    ./tailscale.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

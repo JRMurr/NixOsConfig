@@ -34,6 +34,8 @@ in {
           "${modifier}+d" = "exec rofi -show run";
           "${modifier}+Shift+Escape" =
             "exec rofi -show p -modi p:rofi-power-menu";
+          "--release ${modifier}+Shift+s" =
+            "exec scrot -s ~/Pictures/%Y-%m-%d-%H-%M-%S.png";
         };
         startup = [
           {
