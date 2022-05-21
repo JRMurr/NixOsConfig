@@ -4,6 +4,7 @@
     ./graphics.nix
     ../../common
     ./networking.nix
+    ./fingerprint-reader.nix
   ];
 
   time.timeZone = "America/New_York";
