@@ -118,7 +118,7 @@ in {
           "module/time" = {
             type = "internal/date";
             interval = 1;
-            time = "%H:%M";
+            time = "%I:%M";
             label = "%time%";
             format-prefix = " ";
           };

@@ -10,6 +10,7 @@
     ./i3
     ./polybar
     ./xsession.nix
+    ./nushell.nix
   ];
 
   # adds home-manager-help tool
