@@ -18,13 +18,16 @@ in {
             package = pkgs.gnome3.adwaita-icon-theme;
             size = 10;
           };
+          # https://github.com/NixOS/nixos-artwork/tree/master/wallpapers
+          background =
+            pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
         };
       };
 
       desktopManager.xterm.enable = false;
       desktopManager = {
         wallpaper = {
-          mode = "scale";
+          mode = "fill";
           combineScreens = false;
         };
       };

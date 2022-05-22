@@ -7,6 +7,8 @@ let
   xcfg = nixosConfig.services.xserver;
   cfg = xcfg.desktopManager;
 
+  wallPaperPath = xcfg.displayManager.lightdm.background;
+
   monitorToWorkspaceCfg = with lib;
     config:
     if config.enable then
@@ -50,7 +52,7 @@ in {
           {
             command = "feh --bg-${cfg.wallpaper.mode} ${
                 lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
-              } $HOME/.background-image";
+              } ${wallPaperPath}";
             notification = false;
           }
           {
