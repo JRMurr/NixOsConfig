@@ -46,10 +46,6 @@ in {
             notification = false;
           }
           {
-            command = "autorandr load --normal";
-            notification = false;
-          }
-          {
             command = "feh --bg-${cfg.wallpaper.mode} ${
                 lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
               } ${wallPaperPath}";

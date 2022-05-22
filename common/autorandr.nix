@@ -1,8 +1,7 @@
-{ pkgs, lib, config, nixosConfig, ... }:
-# TODO: switch this to services.autorandr on unstable / nix 22.05 version. That will enable the serivce so autorandr SHOULD detect monitor change events
+{ pkgs, lib, config, ... }:
 with lib;
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = config.myOptions.graphics;
   monitors = gcfg.monitors;
   monitorsByName =
     attrsets.mapAttrs (_: head) (lists.groupBy (x: x.name) monitors);
@@ -18,8 +17,9 @@ let
   };
 in {
   config = lib.mkIf gcfg.enable {
-    programs.autorandr = {
+    services.autorandr = {
       enable = true;
+      defaultTarget = "normal";
       profiles = {
         "normal" = {
           fingerprint =

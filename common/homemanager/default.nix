@@ -1,6 +1,5 @@
 { ... }: {
   imports = [
-    ./autorandr.nix
     ./direnv.nix
     ./asciiArt.nix
     ./git.nix

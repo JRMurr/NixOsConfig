@@ -3,6 +3,7 @@
     # where all my custom options are defined (system wide)
     ./myOptions
 
+    ./autorandr.nix
     ./gestures
     ./xserver.nix
     ./users
