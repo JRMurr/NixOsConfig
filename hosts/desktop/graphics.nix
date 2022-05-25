@@ -4,6 +4,7 @@
   services.xserver.dpi = 100;
   myOptions.graphics = {
     enable = true;
+    wallPaper = { mode = "scale"; };
     monitors = [
       {
         # main 1440p 144hz monitor

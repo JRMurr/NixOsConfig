@@ -4,6 +4,7 @@
   # services.xserver.videoDrivers = [ "nvidia" ];
   myOptions.graphics = {
     enable = true;
+    wallPaper = { mode = "fill"; };
     monitors = [{
       # main 1440p 144hz monitor
       fingerprint =
