@@ -12,6 +12,7 @@
     ./devlopment.nix
     ./programs.nix
     ./tailscale.nix
+    ./ssh.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
