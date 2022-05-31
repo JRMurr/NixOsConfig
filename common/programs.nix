@@ -29,7 +29,6 @@ let
     spotify
     piper # add mouse hotkeys
     firefox
-    chromium
     kitty
     gparted
     baobab # space sniffer alternative
