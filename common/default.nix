@@ -14,6 +14,7 @@
     ./tailscale.nix
     ./ssh.nix
     ./kernel.nix
+    ./network-shares.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
