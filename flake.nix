@@ -37,9 +37,8 @@
       nixosConfigurations = {
         nixos-john = mkSystem [ ./hosts/desktop ];
         wsl = mkSystem [ wsl.nixosModules.wsl ./hosts/wsl ];
-        frameworkIso = mkSystem [
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-          nixos-hardware.nixosModules.framework
+        graphicalIso = mkSystem [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
           ({ ... }: {
             nix = {
               # enable flakes
