@@ -3,28 +3,23 @@
     # where all my custom options are defined (system wide)
     ./myOptions
 
-    ./autorandr.nix
-    ./gestures
-    ./xserver.nix
-    ./users
     ./audio.nix
-    ./fonts.nix
+    ./autorandr.nix
     ./devlopment.nix
-    ./programs.nix
-    ./tailscale.nix
-    ./ssh.nix
+    ./essentials.nix
+    ./fonts.nix
+    ./gestures
     ./kernel.nix
     ./network-shares.nix
+    ./programs.nix
+    ./ssh.nix
+    ./tailscale.nix
+    ./users
+    ./xserver.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
   nix = {
-    # enable flakes
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
     settings = { auto-optimise-store = true; };
     gc = {
       automatic = true;

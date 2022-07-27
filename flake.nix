@@ -38,16 +38,8 @@
         nixos-john = mkSystem [ ./hosts/desktop ];
         wsl = mkSystem [ wsl.nixosModules.wsl ./hosts/wsl ];
         graphicalIso = mkSystem [
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
-          ({ ... }: {
-            nix = {
-              # enable flakes
-              package = nixpkgs.legacyPackages."x86_64-linux".nixFlakes;
-              extraOptions = ''
-                experimental-features = nix-command flakes
-              '';
-            };
-          })
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma5.nix"
+          ./common/essentials.nix
         ];
         framework =
           mkSystem [ nixos-hardware.nixosModules.framework ./hosts/framework ];
