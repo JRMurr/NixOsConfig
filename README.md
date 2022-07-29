@@ -14,7 +14,7 @@ https://hoverbear.org/blog/nix-flake-live-media/
 
 ```fish
 nix build '.#nixosConfigurations.graphicalIso.config.system.build.isoImage'
-# NOTE: UPDATE of to the right usb path (df -h)
+# NOTE: UPDATE of to the right usb path
 set USB_PATH /dev/null
 set ISO_PATH ./result/iso/*.iso
 sudo dd if=$ISO_PATH of=$USB_PATH status=progress
