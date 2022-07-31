@@ -1,15 +1,16 @@
 { ... }: {
   imports = [
-    ./direnv.nix
     ./asciiArt.nix
-    ./git.nix
+    ./direnv.nix
     ./fish.nix
-    ./kitty.nix
-    ./rofi.nix
+    ./git.nix
+    ./helix.nix
     ./i3
-    ./polybar
-    ./xsession.nix
+    ./kitty.nix
     ./nushell.nix
+    ./polybar
+    ./rofi.nix
+    ./xsession.nix
   ];
 
   # https://nix-community.github.io/home-manager/release-notes.html#sec-release-22.11-highlights
