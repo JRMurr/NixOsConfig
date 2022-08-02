@@ -17,7 +17,19 @@ let
       install -Dm755 rofi-power-menu $out/bin/rofi-power-menu
     '';
   };
-  cliPrograms = [ git gh htop bottom vim wget mkpasswd lsof unzip asciinema ];
+  cliPrograms = [
+    git
+    gh
+    htop
+    bottom
+    vim
+    wget
+    mkpasswd
+    lsof
+    unzip
+    asciinema
+    nixpkgs-review
+  ];
   imageStuff = [ feh gimp ];
   messaging = [
     tdesktop # telegram
