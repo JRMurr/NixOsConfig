@@ -9,6 +9,7 @@
     ./kitty.nix
     ./nushell.nix
     ./polybar
+    ./redshift.nix
     ./rofi.nix
     ./xsession.nix
   ];
