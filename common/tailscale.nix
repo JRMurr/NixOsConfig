@@ -7,8 +7,7 @@
 
   networking.firewall.checkReversePath = "loose";
 
-  #   networking.nameservers =
-  #     [ "100.100.100.100" "192.168.1.160" ];
-  #   networking.search = [ "example.com.beta.tailscale.net" ];
+  networking.nameservers = [ "100.100.100.100" "1.1.1.1" "8.8.8.8" ];
+  networking.search = [ "johnreillymurray.gmail.com.beta.tailscale.net" ];
 
 }
