@@ -14,12 +14,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
+    vscode-server = {
+      url = "github:msteen/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
+    , ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -43,6 +48,11 @@
         ];
         framework =
           mkSystem [ nixos-hardware.nixosModules.framework ./hosts/framework ];
+        thicc-server = mkSystem [
+          ./hosts/thicc-server
+          vscode-server.nixosModule
+          ({ config, pkgs, ... }: { services.vscode-server.enable = true; })
+        ];
       };
     };
 }

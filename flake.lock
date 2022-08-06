@@ -72,6 +72,7 @@
     "passwords": {
       "flake": false,
       "locked": {
+        "lastModified": 1659811718,
         "narHash": "sha256-efxsjpeoUNQfW1tvUoobuwWYKVhP2FuOELq+NvGdRUA=",
         "path": "/etc/nixos/secrets/passwords.nix",
         "type": "path"
@@ -88,6 +89,7 @@
         "nixpkgs": "nixpkgs",
         "passwords": "passwords",
         "utils": "utils_2",
+        "vscode-server": "vscode-server",
         "wsl": "wsl"
       }
     },
@@ -118,6 +120,26 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vscode-server": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1658079296,
+        "narHash": "sha256-xnUCsRKi06dJpKFxNCeMsmzkyek4teGGzjYYR+vYI7c=",
+        "owner": "msteen",
+        "repo": "nixos-vscode-server",
+        "rev": "867d5691871acc039fb47d45018c69e9ac751d95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "msteen",
+        "repo": "nixos-vscode-server",
         "type": "github"
       }
     },
