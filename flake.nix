@@ -38,6 +38,8 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              environment.systemPackages =
+                [ deploy-rs.packages.x86_64-linux.deploy-rs ];
             }
           ] ++ extraModules;
           specialArgs = { inherit inputs; };
