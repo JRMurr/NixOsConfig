@@ -20,7 +20,10 @@
 
   nixpkgs.config.allowUnfree = true;
   nix = {
-    settings = { auto-optimise-store = true; };
+    settings = {
+      trusted-users = [ "root" "jr" ];
+      auto-optimise-store = true;
+    };
     gc = {
       automatic = true;
       dates = "weekly";
