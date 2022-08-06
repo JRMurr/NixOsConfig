@@ -66,7 +66,7 @@
         # NixOS deployment can be a bit flaky (especially on unstable)
         # and you may need to deploy twice to succeed, but auto rollback
         # works against that and make your deployments constantly fail.
-        autoRollback = false;
+        # autoRollback = false;
 
         # Auto rollback on Internet disconnection, recommended off.
         #
@@ -75,7 +75,7 @@
         # But if you're adjusting firewall or IP settings, chances are
         # although the Internet is down atm, a simple reboot will make everything work.
         # Magic rollback works against that, so you should keep that off.
-        magicRollback = false;
+        # magicRollback = false;
 
         nodes.thicc-server = {
           hostname = "192.168.1.160";
@@ -88,6 +88,9 @@
           };
         };
       };
+
+      checks = builtins.mapAttrs
+        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
     };
 }
