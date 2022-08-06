@@ -2,6 +2,8 @@
   imports = [
     ./hardware-configuration.nix
     ../../common
+
+    ./adguard.nix
   ];
 
   time.timeZone = "America/New_York";
@@ -13,9 +15,6 @@
   services.openssh.permitRootLogin = "yes";
   virtualisation.docker.enable = true;
   programs.fish.enable = true;
-
-
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
