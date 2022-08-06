@@ -18,13 +18,17 @@
       url = "github:msteen/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
   };
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , ... }@inputs:
+    , deploy-rs, ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -54,5 +58,17 @@
           ({ config, pkgs, ... }: { services.vscode-server.enable = true; })
         ];
       };
+
+      deploy.nodes.thicc-server = {
+        hostname = "192.168.1.160";
+        sshUser = "root";
+        fastConnection = true;
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos
+            self.nixosConfigurations.thicc-server;
+        };
+      };
+
     };
 }
