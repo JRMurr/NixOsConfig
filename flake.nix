@@ -59,14 +59,33 @@
         ];
       };
 
-      deploy.nodes.thicc-server = {
-        hostname = "192.168.1.160";
-        sshUser = "root";
-        fastConnection = true;
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos
-            self.nixosConfigurations.thicc-server;
+      deploy = {
+        # https://lantian.pub/en/article/modify-website/nixos-initial-config-flake-deploy.lantian/
+        # Auto rollback on deployment failure, recommended off.
+        #
+        # NixOS deployment can be a bit flaky (especially on unstable)
+        # and you may need to deploy twice to succeed, but auto rollback
+        # works against that and make your deployments constantly fail.
+        autoRollback = false;
+
+        # Auto rollback on Internet disconnection, recommended off.
+        #
+        # Rollback when your new config killed the Internet connection,
+        # so you don't have to use VNC or IPMI from your service provider.
+        # But if you're adjusting firewall or IP settings, chances are
+        # although the Internet is down atm, a simple reboot will make everything work.
+        # Magic rollback works against that, so you should keep that off.
+        magicRollback = false;
+
+        nodes.thicc-server = {
+          hostname = "192.168.1.160";
+          sshUser = "root";
+          fastConnection = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos
+              self.nixosConfigurations.thicc-server;
+          };
         };
       };
 
