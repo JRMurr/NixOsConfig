@@ -6,6 +6,7 @@
     ./audio.nix
     ./autorandr.nix
     ./devlopment.nix
+    ./containers.nix
     ./essentials.nix
     ./fonts.nix
     ./gestures

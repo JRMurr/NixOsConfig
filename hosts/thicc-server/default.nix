@@ -3,7 +3,7 @@
     ./hardware-configuration.nix
     ../../common
 
-    ./adguard.nix
+    ./pi-hole.nix
   ];
 
   time.timeZone = "America/New_York";
