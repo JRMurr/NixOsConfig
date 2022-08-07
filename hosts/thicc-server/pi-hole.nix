@@ -6,6 +6,7 @@ in {
   config = lib.mkIf containerCfg.enable {
 
     virtualisation.oci-containers.containers."pihole" = {
+      autoStart = true;
       image = "pihole/pihole:latest";
       environment = {
         "TZ" = "America/New_York";
@@ -17,7 +18,7 @@ in {
         "${configDir}/pihole/etc:/etc/pihole"
         "${configDir}/pihole/dnsmasq:/etc/dnsmasq.d"
       ];
-      extraDockerOptions =
+      extraOptions =
         [ "--dns" "1.1.1.1" "--dns" "127.0.0.1" "--cap-add=NET_ADMIN" ];
     };
   };
