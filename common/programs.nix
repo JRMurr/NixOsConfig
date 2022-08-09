@@ -37,8 +37,8 @@ let
   ];
   desktopEnviorment = [ lxappearance arandr rofi-power-menu ];
   video = [ streamlink-twitch-gui-bin streamlink vlc ];
+  audio = [ spotify spotify-tui ];
   miscGraphicalPrograms = [
-    spotify
     piper # add mouse hotkeys
     firefox
     kitty
@@ -52,7 +52,7 @@ let
 
   allGraphicalPrograms = if gcfg.enable then
     miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-    ++ imageStuff
+    ++ imageStuff ++ audio
   else
     [ ];
 in {
