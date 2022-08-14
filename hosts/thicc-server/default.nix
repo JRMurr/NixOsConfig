@@ -4,6 +4,7 @@
     ../../common
 
     ./pi-hole.nix
+    ./dashy.nix
   ];
 
   time.timeZone = "America/New_York";

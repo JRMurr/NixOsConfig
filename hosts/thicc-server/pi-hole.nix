@@ -18,14 +18,8 @@ in {
         "${configDir}/pihole/etc:/etc/pihole"
         "${configDir}/pihole/dnsmasq:/etc/dnsmasq.d"
       ];
-      extraOptions = [
-        # "--restart=unless-stopped"
-        "--dns"
-        "1.1.1.1"
-        "--dns"
-        "127.0.0.1"
-        "--cap-add=NET_ADMIN"
-      ];
+      extraOptions =
+        [ "--dns" "1.1.1.1" "--dns" "127.0.0.1" "--cap-add=NET_ADMIN" ];
     };
   };
 }
