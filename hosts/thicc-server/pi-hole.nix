@@ -7,7 +7,7 @@ in {
 
     virtualisation.oci-containers.containers."pihole" = {
       autoStart = true;
-      image = "pihole/pihole:latest";
+      image = "pihole/pihole:2022.07";
       environment = {
         "TZ" = "America/New_York";
         # TODO: make secrets, not a big deal for now
@@ -19,7 +19,7 @@ in {
         "${configDir}/pihole/dnsmasq:/etc/dnsmasq.d"
       ];
       extraOptions = [
-        "--restart=unless-stopped"
+        # "--restart=unless-stopped"
         "--dns"
         "1.1.1.1"
         "--dns"
