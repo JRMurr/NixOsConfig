@@ -1,9 +1,12 @@
 { config, pkgs, lib, inputs, ... }:
 let
   passwords = import inputs.passwords;
-  tmp = lib.lists.optional config.myOptions.gestures.enable "input";
-  groups = [ "wheel" "networkmanager" "audio" "docker" ] ++ tmp;
+  inputGroup = lib.lists.optional config.myOptions.gestures.enable "input";
+  groups = [ "wheel" "networkmanager" "audio" "docker" ] ++ inputGroup;
+
 in {
+  services.getty.autologinUser = "jr";
+  home-manager.users.jr = (import ./jr);
   users.users.jr = {
     isNormalUser = true;
 
@@ -12,8 +15,7 @@ in {
     hashedPassword = passwords.jr;
 
     shell = pkgs.fish;
+    openssh.authorizedKeys.keyFiles = [ ./jr-keys.txt ];
   };
 
-  services.getty.autologinUser = "jr";
-  home-manager.users.jr = (import ./jr);
 }
