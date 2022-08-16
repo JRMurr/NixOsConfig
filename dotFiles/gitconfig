@@ -35,5 +35,7 @@
 	branch = false
 [pull]
 	ff = only
+[push]
+    autoSetupRemote = true
 [includeIf "gitdir:~/immuta/"]
     path = ~/.immuta.gitconfig
