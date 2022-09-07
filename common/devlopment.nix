@@ -8,6 +8,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    dive
     docker-compose
     python3
     rustup
