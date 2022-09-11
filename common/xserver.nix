@@ -24,6 +24,12 @@ in {
     services.xserver = {
       enable = true;
 
+      libinput = {
+        enable = true;
+        # disabling touchpad acceleration
+        touchpad = { accelProfile = "flat"; };
+      };
+
       # write config to /etc/X11/xorg.conf for easy debugging
       exportConfiguration = true;
 
