@@ -9,7 +9,13 @@
     interfaces.enp10s0.useDHCP = true;
     interfaces.wlp8s0.useDHCP = true;
 
-    firewall.allowedTCPPorts = [ 57621 ]; # for spotify
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        57621 # for spotify
+        8050 # for protohackers
+      ];
+    };
   };
 
   programs.nm-applet.enable = true;
