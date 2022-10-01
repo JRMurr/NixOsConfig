@@ -28,7 +28,7 @@
     };
   };
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , deploy-rs, ... }@inputs:
+    , flake-utils, deploy-rs, ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -44,6 +44,28 @@
           ] ++ extraModules;
           specialArgs = { inherit inputs; };
         };
+      mkPkgs = system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      mkHomemanager = let myOptions = import ./common/myOption;
+      in name: user: system:
+      inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = mkPkgs system;
+        inherit system username;
+        extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
+        modules = [
+          {
+            home = {
+              # TODO: this is the macos path, if used on linux need to switch to home
+              homeDirectory = "/Users/${user}";
+              username = user;
+            };
+          }
+          (./common/users + "/${name}" + /home.nix)
+        ];
+      };
     in {
       nixosConfigurations = {
         nixos-john = mkSystem [ ./hosts/desktop ];
@@ -59,6 +81,11 @@
           vscode-server.nixosModule
           ({ config, pkgs, ... }: { services.vscode-server.enable = true; })
         ];
+      };
+
+      homeConfigurations = {
+        # stolen sorta from https://github.com/mrkuz/nixos/blob/738528d405bdb5b6e729c1d8d1885664650e08dd/flake.nix#L110
+        jmurray = mkHomemanager "jmurray" "jmurray" "x86_64-darwin";
       };
 
       deploy = {
