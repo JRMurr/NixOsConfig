@@ -17,6 +17,7 @@ alias jsonJs="pbpaste | json-to-js --spaces=4 | pbcopy; pbpaste"
 
 set -g BODATA_DIR "/Users/jmurray/immuta/bodata"
 set -g FINGERPRINT_DIR "/Users/jmurray/immuta/fingerprint"
+set -g AUDIT_DIR "/Users/jmurray/immuta/audit"
 set -g CLI_DIR "/Users/jmurray/immuta/cli"
 set -g -x NODE_OPTIONS "--max_old_space_size=5120"
 
@@ -26,9 +27,10 @@ set -x PATH $PATH /usr/local/go/bin $GOPATH/bin
 
 alias sshB="ssh -A -l jmurray bastion.immuta.com"
 alias gUnit="grunt mocha_istanbul:unit"
-alias bocode="code ~/immuta/bodata"
+alias bocode="cd  ~/immuta/bodata && code ."
 alias fingerCode="code ~/immuta/fingerprint"
 alias cliCode="code ~/immuta/cli"
+alias auditCode="code $AUDIT_DIR"
 
 
 alias pgKris="psql -d immuta -U kris -h localhost"
@@ -45,6 +47,7 @@ alias pgBo="pgcli postgresql://bometa:secret@localhost:5432/bometadata"
 alias pgFe=" psql postgresql://feature_service:secret@localhost:5432/immuta"
 alias buildRun="bash ~/scripts/buildBodataPost.sh; sleep 40; npm start"
 alias cdBo="cd ~/immuta/bodata/service"
+alias cdAudit="cd $AUDIT_DIR"
 alias fdwIT="IT_UNOBFUSCATED=true npm run mocha -- fdw_it/fdw.it.spec.js"
 alias nodeIT="IT_UNOBFUSCATED=true npm run mocha -- it/*.spec.js"
 alias npmc="cd ~/immuta/bodata/service && npm run console:dev"
@@ -74,8 +77,4 @@ function imComplete
     pushd $CLI_DIR
     go run main.go completion fish > ~/.config/fish/completions/immuta.fish
     popd
-end
-
-function kubePub --wraps="kubectl"
-    kubectl --context kube-1.partner.immuta.com:jmurray $argv
 end

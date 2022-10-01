@@ -1,5 +1,6 @@
 function buildDevPost
     if read_confirm "Do you want to stop and rebuild the pg container?"
+        kitty @ set-tab-title "POSTGRES"
         killPg
         pushd $BODATA_DIR
         if not make db MAKE_JOBS=4

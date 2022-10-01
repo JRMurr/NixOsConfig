@@ -1,4 +1,5 @@
 function startDev
+    set -x FeatureFlag_AuditService true
     set --local tab_title "Bodata"
     set --local tab_matcher "title:$tab_title"
 

@@ -9,14 +9,15 @@ function buildFingerDev
     if not set -q _flag_runOnly
         make immuta-fingerprint-devel
     end
-    echo "run 'poetry run immuta-fingerprint --log-level DEBUG' when u get in the container"
-    docker run \
-        -it \
-        --publish 5001:5001 \
-        --name=immuta-fingerprint-devel \
-        --add-host=db.immuta:10.0.2.2 \
-        -v "$PWD"/fingerprint:/opt/immuta/fingerprint/fingerprint \
-        --entrypoint /bin/bash \
-        immuta-fingerprint:latest-devel
+    # echo "run 'poetry run immuta-fingerprint --log-level DEBUG --reload' when u get in the container"
+    # docker run \
+    #     -it \
+    #     --publish 5001:5001 \
+    #     --name=immuta-fingerprint-devel \
+    #     --add-host=db.immuta:10.0.2.2 \
+    #     -v "$PWD"/fingerprint:/opt/immuta/fingerprint/fingerprint \
+    #     --entrypoint /bin/bash \
+    #     immuta-fingerprint:latest-devel
+    make run-dev
     popd
 end
