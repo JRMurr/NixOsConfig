@@ -3,7 +3,7 @@
   programs.fish = {
     enable = true;
     # allow home manager to manage the root config file so other programs can be setup by it
-    shellInit = (builtins.readFile ../../../dotFiles/fish/config.base.fish);
+    shellInit = (builtins.readFile ./files/config.base.fish);
 
     plugins = [{
       name = "bass";
@@ -30,10 +30,10 @@
   home.packages = with pkgs; [ bat killall exa jq ];
   xdg.configFile.fish = {
     recursive = true;
-    source = ../../../dotFiles/fish;
+    source = ./files;
   };
   xdg.configFile."fish_plugins" = {
-    source = ../../../dotFiles/fish/fish_plugins;
+    source = ./files/fish_plugins;
     target = "./fish_plugins";
   };
 }
