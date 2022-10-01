@@ -4,7 +4,8 @@ end
 if type -q direnv
     direnv hook fish | source
 end
-bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+# bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
 
 sudo ifconfig lo0 alias 10.0.2.2
 

@@ -2,7 +2,7 @@
   imports = [
     ./asciiArt.nix
     ./direnv.nix
-    ./fish.nix
+    ./fish
     ./git.nix
     ./helix.nix
     ./i3

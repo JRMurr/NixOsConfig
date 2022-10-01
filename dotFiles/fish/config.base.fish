@@ -1,14 +1,11 @@
 set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
 
-# setup zoxide https://github.com/ajeetdsouza/zoxide#installation
+# # setup zoxide https://github.com/ajeetdsouza/zoxide#installation
 if type -q zoxide
-    zoxide init fish | source
+    # this is setup by homemanager but not the env vars
+    # zoxide init fish | source
     set -g _ZO_DATA_DIR $HOME/.local/share/zoxide
     set -g _ZO_ECHO 1
-end
-
-if type -q direnv
-    eval (direnv hook fish)
 end
 
 # load all the custom funcs 
