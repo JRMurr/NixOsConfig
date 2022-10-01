@@ -49,23 +49,44 @@
           inherit system;
           config.allowUnfree = true;
         };
-      mkHomemanager = let myOptions = import ./common/myOption;
-      in name: user: system:
-      inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = mkPkgs system;
-        inherit system username;
-        extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
-        modules = [
-          {
-            home = {
-              # TODO: this is the macos path, if used on linux need to switch to home
-              homeDirectory = "/Users/${user}";
-              username = user;
-            };
-          }
-          (./common/users + "/${name}" + /home.nix)
-        ];
-      };
+      mkHomemanager = name: user: system:
+        let
+          pkgs = mkPkgs system;
+          # myOptions = import ./common/myOptions {
+          #   config = { };
+          #   lib = pkgs.lib;
+          # };
+          myOptions = { graphics.enable = false; };
+        in home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgs;
+          extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
+          modules = [
+            {
+              _module.args.nixpkgs = nixpkgs;
+              _module.args.inputs = inputs;
+              # _module.args.vars = { stateVersion = "22.05"; };
+            }
+            {
+              home = {
+                # TODO: this is the macos path, if used on linux need to switch to home
+                homeDirectory = "/Users/${user}";
+                username = user;
+                # This value determines the Home Manager release that your
+                # configuration is compatible with. This helps avoid breakage
+                # when a new Home Manager release introduces backwards
+                # incompatible changes.
+                #
+                # You can update Home Manager without changing this value. See
+                # the Home Manager release notes for a list of state version
+                # changes in each release.
+                stateVersion = "22.05";
+              };
+              # Let Home Manager install and manage itself.
+              programs.home-manager.enable = true;
+            }
+            (./common/users + "/${name}" + /home.nix)
+          ];
+        };
     in {
       nixosConfigurations = {
         nixos-john = mkSystem [ ./hosts/desktop ];

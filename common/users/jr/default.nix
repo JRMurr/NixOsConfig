@@ -4,4 +4,7 @@
   # https://rycee.gitlab.io/home-manager/options.html
 
   xdg.enable = true;
+
+  # https://nix-community.github.io/home-manager/release-notes.html#sec-release-22.11-highlights
+  home.stateVersion = "18.09";
 }

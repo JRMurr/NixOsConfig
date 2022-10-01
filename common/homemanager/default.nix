@@ -14,9 +14,6 @@
     ./xsession.nix
   ];
 
-  # https://nix-community.github.io/home-manager/release-notes.html#sec-release-22.11-highlights
-  home.stateVersion = "18.09";
-
   # adds home-manager-help tool
   manual.html.enable = true;
 
