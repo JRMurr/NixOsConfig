@@ -1,4 +1,6 @@
 { pkgs, ... }: {
+  programs.fish.enable = true;
+
   home.packages = with pkgs; [ bat killall exa zoxide jq fzf ];
   xdg.configFile.fish = {
     recursive = true;

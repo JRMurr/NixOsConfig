@@ -4,6 +4,8 @@ end
 if type -q direnv
     direnv hook fish | source
 end
+bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
 sudo ifconfig lo0 alias 10.0.2.2
 
 # ghcup-env
@@ -65,6 +67,10 @@ end
 
 function mochaFile
     npx _mocha --inline-diffs -r source-map-support/register -r ts-node/register --timeout 999999 --colors $argv
+end
+
+function hmRe
+    home-manager switch --flake '/Users/jmurray/NixOsConfig#jmurray'
 end
 
 function im --wraps="immuta"
