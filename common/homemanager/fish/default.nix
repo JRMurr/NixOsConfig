@@ -27,7 +27,14 @@
     enableFishIntegration = true;
   };
 
-  home.packages = with pkgs; [ bat killall exa jq ];
+  programs.exa = {
+    enable = true;
+    enableAliases = true;
+  };
+
+  programs.bat = { enable = true; };
+
+  home.packages = with pkgs; [ killall jq ];
   xdg.configFile.fish = {
     recursive = true;
     source = ./files;
