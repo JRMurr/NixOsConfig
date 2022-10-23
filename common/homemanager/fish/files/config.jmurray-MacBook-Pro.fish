@@ -70,9 +70,12 @@ function mochaFile
     npx _mocha --inline-diffs -r source-map-support/register -r ts-node/register --timeout 999999 --colors $argv
 end
 
-function hmRe
-    home-manager switch --flake '/Users/jmurray/NixOsConfig#jmurray'
-end
+# function hmRe
+#     home-manager switch --flake '/Users/jmurray/NixOsConfig#jmurray'
+# end
+
+alias hmRe="home-manager switch --flake '/Users/jmurray/NixOsConfig#jmurray'"
+
 
 function im --wraps="immuta"
     pushd $CLI_DIR

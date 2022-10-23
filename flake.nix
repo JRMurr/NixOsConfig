@@ -66,7 +66,7 @@
               _module.args.inputs = inputs;
               # _module.args.vars = { stateVersion = "22.05"; };
             }
-            {
+            ({ config, pkgs, lib, ... }: {
               home = {
                 # TODO: this is the macos path, if used on linux need to switch to home
                 homeDirectory = "/Users/${user}";
@@ -80,10 +80,33 @@
                 # the Home Manager release notes for a list of state version
                 # changes in each release.
                 stateVersion = "22.05";
+
+                # symlink apps to $HOME/Applications so they show up in finder
+                # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1190875080
+                activation = lib.mkIf pkgs.stdenv.isDarwin {
+                  copyApplications = let
+                    apps = pkgs.buildEnv {
+                      name = "home-manager-applications";
+                      paths = config.home.packages;
+                      pathsToLink = "/Applications";
+                    };
+                  in home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                    baseDir="$HOME/Applications/Home Manager Apps"
+                    if [ -d "$baseDir" ]; then
+                      rm -rf "$baseDir"
+                    fi
+                    mkdir -p "$baseDir"
+                    for appFile in ${apps}/Applications/*; do
+                      target="$baseDir/$(basename "$appFile")"
+                      $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
+                      $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
+                    done
+                  '';
+                };
               };
               # Let Home Manager install and manage itself.
               programs.home-manager.enable = true;
-            }
+            })
             (./common/users + "/${name}" + /home.nix)
           ];
         };

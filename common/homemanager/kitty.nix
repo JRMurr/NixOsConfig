@@ -1,7 +1,7 @@
 { pkgs, config, lib, nixosConfig, ... }:
 let gcfg = nixosConfig.myOptions.graphics;
 in {
-  config = lib.mkIf gcfg.enable {
+  config = lib.mkIf (pkgs.stdenv.isDarwin || gcfg.enable) {
     programs.kitty = {
       enable = true;
       settings = {
