@@ -19,6 +19,7 @@ set -g Z_EXCLUDE $HOME
 
 set -g ASCII_DIR (realpath ~/asciiArt)
 # bob the fish stuff
+source ~/.config/fish/config/dracula.fish
 source ~/.config/fish/config/bobTheFish.fish
 
 #aliases
