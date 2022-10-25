@@ -11,6 +11,8 @@ in {
         bold_italic_font = "auto";
         enable_audio_bell = false;
         scrollback_lines = -1;
+        tab_bar_edge = "top";
+        allow_remote_control = "yes";
       };
       theme = "Dracula";
       # # theme dracula
