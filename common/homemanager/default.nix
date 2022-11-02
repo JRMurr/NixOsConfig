@@ -8,6 +8,7 @@
     ./i3
     ./kitty.nix
     ./nushell.nix
+    ./programs.nix
     ./polybar
     ./redshift.nix
     ./rofi.nix
