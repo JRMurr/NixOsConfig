@@ -2,6 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./graphics.nix
+    ./brightness.nix
     ../../common
     ./networking.nix
     ./fingerprint-reader.nix
