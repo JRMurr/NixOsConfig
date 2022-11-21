@@ -23,7 +23,7 @@
     lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
     rbm = !"git fetch origin && git rebase origin/master"
     tmp = !"git add -A && git commit --no-verify -m 'tmp'"
-    pub = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+    # pub = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
     scary = !"git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)"
     forget = "update-index --skip-worktree"
     remember = "update-index --no-skip-worktree"
@@ -31,6 +31,14 @@
     gone = !"git remote prune origin; git branch --merged | grep -Ev \"(\\*|master)\" | xargs git branch -d"
     l = log --oneline --decorate --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --a
+    # Rebase workflow https://softwaredoug.com/blog/2022/11/09/idiot-proof-git-aliases.html
+    mainbranch = "!git remote show origin | sed -n '/HEAD branch/s/.*: //p'"
+    synced = "!git pull origin $(git mainbranch) --rebase"
+    update = "!git pull origin $(git rev-parse --abbrev-ref HEAD) --rebase"
+    squash = "!git rebase -v -i $(git mainbranch)"
+    publish = push origin HEAD --force-with-lease
+    pub = publish
+    com = "!git checkout $(git mainbranch)"
 [pager]
 	branch = false
 [pull]
