@@ -14,6 +14,7 @@ in {
         tab_bar_edge = "top";
         allow_remote_control = "yes";
         shell_integration = "enabled";
+        macos_option_as_alt = "yes";
       };
       theme = "Dracula";
     };
