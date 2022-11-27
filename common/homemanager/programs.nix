@@ -1,1 +1,1 @@
-{ pkgs, ... }: { home.packages = with pkgs; [ bottom htop ]; }
+{ pkgs, ... }: { home.packages = with pkgs; [ bottom htop cachix ]; }
