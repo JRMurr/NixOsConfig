@@ -21,7 +21,6 @@
     yeet = "push"
     gh = !"open `fish -c git_repo_url`"
     lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
-    rbm = !"git fetch origin && git rebase origin/master"
     tmp = !"git add -A && git commit --no-verify -m 'tmp'"
     # pub = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
     scary = !"git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)"
@@ -39,6 +38,7 @@
     publish = push origin HEAD --force-with-lease
     pub = publish
     com = "!git checkout $(git mainbranch)"
+    rbm = !"git fetch origin && git rebase origin/$(git mainbranch)"
 [pager]
 	branch = false
 [pull]
