@@ -18,3 +18,7 @@ function resetPulse
     pulseaudio -k
     pulseaudio --start
 end
+
+function mountBigDrive
+    udisksctl mount -b /dev/sdd1
+end
