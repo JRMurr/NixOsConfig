@@ -70,7 +70,7 @@
   # auto upgrade with nixos-rebuild switch --upgrade
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-21.05";
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-22.11";
 
   # nix = {
   #   package = pkgs.nixUnstable;
