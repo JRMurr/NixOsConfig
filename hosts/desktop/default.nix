@@ -70,7 +70,7 @@
   # auto upgrade with nixos-rebuild switch --upgrade
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-22.11";
+  system.autoUpgrade.flake = "github:kloenk/JRMurr/NixOsConfig";
 
   # nix = {
   #   package = pkgs.nixUnstable;
@@ -85,6 +85,5 @@
   #   ];
   # };
   virtualisation.docker.enable = true;
-  programs.fish.enable = true;
 }
 
