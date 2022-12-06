@@ -2,6 +2,7 @@
 with lib; {
   imports = [ ./monitor.nix ./containers.nix ];
   options.myOptions.graphics.enable = mkEnableOption "Enable graphics";
+  options.myOptions.redShift.disable = mkEnableOption "disable redShift";
 
   options.myOptions.gestures.enable = mkEnableOption "Enable gestures";
 
