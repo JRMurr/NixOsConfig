@@ -9,14 +9,15 @@
       let pkgs = import nixpkgs { inherit system; };
       in {
         devShells = {
-          default = mkShell {
-            buildInputs = [
-              # common
-              watchexec
-              just
-              nixfmt
-            ];
-          };
+          default = with pkgs;
+            mkShell {
+              buildInputs = [
+                # common
+                watchexec
+                just
+                nixfmt
+              ];
+            };
         };
 
         packages = { default = pkgs.hello; };
