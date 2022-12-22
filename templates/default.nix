@@ -16,8 +16,11 @@
 
       Add this projects name to rust.nix
 
+      run cargo init (for cwd)
+      run cargo new (to specify a new dir)
+
       ## More info
-      - [Rust Overlay](https://github.com/oxalica/rust-overlay)
+      - Rust Overlay (https://github.com/oxalica/rust-overlay)
 
     '';
   };

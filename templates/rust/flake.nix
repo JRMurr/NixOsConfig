@@ -16,7 +16,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        rustAttrs = import ./rust { inherit pkgs gitignore; };
+        rustAttrs = import ./rust.nix { inherit pkgs gitignore; };
       in {
         devShells = {
           default = pkgs.mkShell {
