@@ -12,10 +12,11 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, gitignore, ... }:
+  outputs = { self, nixpkgs, flake-utils, rust-overlay, gitignore, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        overlays = [ (import rust-overlay) ];
+        pkgs = import nixpkgs { inherit system overlays; };
         rustAttrs = import ./rust.nix { inherit pkgs gitignore; };
       in {
         devShells = {

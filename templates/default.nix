@@ -17,6 +17,7 @@
       Add this projects name to rust.nix
 
       run cargo init (for cwd)
+
       run cargo new (to specify a new dir)
 
       ## More info
