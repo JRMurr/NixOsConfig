@@ -30,7 +30,7 @@ in {
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
           # "${modifier}+Shift+e" = "exec xfce4-session-logout";
-          "${modifier}+Shift+a" = "exec autorandr --change";
+          "${modifier}+Shift+a" = "exec autorandr normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+F2" = "exec firefox";
           "${modifier}+d" = "exec rofi -show run";
