@@ -38,6 +38,10 @@ in {
             "exec rofi -show p -modi p:rofi-power-menu";
           "--release ${modifier}+Shift+s" =
             "exec scrot -s ~/Pictures/%Y-%m-%d-%H-%M-%S.png";
+
+          # move focused workspace between monitors
+          "${modifier}+Ctrl+greater" = "move workspace to output right";
+          "${modifier}+Ctrl+less" = "move workspace to output left";
         };
         startup = [
           {
