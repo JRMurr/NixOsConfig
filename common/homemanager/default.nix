@@ -4,6 +4,7 @@
     ./direnv.nix
     ./fish
     ./git.nix
+    ./gitui.nix
     ./helix.nix
     ./i3
     ./kitty.nix
