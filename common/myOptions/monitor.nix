@@ -79,6 +79,14 @@ let
         default = null;
         example = "left";
       };
+
+      crtc = mkOption {
+        type = types.nullOr types.ints.unsigned;
+        description = lib.mdDoc
+          "Output video display controller. Use `xrandr --verbose` to get";
+        default = null;
+        example = 0;
+      };
     };
   };
 in {
