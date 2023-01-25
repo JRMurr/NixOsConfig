@@ -42,9 +42,9 @@ in {
             package = pkgs.gnome.adwaita-icon-theme;
             size = 10;
           };
-          # https://github.com/NixOS/nixos-artwork/tree/master/wallpapers
-          background =
-            pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
+          # # https://github.com/NixOS/nixos-artwork/tree/master/wallpapers
+          # background =
+          #   pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
         };
       };
 

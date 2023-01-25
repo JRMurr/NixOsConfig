@@ -49,12 +49,12 @@ in {
             always = true;
             notification = false;
           }
-          {
-            command = "feh --bg-${cfg.wallpaper.mode} ${
-                lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
-              } ${wallPaperPath}";
-            notification = false;
-          }
+          # {
+          #   command = "feh --bg-${cfg.wallpaper.mode} ${
+          #       lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
+          #     } ${wallPaperPath}";
+          #   notification = false;
+          # }
           {
             command = "pa-applet";
             notification = false;
