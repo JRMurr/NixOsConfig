@@ -18,10 +18,10 @@
       url = "github:msteen/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # deploy-rs = {
+    #   url = "github:serokell/deploy-rs";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     nurl = {
       url = "github:nix-community/nurl";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,21 +32,22 @@
     };
   };
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , flake-utils, deploy-rs, ... }@inputs:
+    , flake-utils, ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
           modules = [
+            { _module.args = { inherit inputs; }; }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              environment.systemPackages =
-                [ deploy-rs.packages.x86_64-linux.deploy-rs ];
+
+              # environment.systemPackages =
+              #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
             }
           ] ++ extraModules;
-          specialArgs = { inherit inputs; };
         };
       mkPkgs = system:
         import nixpkgs {
@@ -169,8 +170,8 @@
       #   };
       # };
 
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      # checks = builtins.mapAttrs
+      #   (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
     };
 }

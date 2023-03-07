@@ -6,7 +6,7 @@ let
 
 in {
   services.getty.autologinUser = "jr";
-  home-manager.users.jr = (import ./jr);
+  home-manager.users.jr = (import ./jr { inherit inputs; });
   users.users.jr = {
     isNormalUser = true;
 
