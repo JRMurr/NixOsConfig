@@ -8,7 +8,7 @@
     ./helix.nix
     ./i3
     ./kitty.nix
-    ./nushell.nix
+    # ./nushell.nix
     ./programs.nix
     ./polybar
     ./redshift.nix

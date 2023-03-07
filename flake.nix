@@ -22,6 +22,10 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nurl = {
+      url = "github:nix-community/nurl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
@@ -81,28 +85,28 @@
                 # changes in each release.
                 stateVersion = "22.05";
 
-                # symlink apps to $HOME/Applications so they show up in finder
-                # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1190875080
-                activation = lib.mkIf pkgs.stdenv.isDarwin {
-                  copyApplications = let
-                    apps = pkgs.buildEnv {
-                      name = "home-manager-applications";
-                      paths = config.home.packages;
-                      pathsToLink = "/Applications";
-                    };
-                  in home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                    baseDir="$HOME/Applications/Home Manager Apps"
-                    if [ -d "$baseDir" ]; then
-                      rm -rf "$baseDir"
-                    fi
-                    mkdir -p "$baseDir"
-                    for appFile in ${apps}/Applications/*; do
-                      target="$baseDir/$(basename "$appFile")"
-                      $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
-                      $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
-                    done
-                  '';
-                };
+                # # symlink apps to $HOME/Applications so they show up in finder
+                # # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1190875080
+                # activation = lib.mkIf pkgs.stdenv.isDarwin {
+                #   copyApplications = let
+                #     apps = pkgs.buildEnv {
+                #       name = "home-manager-applications";
+                #       paths = config.home.packages;
+                #       pathsToLink = "/Applications";
+                #     };
+                #   in home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                #     baseDir="$HOME/Applications/Home Manager Apps"
+                #     if [ -d "$baseDir" ]; then
+                #       rm -rf "$baseDir"
+                #     fi
+                #     mkdir -p "$baseDir"
+                #     for appFile in ${apps}/Applications/*; do
+                #       target="$baseDir/$(basename "$appFile")"
+                #       $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
+                #       $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
+                #     done
+                #   '';
+                # };
               };
               # Let Home Manager install and manage itself.
               programs.home-manager.enable = true;
@@ -135,35 +139,35 @@
         jmurray = mkHomemanager "jmurray" "jmurray" "x86_64-darwin";
       };
 
-      deploy = {
-        # https://lantian.pub/en/article/modify-website/nixos-initial-config-flake-deploy.lantian/
-        # Auto rollback on deployment failure, recommended off.
-        #
-        # NixOS deployment can be a bit flaky (especially on unstable)
-        # and you may need to deploy twice to succeed, but auto rollback
-        # works against that and make your deployments constantly fail.
-        autoRollback = false;
+      # deploy = {
+      #   # https://lantian.pub/en/article/modify-website/nixos-initial-config-flake-deploy.lantian/
+      #   # Auto rollback on deployment failure, recommended off.
+      #   #
+      #   # NixOS deployment can be a bit flaky (especially on unstable)
+      #   # and you may need to deploy twice to succeed, but auto rollback
+      #   # works against that and make your deployments constantly fail.
+      #   autoRollback = false;
 
-        # Auto rollback on Internet disconnection, recommended off.
-        #
-        # Rollback when your new config killed the Internet connection,
-        # so you don't have to use VNC or IPMI from your service provider.
-        # But if you're adjusting firewall or IP settings, chances are
-        # although the Internet is down atm, a simple reboot will make everything work.
-        # Magic rollback works against that, so you should keep that off.
-        magicRollback = false;
+      #   # Auto rollback on Internet disconnection, recommended off.
+      #   #
+      #   # Rollback when your new config killed the Internet connection,
+      #   # so you don't have to use VNC or IPMI from your service provider.
+      #   # But if you're adjusting firewall or IP settings, chances are
+      #   # although the Internet is down atm, a simple reboot will make everything work.
+      #   # Magic rollback works against that, so you should keep that off.
+      #   magicRollback = false;
 
-        nodes.thicc-server = {
-          hostname = "192.168.1.160";
-          sshUser = "root";
-          fastConnection = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos
-              self.nixosConfigurations.thicc-server;
-          };
-        };
-      };
+      #   nodes.thicc-server = {
+      #     hostname = "192.168.1.160";
+      #     sshUser = "root";
+      #     fastConnection = true;
+      #     profiles.system = {
+      #       user = "root";
+      #       path = deploy-rs.lib.x86_64-linux.activate.nixos
+      #         self.nixosConfigurations.thicc-server;
+      #     };
+      #   };
+      # };
 
       checks = builtins.mapAttrs
         (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
