@@ -74,8 +74,8 @@ in {
             { title = "Steam - Update News"; }
             { class = "Pavucontrol"; }
             {
-              title = "bevy";
-              class = "insta-client";
+              title = "Bevy App";
+              # class = "insta-client";
             }
           ];
         };
