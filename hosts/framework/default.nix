@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
     ./graphics.nix
@@ -19,7 +19,12 @@
 
   myOptions.gestures.enable = true;
 
-  fonts.optimizeForVeryHighDPI = true;
+  # fonts.optimizeForVeryHighDPI = true;
+  fonts.fontconfig.antialias = true;
+  fonts.fontconfig.subpixel = {
+    rgba = "none";
+    lcdfilter = "none";
+  };
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
