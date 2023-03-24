@@ -10,6 +10,7 @@
     ./networking.nix
     ./gaming.nix
     ./udisk.nix
+    ./programs.nix
   ];
 
   boot.loader = {
