@@ -5,6 +5,7 @@
     ./brightness.nix
     ../../common
     ./networking.nix
+    ./programs.nix
     ./fingerprint-reader.nix
   ];
 
@@ -17,6 +18,8 @@
   programs.fish.enable = true;
 
   myOptions.gestures.enable = true;
+
+  fonts.optimizeForVeryHighDPI = true;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
