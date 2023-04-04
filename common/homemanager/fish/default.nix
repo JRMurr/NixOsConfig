@@ -20,6 +20,7 @@
   programs.zoxide = {
     enable = true;
     enableFishIntegration = true;
+    enableNuShellIntegration = true;
   };
 
   programs.fzf = {
