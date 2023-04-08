@@ -37,6 +37,7 @@ let
     vscode
     dbeaver
     deluge
+    notion-app-enhanced
   ];
 
   allGraphicalPrograms = if gcfg.enable then
