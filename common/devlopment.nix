@@ -1,6 +1,5 @@
 { pkgs, config, ... }: {
-  # services.lorri.enable = true;
-
+  # TODO: move this into homemanger
   # https://github.com/nix-community/nix-direnv
   nix.extraOptions = ''
     keep-outputs = true
