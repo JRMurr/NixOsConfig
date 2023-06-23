@@ -1,0 +1,21 @@
+{
+    "eval": {
+        "target": {
+            "args": [
+                "--impure",
+                "--expr",
+                "(import ./default.nix).nixosConfigurations.framework.options"
+            ],
+            "installable": ""
+        },
+        "depth": 5
+      },
+    "options": {
+        "enable": true,
+        "target": {
+            "args": [
+            ],
+            "installable": ".#nixosConfigurations.framework.options"
+        }
+    }
+}

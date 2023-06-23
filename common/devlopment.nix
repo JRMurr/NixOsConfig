@@ -6,7 +6,6 @@
     keep-outputs = true
     keep-derivations = true
   '';
-
   environment.systemPackages = with pkgs; [
     dive
     flyctl
@@ -17,6 +16,7 @@
     nixfmt
     rnix-lsp # nix lang server
     statix # linter
+
   ];
 
   programs.java.enable = true;

@@ -26,13 +26,18 @@
       url = "github:nix-community/nurl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixd = { url = "github:nix-community/nixd"; };
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
+    flake-compat = {
+      url = "github:inclyc/flake-compat";
+      flake = false;
+    };
   };
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , flake-utils, ... }@inputs:
+    , flake-utils, nixd, ... }@inputs:
     let
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -43,7 +48,6 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-
               # environment.systemPackages =
               #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
             }
