@@ -6,9 +6,10 @@
                 "--expr",
                 "(import ./default.nix).nixosConfigurations.framework.options"
             ],
-            "installable": ""
-        },
-        "depth": 5
+            "installable": "",
+            "depth": 10,
+            "workers": 4
+        }
       },
     "options": {
         "enable": true,

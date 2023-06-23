@@ -1,12 +1,1 @@
-{
-  "nix.serverSettings": {
-    "nixd": {
-      "eval": {
-        "depth": 5
-      },
-      "formatting": {
-        "command": "nixpkgs-fmt"
-      }
-    }
-  }
-}
+{}
