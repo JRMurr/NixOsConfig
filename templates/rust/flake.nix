@@ -19,15 +19,15 @@
         pkgs = import nixpkgs { inherit system overlays; };
         rustAttrs = import ./rust.nix { inherit pkgs gitignore; };
       in {
+        formatter = pkgs.nixpkgs-fmt;
+
         devShells = {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               rustAttrs.rust-shell
 
               # common
-              watchexec
               just
-              nixfmt
             ];
           };
         };

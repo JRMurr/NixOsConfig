@@ -22,6 +22,7 @@
         nativeDeps = rustAttrs.nativeDeps;
 
       in {
+        formatter = pkgs.nixpkgs-fmt;
         devShells = {
           default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [ pkg-config ];
@@ -33,9 +34,7 @@
                 lld # TODO: try mold instead https://bevyengine.org/learn/book/getting-started/setup/#enable-fast-compiles-optional
 
                 # common
-                watchexec
                 just
-                nixfmt
               ] ++ nativeDeps;
 
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath nativeDeps;
