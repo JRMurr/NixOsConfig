@@ -5,9 +5,11 @@
 { config, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ./graphics.nix
     ../../common
+
+    ./graphics.nix
     ./networking.nix
+    ./mic.nix
     ./gaming.nix
     ./udisk.nix
     ./programs.nix
