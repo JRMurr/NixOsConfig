@@ -19,7 +19,7 @@ let
     lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
 in {
   config = lib.mkIf gcfg.enable {
-    home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet ];
+    home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet kitti3 ];
 
     xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
@@ -32,6 +32,7 @@ in {
           # "${modifier}+Shift+e" = "exec xfce4-session-logout";
           "${modifier}+Shift+a" = "exec autorandr normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
+          "${modifier}+n" = "nop kitti3";
           "${modifier}+F2" = "exec firefox";
           "${modifier}+d" = "exec rofi -show run";
           "${modifier}+Shift+Escape" =
@@ -46,6 +47,11 @@ in {
         startup = [
           {
             command = "systemctl --user restart polybar";
+            always = true;
+            notification = false;
+          }
+          {
+            command = "kitti3 --position CT";
             always = true;
             notification = false;
           }
