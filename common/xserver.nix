@@ -67,5 +67,8 @@ in {
         };
       in builtins.map monitorConfigMap gcfg.monitors;
     };
+
+    services.picom = { enable = true; };
+
   };
 }

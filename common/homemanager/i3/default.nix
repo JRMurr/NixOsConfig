@@ -51,7 +51,8 @@ in {
             notification = false;
           }
           {
-            command = "kitti3 --position CT";
+            command =
+              "kitti3 --position CT -- --override background_opacity=0.8";
             always = true;
             notification = false;
           }
