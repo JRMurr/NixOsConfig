@@ -3,20 +3,7 @@ with pkgs;
 # TODO: move some of this to homemnager
 let
   gcfg = config.myOptions.graphics;
-  rofi-power-menu = stdenv.mkDerivation rec {
-    pname = "rofi-power-menu";
-    version = "3.1.0";
-    src = fetchFromGitHub {
-      owner = "jluttine";
-      repo = pname;
-      rev = version;
-      sha256 = "0yrnjihjs8cl331rmipr3xih503yh0ir60mwsxwh976j2pn3qiq6";
-    };
-    buildPhase = "";
-    installPhase = ''
-      install -Dm755 rofi-power-menu $out/bin/rofi-power-menu
-    '';
-  };
+
   cliPrograms =
     [ git gh htop vim wget mkpasswd lsof unzip asciinema nixpkgs-review ];
   imageStuff = [ feh gimp ];
