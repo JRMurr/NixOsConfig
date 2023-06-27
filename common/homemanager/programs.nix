@@ -7,6 +7,7 @@ let
   linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [ nixd ];
 in {
 
-  home.packages = linuxOnly ++ (with pkgs; [ bottom htop cachix nurl dive ]);
+  home.packages = linuxOnly
+    ++ (with pkgs; [ bottom htop cachix nurl dive xclip ]);
 
 }
