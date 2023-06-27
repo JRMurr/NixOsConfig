@@ -13,6 +13,7 @@
     ./kernel.nix
     ./network-shares.nix
     ./programs.nix
+    ./plymouth.nix
     ./ssh.nix
     ./tailscale.nix
     ./users
