@@ -5,7 +5,7 @@ let
   gcfg = config.myOptions.graphics;
   rofi-power-menu = stdenv.mkDerivation rec {
     pname = "rofi-power-menu";
-    version = "3.0.2";
+    version = "3.1.0";
     src = fetchFromGitHub {
       owner = "jluttine";
       repo = pname;
