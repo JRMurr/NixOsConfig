@@ -24,7 +24,10 @@ let
     vscode
     dbeaver
     deluge
+
+    # note stuff
     notion-app-enhanced
+    obsidian
   ];
 
   allGraphicalPrograms = if gcfg.enable then
