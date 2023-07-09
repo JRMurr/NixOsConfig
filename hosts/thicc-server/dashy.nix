@@ -14,7 +14,7 @@ in {
           "UID" = "1000"; # jr
           "GID" = "131"; # docker
         };
-        ports = [ "80:80" ];
+        ports = [ "4000:80" ];
         volumes = [ "${configDir}/dashy/my-config.yml:/app/public/conf.yml" ];
       };
 
