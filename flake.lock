@@ -213,8 +213,8 @@
     "passwords": {
       "flake": false,
       "locked": {
-        "lastModified": 1689024551,
-        "narHash": "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY=",
+        "lastModified": 1689025430,
+        "narHash": "sha256-DrV2mCet36lM0yQj6XFSMeLDRO7UtuYDZLYo4LDShZE=",
         "path": "/etc/nixos/secrets/passwords.nix",
         "type": "path"
       },
