@@ -3,11 +3,12 @@ let
   passwords = import inputs.passwords;
   inputGroup = lib.lists.optional config.myOptions.gestures.enable "input";
   groups = [ "wheel" "networkmanager" "audio" "docker" ] ++ inputGroup;
-
+  userOpts = config.myOptions.users;
 in {
-  services.getty.autologinUser = "jr";
+  services.getty.autologinUser = lib.mkIf userOpts.jrAutoLogin "jr";
   home-manager.users.jr = (import ./jr { inherit inputs; });
-  users.users.jr = {
+  
+  users.users.jr = lib.mkIf userOpts.makeJr {
     isNormalUser = true;
 
     extraGroups = groups;
