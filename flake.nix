@@ -39,19 +39,22 @@
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
     , flake-utils, nixd, ... }@inputs:
     let
+
+      defaultModules = [
+        { _module.args = { inherit inputs; }; }
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          # environment.systemPackages =
+          #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
+        }
+      ];
+
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
-          modules = [
-            { _module.args = { inherit inputs; }; }
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              # environment.systemPackages =
-              #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
-            }
-          ] ++ extraModules;
+          modules = defaultModules ++ extraModules;
         };
       mkPkgs = system:
         import nixpkgs {
@@ -121,7 +124,7 @@
         };
     in {
       lib = { inherit mkSystem; };
-      nixosModules.default = { ... }: { imports = [ ./common ]; };
+      nixosModules.default = { ... }: { imports = defaultModules ++ [ ./common ]; };
       templates = import ./templates { };
 
       nixosConfigurations = {
