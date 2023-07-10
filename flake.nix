@@ -120,10 +120,8 @@
           ];
         };
     in {
-      lib = {
-        inherit mkSystem;
-      };
-      nixosModules.default = ./common;
+      lib = { inherit mkSystem; };
+      nixosModules.default = { ... }: { imports = [ ./common ]; };
       templates = import ./templates { };
 
       nixosConfigurations = {
