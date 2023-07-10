@@ -1,9 +1,9 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   uid = "1000";
   gid = "100"; # users
-  networkSharesCfg = config.myOptions.graphics;
+  networkSharesCfg = config.myOptions.networkShares;
 in {
   config = lib.mkIf networkSharesCfg.enable {
     services.gvfs.enable = true;
