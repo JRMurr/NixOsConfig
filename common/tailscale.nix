@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib,... }:
 let tailscaleCfg = config.myOptions.tailscale;
 in {
   config = lib.mkIf tailscaleCfg.enable {
