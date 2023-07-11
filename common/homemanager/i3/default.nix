@@ -19,7 +19,7 @@ let
     lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
 in {
   config = lib.mkIf gcfg.enable {
-    home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet kitti3 ];
+    home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet kitti3 i3lock-blur];
 
     xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
@@ -30,6 +30,7 @@ in {
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
           # "${modifier}+Shift+e" = "exec xfce4-session-logout";
+          "${modifier}+Ctrl+l" = "exec i3lock -c 000000";
           "${modifier}+Shift+a" = "exec autorandr normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+n" = "nop kitti3";
