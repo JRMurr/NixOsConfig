@@ -93,7 +93,7 @@ in {
         enable = true;
         package = pkgs.polybarFull;
         script = lib.concatMapStringsSep "\n" monitorToStartScript monitors;
-        settings = bars // rec {
+        settings = bars //  {
 
           # barConf = commonBarOpts // {
           #   # modules-center = "title";
