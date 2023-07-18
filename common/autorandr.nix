@@ -15,6 +15,7 @@ let
     rate = config.rate;
     rotate = config.rotate;
     crtc = config.crtc;
+    dpi = config.dpi;
   };
 in {
   config = lib.mkIf gcfg.enable {
