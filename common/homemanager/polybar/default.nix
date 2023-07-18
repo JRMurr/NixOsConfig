@@ -48,14 +48,22 @@ let
       else
         "");
     tray-position = "right";
-    dpi = nixosConfig.services.xserver.dpi;
   };
 
   monitorToBarCfg = monitorConfig:
-    if monitorConfig.primary then
-      mainBar // { monitor = "${monitorConfig.name}"; }
-    else
-      simpleBar // { monitor = "${monitorConfig.name}"; };
+    let
+      barCfg = {
+        monitor = "${monitorConfig.name}";
+        dpi = if monitorConfig.dpi == null then
+          (if config.services.xserver.dpi == null then
+            100
+          else
+            config.services.xserver.dpi)
+        else
+          monitorConfig.dpi;
+      };
+      inheritedCfg = if monitorConfig.primary then mainBar else simpleBar;
+    in inheritedCfg // barCfg;
 
   bars = attrsets.mapAttrs' (name: monitorConfig:
     attrsets.nameValuePair ("bar/${monitorConfig.name}")
@@ -93,7 +101,7 @@ in {
         enable = true;
         package = pkgs.polybarFull;
         script = lib.concatMapStringsSep "\n" monitorToStartScript monitors;
-        settings = bars //  {
+        settings = bars // {
 
           # barConf = commonBarOpts // {
           #   # modules-center = "title";
