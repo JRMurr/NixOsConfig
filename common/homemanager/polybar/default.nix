@@ -48,6 +48,8 @@ let
       else
         "");
     tray-position = "right";
+
+    modules-center = "spotify";
   };
 
   monitorToBarCfg = monitorConfig:
@@ -74,33 +76,46 @@ let
       "polybar --reload ${monitorConfig.name} & disown;"
     else
       "";
+
+  spotifyPkg = pkgs.callPackage ./polybar-spotify.nix { };
+
+  dependentPackages = with pkgs; [ zscroll playerctl spotifyPkg ];
 in {
   config = lib.mkIf gcfg.enable {
     # try to use stuff from https://github.com/adi1090x/polybar-themes
     # this looks good https://github.com/adi1090x/polybar-themes/tree/master/simple/material
     # environment.systemPackages = " pkgs.pywal " {;
 
-    home.packages = with pkgs; [ zscroll playerctl ];
+    home.packages = dependentPackages;
     services.playerctld.enable = true;
 
-    xdg.configFile = {
-      "poly-get-spotify-status" = {
-        source = ./scripts/poly-get-spotify-status.sh;
-        target = "polybar/scripts/poly-get-spotify-status.sh";
-        executable = true;
-      };
-      "poly-scroll-spotify" = {
-        source = ./scripts/poly-scroll-spotify.sh;
-        target = "polybar/scripts/poly-scroll-spotify.sh";
-        executable = true;
-      };
-    };
+    # xdg.configFile = {
+    #   "poly-get-spotify-status" = {
+    #     source = ./scripts/poly-get-spotify-status.sh;
+    #     target = "polybar/scripts/poly-get-spotify-status.sh";
+    #     executable = true;
+    #   };
+    #   "poly-scroll-spotify" = {
+    #     source = ./scripts/poly-scroll-spotify.sh;
+    #     target = "polybar/scripts/poly-scroll-spotify.sh";
+    #     executable = true;
+    #   };
+    # };
+
+    # add to polybar path
+    # systemd.user.services.polybar.Service.Environment = lib.mkForce
+    #   "PATH=${pkgs.polybarFull}/bin:${
+    #     lib.makeBinPath dependentPackages
+    #   }:/run/wrappers/bin";
 
     services = {
       polybar = {
         enable = true;
         package = pkgs.polybarFull;
-        script = lib.concatMapStringsSep "\n" monitorToStartScript monitors;
+        script =
+          # ''PATH="${lib.makeBinPath dependentPackages}${"PATH:+:"}$PATH\n''
+          # ++ 
+          lib.concatMapStringsSep "\n" monitorToStartScript monitors;
         settings = bars // {
 
           # barConf = commonBarOpts // {
@@ -225,8 +240,7 @@ in {
             tail = true;
             format-prefix = "<prefix-symbol>";
             format = "<label>";
-            exec = ''
-              ${pkgs.bash}/bin/bash -c "~/.config/polybar/scripts/poly-scroll-spotify.sh"'';
+            exec = "${spotifyPkg}/bin/scroll_spotify_status";
           };
 
           "module/spotify-prev" = {
