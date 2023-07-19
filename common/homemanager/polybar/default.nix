@@ -148,13 +148,15 @@ in {
           "module/cpu" = {
             type = "internal/cpu";
             interval = "0.5";
+            format-prefix = "󰻠 ";
             format = "<label>";
-            label = "﬙ %percentage%%";
+            label = "%percentage%%";
           };
 
           "module/ram" = {
             type = "internal/memory";
             interval = 3;
+            format-prefix = "󰍛 ";
             format = "<label>";
             label = "%gb_free%/%gb_total%";
           };
