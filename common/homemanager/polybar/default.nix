@@ -27,13 +27,14 @@ let
     border-size = 3;
     border-color = "${colors.background}";
     tray-background = "${colors.background}";
-    module-margin-left = 2;
-    module-margin-right = 2;
+    module-margin-left = 1;
+    module-margin-right = 1;
+    # fc-match "Fira Code Nerd Font:style=medium"  
     font = [
+      "Fira Code Nerd Font:style=medium:size=11;3"
       "Fantasque Sans Mono:pixelsize=12;3"
       "Material-Design-Iconic-Font:size=13;4"
       "Iosevka Term:size=15:weight=bold;3"
-      "Fira Code Nerd Font:pixelsize=12;3"
     ];
   };
   commonBarOpts = formatting // {
@@ -230,6 +231,7 @@ in {
             tail = true;
             format-prefix = " ";
             format = "<label>";
+            # label-active-font = 2;
             exec = "${spotifyPkg}/bin/scroll_spotify_status";
           };
 
