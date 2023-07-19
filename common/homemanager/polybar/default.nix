@@ -33,6 +33,7 @@ let
       "Fantasque Sans Mono:pixelsize=12;3"
       "Material-Design-Iconic-Font:size=13;4"
       "Iosevka Term:size=15:weight=bold;3"
+      "Fira Code Nerd Font:pixelsize=12;3"
     ];
   };
   commonBarOpts = formatting // {
@@ -42,14 +43,15 @@ let
   };
   simpleBar = commonBarOpts // { modules-right = "time"; };
   mainBar = commonBarOpts // {
-    modules-right = "filesystem eth-speed ram cpu date time "
+    # eth-speed
+    modules-right = "filesystem ram cpu date time "
       + (if nixosConfig.networking.hostName == "framework" then
         "battery"
       else
         "");
     tray-position = "right";
 
-    modules-center = "spotify";
+    modules-center = "spotify spotify-prev spotify-play-pause spotify-next";
   };
 
   monitorToBarCfg = monitorConfig:
@@ -80,6 +82,7 @@ let
   spotifyPkg = pkgs.callPackage ./polybar-spotify.nix { };
 
   dependentPackages = with pkgs; [ zscroll playerctl spotifyPkg ];
+  playerctlPath = "${pkgs.playerctl}/bin/playerctl";
 in {
   config = lib.mkIf gcfg.enable {
     # try to use stuff from https://github.com/adi1090x/polybar-themes
@@ -88,19 +91,6 @@ in {
 
     home.packages = dependentPackages;
     services.playerctld.enable = true;
-
-    # xdg.configFile = {
-    #   "poly-get-spotify-status" = {
-    #     source = ./scripts/poly-get-spotify-status.sh;
-    #     target = "polybar/scripts/poly-get-spotify-status.sh";
-    #     executable = true;
-    #   };
-    #   "poly-scroll-spotify" = {
-    #     source = ./scripts/poly-scroll-spotify.sh;
-    #     target = "polybar/scripts/poly-scroll-spotify.sh";
-    #     executable = true;
-    #   };
-    # };
 
     # add to polybar path
     # systemd.user.services.polybar.Service.Environment = lib.mkForce
@@ -165,7 +155,7 @@ in {
             type = "internal/memory";
             interval = 3;
             format = "<label>";
-            label = " %gb_free%/%gb_total%";
+            label = "%gb_free%/%gb_total%";
           };
 
           "module/eth" = {
@@ -198,7 +188,7 @@ in {
             type = "internal/fs";
             mount-0 = "/";
             format-mounted = "<label-mounted>";
-            format-mounted-prefix = "";
+            format-mounted-prefix = "󰆼 ";
 
             # label-mounted = " %free%";
             label-mounted = "%free% free of %total%";
@@ -238,31 +228,31 @@ in {
           "module/spotify" = {
             type = "custom/script";
             tail = true;
-            format-prefix = "<prefix-symbol>";
+            format-prefix = " ";
             format = "<label>";
             exec = "${spotifyPkg}/bin/scroll_spotify_status";
           };
 
           "module/spotify-prev" = {
             type = "custom/script";
-            exec = ''echo "<previous-song-symbol>"'';
+            exec = ''echo "󰒫"'';
             format = "<label>";
-            click-left = "playerctl previous -p spotify";
+            click-left = "${playerctlPath} previous -p spotify";
           };
 
           "module/spotify-play-pause" = {
             type = "custom/ipc";
-            hook-0 = ''echo "<playing-symbol>"'';
-            hook-1 = ''echo "<pause-symbol>"'';
+            hook-0 = ''echo "󰐊"'';
+            hook-1 = ''echo "󰏤"'';
             initial = 1;
-            click-left = "playerctl play-pause - p spotify";
+            click-left = "${playerctlPath} play-pause -p spotify";
           };
 
           "module/spotify-next" = {
             type = "custom/script";
-            exec = ''echo "next-song-symbol"'';
+            exec = ''echo "󰒬 "'';
             format = "<label>";
-            click-left = "playerctl next -p spotify";
+            click-left = "${playerctlPath} next -p spotify";
           };
 
         };

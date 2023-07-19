@@ -28,6 +28,9 @@ let
     # note stuff
     notion-app-enhanced
     obsidian
+
+    # show fonts
+    gnome.gucharmap
   ];
 
   allGraphicalPrograms = if gcfg.enable then
