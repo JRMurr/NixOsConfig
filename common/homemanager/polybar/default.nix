@@ -211,14 +211,14 @@ in {
               focused-foreground = "${colors.foreground}";
               focused-background = "${colors.background-alt}";
               focused-underline = "${colors.primary}";
-              focused-padding = 4;
+              focused-padding = 2;
 
               unfocused = "%index%";
-              unfocused-padding = 4;
+              unfocused-padding = 2;
 
               visible = "%index%";
               visible-underline = "${colors.foreground-alt}";
-              visible-padding = 4;
+              visible-padding = 2;
             };
 
             # label-separator = "|";
