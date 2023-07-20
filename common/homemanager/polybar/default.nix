@@ -1,5 +1,5 @@
 { pkgs, lib, config, nixosConfig, ... }:
-# TODO: add https://github.com/PrayagS/polybar-spotify
+# TODO: look into https://github.com/polybar/polybar-scripts
 with lib;
 
 let
@@ -150,7 +150,7 @@ in {
             interval = "0.5";
             format-prefix = "󰻠 ";
             format = "<label>";
-            label = "%percentage%%";
+            label = "%percentage:02%%";
           };
 
           "module/ram" = {

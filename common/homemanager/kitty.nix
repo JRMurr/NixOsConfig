@@ -4,6 +4,7 @@ in {
   config = lib.mkIf (pkgs.stdenv.isDarwin || gcfg.enable) {
     programs.kitty = {
       enable = true;
+      shellIntegration.enableFishIntegration = true;
       settings = {
         font_family = "FiraCode Nerd Font";
         bold_font = "auto";

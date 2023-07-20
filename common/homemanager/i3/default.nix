@@ -19,7 +19,13 @@ let
     lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
 in {
   config = lib.mkIf gcfg.enable {
-    home.packages = with pkgs; [ xorg.xwininfo scrot pa_applet kitti3 i3lock-blur];
+    home.packages = with pkgs; [
+      xorg.xwininfo
+      scrot
+      pa_applet
+      kitti3
+      i3lock-blur
+    ];
 
     xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
@@ -77,6 +83,7 @@ in {
           hideEdgeBorders = "smart";
         };
         workspaceLayout = "tabbed";
+        gaps = { inner = 5; };
         floating = {
           criteria = [
             { title = "Steam - Update News"; }
