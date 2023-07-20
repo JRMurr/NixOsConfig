@@ -234,6 +234,8 @@ in {
             format-prefix = " ";
             format = "<label>";
             # label-active-font = 2;
+            label-minlen = 31;
+            label-alignment = "center";
             exec = "${spotifyPkg}/bin/scroll_spotify_status";
           };
 
