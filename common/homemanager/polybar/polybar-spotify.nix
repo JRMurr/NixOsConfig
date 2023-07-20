@@ -30,6 +30,9 @@ in pkgs.stdenv.mkDerivation rec {
 
     # make srcoll reference the global script
     sed -i 's/"`dirname $0`\/get_spotify_status.sh/"get_spotify_status/g' scroll_spotify_status.sh
+
+    # less padding
+    sed -i 's/--scroll-padding.*\\/--scroll-padding " "\\/' scroll_spotify_status.sh
   '';
 
   dontBuild = true;
