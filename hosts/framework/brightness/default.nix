@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }: {
   services.clight = {
-    enable = true;
+    # TODO: some crashing bug with clight right now 
+    enable = false;
     settings = { };
   };
   location = { provider = "geoclue2"; };

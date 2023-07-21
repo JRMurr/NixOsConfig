@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./graphics.nix
-    ./brightness.nix
+    ./brightness
     ../../common
     ./networking.nix
     ./programs.nix
