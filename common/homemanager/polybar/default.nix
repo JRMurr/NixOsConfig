@@ -60,10 +60,10 @@ let
       barCfg = {
         monitor = "${monitorConfig.name}";
         dpi = if monitorConfig.dpi == null then
-          (if config.services.xserver.dpi == null then
+          (if nixosConfig.services.xserver.dpi == null then
             100
           else
-            config.services.xserver.dpi)
+            nixosConfig.services.xserver.dpi)
         else
           monitorConfig.dpi;
       };
