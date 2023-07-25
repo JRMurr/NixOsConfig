@@ -232,6 +232,7 @@ in {
             type = "custom/script";
             tail = true;
             format-prefix = " ";
+            # label = "%{u#1db954}%{+u}%output%";
             format = "<label>";
             # label-active-font = 2;
             label-minlen = 31;
