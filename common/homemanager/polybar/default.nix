@@ -80,7 +80,7 @@ let
     else
       "";
 
-  spotifyPkg = pkgs.callPackage ./polybar-spotify.nix { };
+  spotifyPkg = pkgs.callPackage ./spotify { };
 
   dependentPackages = with pkgs; [ zscroll playerctl spotifyPkg ];
   playerctlPath = "${pkgs.playerctl}/bin/playerctl";

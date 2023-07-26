@@ -13,27 +13,28 @@ let
 in pkgs.stdenv.mkDerivation rec {
   pname = "polybar-spotify";
   version = "1.0.0";
-  src = pkgs.fetchFromGitHub {
-    owner = "PrayagS";
-    repo = pname;
-    rev = "d20a8ad2fef05fe79c5b38fa7e17be0724e1e821";
-    hash = "sha256-+rVH8dd3ylM514wJKScu7klujykwZy87AFZRDjyI28s=";
-  };
+  src = ./scripts;
+  # src = pkgs.fetchFromGitHub {
+  #   owner = "PrayagS";
+  #   repo = pname;
+  #   rev = "d20a8ad2fef05fe79c5b38fa7e17be0724e1e821";
+  #   hash = "sha256-+rVH8dd3ylM514wJKScu7klujykwZy87AFZRDjyI28s=";
+  # };
   buildInputs = deps;
   nativeBuildInputs = [ pkgs.makeWrapper ];
 
-  preConfigure = ''
-    patchShebangs "script"
+  # preConfigure = ''
+  #   patchShebangs "script"
 
-    # need to change some variables to match my bar config, probably should path or fork the repo to make it more easily configurable
-    sed -i 's/PARENT_BAR="now-playing"/PARENT_BAR="main"/g' get_spotify_status.sh
+  #   # need to change some variables to match my bar config, probably should path or fork the repo to make it more easily configurable
+  #   sed -i 's/PARENT_BAR="now-playing"/PARENT_BAR="main"/g' get_spotify_status.sh
 
-    # make srcoll reference the global script
-    sed -i 's/"`dirname $0`\/get_spotify_status.sh/"get_spotify_status/g' scroll_spotify_status.sh
+  #   # make srcoll reference the global script
+  #   sed -i 's/"`dirname $0`\/get_spotify_status.sh/"get_spotify_status/g' scroll_spotify_status.sh
 
-    # less padding
-    sed -i 's/--scroll-padding.*\\/--scroll-padding " "\\/' scroll_spotify_status.sh
-  '';
+  #   # less padding
+  #   sed -i 's/--scroll-padding.*\\/--scroll-padding " "\\/' scroll_spotify_status.sh
+  # '';
 
   dontBuild = true;
 
