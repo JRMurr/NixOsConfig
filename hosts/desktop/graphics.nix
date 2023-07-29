@@ -18,6 +18,7 @@
         rate = "143.97";
         workspace = 1;
         crtc = 0; # xrandr --verbose to get
+        dpi = 100;
       }
       {
         # 4k portrait on left
