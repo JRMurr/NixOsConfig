@@ -52,7 +52,7 @@ let
         "");
     tray-position = "right";
 
-    modules-center = "spotify spotify-prev spotify-play-pause spotify-next";
+    modules-center = "spotify-prev spotify spotify-next";
   };
 
   monitorToBarCfg = monitorConfig:
@@ -231,13 +231,14 @@ in {
           "module/spotify" = {
             type = "custom/script";
             tail = true;
-            format-prefix = " ";
+            # format-prefix = " ";
             # label = "%{u#1db954}%{+u}%output%";
             format = "<label>";
             # label-active-font = 2;
             label-minlen = 31;
             label-alignment = "center";
             exec = "${spotifyPkg}/bin/scroll_spotify_status";
+            click-left = "${playerctlPath} play-pause -p spotify";
           };
 
           "module/spotify-prev" = {
