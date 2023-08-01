@@ -15,6 +15,7 @@
     ./programs.nix
     # ./plymouth.nix
     ./ssh.nix
+    ./sudo.nix
     ./tailscale.nix
     ./users
     ./xserver.nix
