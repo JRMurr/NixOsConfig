@@ -1,31 +1,23 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
+  customPlugins = [{
+    name = "fish-completion-sync";
+    src = pkgs.fetchFromGitHub {
+      owner = "pfgray";
+      repo = "fish-completion-sync";
+      rev = "ba70b6457228af520751eab48430b1b995e3e0e2";
+      hash = "sha256-JdOLsZZ1VFRv7zA2i/QEZ1eovOym/Wccn0SJyhiP9hI=";
+    };
+  }];
+  preBuiltPlugins = with pkgs.fishPlugins; [ bass done ];
+in {
 
   programs.fish = {
     enable = true;
     # allow home manager to manage the root config file so other programs can be setup by it
     shellInit = (builtins.readFile ./files/config.base.fish);
 
-    plugins = [
-      {
-        name = "bass";
-        src = pkgs.fetchFromGitHub {
-          owner = "edc";
-          repo = "bass";
-          rev = "2fd3d2157d5271ca3575b13daec975ca4c10577a";
-          # sha256 = lib.fakeSha256;
-          sha256 = "fl4/Pgtkojk5AE52wpGDnuLajQxHoVqyphE90IIPYFU=";
-        };
-      }
-      {
-        name = "fish-completion-sync";
-        src = pkgs.fetchFromGitHub {
-          owner = "pfgray";
-          repo = "fish-completion-sync";
-          rev = "ba70b6457228af520751eab48430b1b995e3e0e2";
-          hash = "sha256-JdOLsZZ1VFRv7zA2i/QEZ1eovOym/Wccn0SJyhiP9hI=";
-        };
-      }
-    ];
+    plugins = customPlugins;
   };
 
   programs.zoxide = {
@@ -45,7 +37,7 @@
 
   programs.bat = { enable = true; };
 
-  home.packages = with pkgs; [ killall jq ];
+  home.packages = with pkgs; [ killall jq libnotify ] ++ preBuiltPlugins;
   xdg.configFile.fish = {
     recursive = true;
     source = ./files;

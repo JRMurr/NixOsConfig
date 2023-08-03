@@ -18,7 +18,7 @@ let
     monitor = {
       load_current = true;
       enable_clipboard = true;
-      enable_primary = true;
+      enable_primary = false;
     };
 
     grpc = {
