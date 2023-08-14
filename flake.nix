@@ -26,7 +26,10 @@
       url = "github:nix-community/nurl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # TODO: pick one
     nixd = { url = "github:nix-community/nixd"; };
+    nil = { url = "github:oxalica/nil"; };
+
     passwords = {
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
@@ -37,7 +40,7 @@
     };
   };
   outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , flake-utils, nixd, ... }@inputs:
+    , flake-utils, nixd, nil, ... }@inputs:
     let
 
       defaultModules = [
@@ -124,7 +127,9 @@
         };
     in {
       lib = { inherit mkSystem; };
-      nixosModules.default = { ... }: { imports = defaultModules ++ [ ./common ]; };
+      nixosModules.default = { ... }: {
+        imports = defaultModules ++ [ ./common ];
+      };
       templates = import ./templates { };
 
       nixosConfigurations = {
