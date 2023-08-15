@@ -18,9 +18,12 @@ set -g Z_DATA_DIR $HOME/.local/share/z
 set -g Z_EXCLUDE $HOME
 
 set -g ASCII_DIR (realpath ~/asciiArt)
+
+set -U fish_greeting
+
 # bob the fish stuff
 source ~/.config/fish/config/dracula.fish
-source ~/.config/fish/config/bobTheFish.fish
+# source ~/.config/fish/config/bobTheFish.fish
 
 #aliases
 source ~/.config/fish/aliases.fish

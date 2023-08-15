@@ -14,6 +14,7 @@
     ./polybar
     ./redshift.nix
     ./rofi.nix
+    ./starship.nix
     ./xsession.nix
   ];
 
