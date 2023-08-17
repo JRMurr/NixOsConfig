@@ -4,8 +4,19 @@ with pkgs;
 let
   gcfg = config.myOptions.graphics;
 
-  cliPrograms =
-    [ git gh htop vim wget mkpasswd lsof unzip asciinema nixpkgs-review ];
+  cliPrograms = [
+    git
+    gh
+    htop
+    vim
+    wget
+    mkpasswd
+    lsof
+    unzip
+    asciinema
+    nixpkgs-review
+    difftastic
+  ];
   imageStuff = [ feh gimp ];
   messaging = [
     tdesktop # telegram
@@ -44,5 +55,5 @@ in {
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  environment.systemPackages = with pkgs; cliPrograms ++ allGraphicalPrograms;
+  environment.systemPackages = cliPrograms ++ allGraphicalPrograms;
 }
