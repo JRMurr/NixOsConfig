@@ -8,16 +8,43 @@ let
   # TODO: make lib func for easy group by to single value?
   monitorsByName = attrsets.mapAttrs (name: value: head value)
     (lists.groupBy (x: x.name) monitors);
-  colors = {
-    background = "#1F1F1F";
-    background-alt = "#3f3f3f";
-    foreground = "#FFFFFF";
-    foreground-alt = "#8F8F8F";
-    module-fg = "#1F1F1F";
-    primary = "#ffb300";
-    secondary = "#E53935";
-    alternate = "#7cb342";
+  # colors = {
+  #   background = "#1F1F1F";
+  #   background-alt = "#3f3f3f";
+  #   foreground = "#FFFFFF";
+  #   foreground-alt = "#8F8F8F";
+  #   module-fg = "#1F1F1F";
+  #   primary = "#ffb300";
+  #   secondary = "#E53935";
+  #   alternate = "#7cb342";
+  # };
+  # https://github.com/Trollwut/dotfiles-polybar-dracula/blob/63a650f5b26b87930a822391704cdec22fe1faa8/polybar/.config/polybar/config#L35
+  colors = rec {
+    fg = "#f8f8f2";
+    text-fg = "${fg}";
+    bg = "#282a36";
+    base-bg = bg; # ${self.bg:#dd282a36}
+    text-bg = bg;
+    selection = "#44475a";
+    comment = "#6272a4";
+    glyph-bg = comment;
+    module-bg = comment;
+    cyan = "#8be9fd";
+    green = "#50fa7b";
+    orange = "#ffb86c";
+    pink = "#ff79c6";
+    purple = "#bd93f9";
+    red = "#ff5555";
+    white = "#f8f8f2";
+    yellow = "#f1fa8c";
+
+    #aliases so i dont change the actual formatting below
+    background = bg;
+    foreground = fg;
+    primary = pink;
+    background-alt = module-bg;
   };
+
   formatting = {
     fixed-center = true;
     background = "${colors.background}";
@@ -219,7 +246,7 @@ in {
               unfocused-padding = 2;
 
               visible = "%index%";
-              visible-underline = "${colors.foreground-alt}";
+              # visible-underline = "${colors.foreground-alt}";
               visible-padding = 2;
             };
 
