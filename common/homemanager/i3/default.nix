@@ -83,7 +83,10 @@ in {
           hideEdgeBorders = "smart";
         };
         workspaceLayout = "tabbed";
-        gaps = { inner = 5; };
+        gaps = {
+          inner = 5;
+          smartGaps = true;
+        };
         floating = {
           criteria = [
             { title = "Steam - Update News"; }
