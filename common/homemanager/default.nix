@@ -1,6 +1,5 @@
 { ... }: {
   imports = [
-    ./asciiArt.nix
     ./clipcat.nix
     ./direnv.nix
     ./fish

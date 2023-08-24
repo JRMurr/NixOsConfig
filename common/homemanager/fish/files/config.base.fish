@@ -17,8 +17,6 @@ set -g Z_DATA $HOME/.local/share/z/data
 set -g Z_DATA_DIR $HOME/.local/share/z
 set -g Z_EXCLUDE $HOME
 
-set -g ASCII_DIR (realpath ~/asciiArt)
-
 set -U fish_greeting
 
 # bob the fish stuff
@@ -44,5 +42,3 @@ if test -d ~/.config/fish/customFuncs/(echo $my_host)
         source $file
     end
 end
-
-# if [ $PWD = (realpath ~) ]; randomAsciiImage; end
