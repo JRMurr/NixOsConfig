@@ -24,7 +24,7 @@
     # };
     nurl = {
       url = "github:nix-community/nurl";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     # TODO: pick one
     nixd = { url = "github:nix-community/nixd"; };
