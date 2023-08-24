@@ -86,6 +86,7 @@ in {
         gaps = {
           inner = 5;
           smartGaps = true;
+          outer = 0;
         };
         floating = {
           criteria = [
