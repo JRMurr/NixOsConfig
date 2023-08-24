@@ -4,7 +4,7 @@
     ./clipcat.nix
     ./direnv.nix
     ./fish
-    ./git.nix
+    ./git
     ./gitui.nix
     ./helix.nix
     ./i3

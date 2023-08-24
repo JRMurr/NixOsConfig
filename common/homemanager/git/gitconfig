@@ -45,7 +45,5 @@
 	ff = only
 [push]
     autoSetupRemote = true
-[includeIf "gitdir:~/immuta/"]
-    path = ~/.immuta.gitconfig
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
