@@ -31,10 +31,14 @@
 
       jobs.disabled = true;
 
+      shell.disabled = false;
+      hostname.disabled = true;
+
       format = let
         # https://starship.rs/config/#prompt
         modules = [
           # displayed in order
+          "shell" # moved this
           "username"
           "hostname"
           "localip"
@@ -118,7 +122,7 @@
           "status"
           "os"
           "container"
-          "shell"
+          # "shell"
           "character"
         ];
       in lib.concatMapStrings (m: "$" + m) modules;
