@@ -26,7 +26,7 @@
     settings = {
       trusted-users = [ "root" "jr" ];
       auto-optimise-store = true;
-      substituters = [
+      substituters = lib.mkBefore [
         "https://nix-community.cachix.org?priority=10"
         "https://jrmurr.cachix.org?priority=1"
         "https://cache.nixos.org/?priority=20"
