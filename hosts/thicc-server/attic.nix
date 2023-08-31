@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 let
   passwords = import inputs.passwords;
 
@@ -87,18 +87,23 @@ in {
       HOME = "/run/nix-cache-build";
       XDG_CONFIG_HOME = "/run/nix-cache-build/config";
     };
-    script = ''
+    script = let
+      hosts = [ "thicc-server" "framework" "nixos-john" "graphicalIso" ];
+      buildAndPush = host: ''
+        echo "BUILDING ${host}"
+        nixos-rebuild build --flake /tmp/nixos-configs#${host}
+        attic push main ./result/
+      '';
+      buildSteps = lib.concatMapStringsSep "\n" buildAndPush hosts;
+    in ''
       set -eu
       rm -rf /tmp/nixos-configs
       # if weird error make sure has no new lines (echo -n)
       attic login --set-default local https://thicc-server.tail19e8e.ts.net/attic/ "$(cat ${passwords.atticTokenPath})"
-      RUST_BACKTRACE=1  attic cache info main
+      attic cache info main
 
       git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
-
-      nixos-rebuild build --flake /tmp/nixos-configs#thicc-server
-      attic push main ./result/
-
+    '' + buildSteps + ''
       rm -rf /tmp/nixos-configs
     '';
     serviceConfig = {
