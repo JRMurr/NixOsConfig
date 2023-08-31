@@ -30,6 +30,7 @@ let external_completer = {|spans|
         nu: $fish_completer
         # fish completes commits and branch names in a nicer way
         git: $fish_completer
+        hg: $fish_completer
         __zoxide_z: $zoxide_completer
         __zoxide_zi: $zoxide_completer
         z: $zoxide_completer
