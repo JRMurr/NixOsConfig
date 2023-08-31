@@ -134,6 +134,7 @@
           ];
         };
     in {
+      inherit overlays;
       lib = { inherit mkSystem; };
       nixosModules.default = { ... }: {
         imports = defaultModules ++ [ ./common ];
