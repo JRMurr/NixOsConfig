@@ -108,6 +108,7 @@ in {
     '';
     serviceConfig = {
       Type = "oneshot";
+      # TODO: can probably remove this and enviorment settings
       RuntimeDirectory = "nix-cache-build";
       WorkingDirectory = "/run/nix-cache-build";
       RuntimeDirectoryPreserve = true;
