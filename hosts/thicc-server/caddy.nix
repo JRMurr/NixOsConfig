@@ -26,6 +26,18 @@ let
         header_up X-Frame-Options SAMEORIGIN
       '';
     }
+    {
+      external_path_prefix = "/attic";
+      redirect_path = "thicc-server:8080";
+      redirect_directives = ''
+        header_up Host caddy
+      '';
+    }
+    {
+      # this might not be working...
+      external_path_prefix = "/s3"; # minio
+      redirect_path = "fatnas:7000";
+    }
     # TODO: need to use subdomains for pihole to work https://docs.pi-hole.net/guides/webserver/caddy/
     # tailscale does not support multiple subdomains for a machine :(
     # {
