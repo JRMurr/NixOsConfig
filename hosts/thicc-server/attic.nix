@@ -18,8 +18,8 @@ in {
       storage = {
         type = "s3";
         bucket = "cache";
-        region = "does-not-matter";
-        endpoint = "fatnas:7001";
+        region = "us-east-1";
+        endpoint = "http://fatnas:7000";
         credentials = {
           access_key_id = "minio";
           secret_access_key = passwords.minio;
