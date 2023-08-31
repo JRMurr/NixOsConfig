@@ -46,7 +46,10 @@
   outputs =
     { self, nixpkgs, home-manager, wsl, flake-utils, nixd, nil, ... }@inputs:
     let
-
+      overlays = [
+        inputs.attic.overlays.default
+        # TODO: nil and nurl
+      ];
       defaultModules = [
         { _module.args = { inherit inputs; }; }
         home-manager.nixosModules.home-manager
@@ -57,17 +60,18 @@
           #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
         }
       ];
-
+      mkPkgs = system:
+        import nixpkgs {
+          inherit system overlays;
+          config.allowUnfree = true;
+        };
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
+          pkgs = mkPkgs "x86_64-linux";
           system = "x86_64-linux";
           modules = defaultModules ++ extraModules;
         };
-      mkPkgs = system:
-        import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
+
       mkHomemanager = name: user: system:
         let
           pkgs = mkPkgs system;

@@ -1,9 +1,26 @@
 { pkgs, inputs, ... }:
-let passwords = import inputs.passwords;
-in {
+let
+  passwords = import inputs.passwords;
+
   # tokens https://docs.attic.rs/reference/atticadm-cli.html#atticadm-make-token
-  # make admin token for 1 month 
-  # sudo atticd-atticadm make-token --sub "thicc-server" --validity "1month" --push "*" --pull "*" --delete "*" --configure-cache-retention "*" --create-cache "*" --configure-cache "*" --destroy-cache "*"
+  getAdminToken = pkgs.writeShellScriptBin "attic-admin-token" ''
+    atticd-atticadm make-token --sub "thicc-server" \
+     --validity "1day" \
+     --push "*" \
+     --pull "*" \
+     --delete "*" \
+     --configure-cache-retention "*" \
+     --create-cache "*" \
+     --configure-cache "*" \
+     --destroy-cache "*"
+  '';
+
+  atticAdminLogin = pkgs.writeShellScriptBin "attic-admin-login" ''
+    TOKEN=$(${getAdminToken}/bin/attic-admin-token)
+    attic login local https://thicc-server.tail19e8e.ts.net/attic/ --set-default $token
+  '';
+
+in {
   services.atticd = {
     enable = true;
 
@@ -22,7 +39,8 @@ in {
         endpoint = "http://fatnas:7000";
         credentials = {
           access_key_id = "minio";
-          secret_access_key = passwords.minio;
+          secret_access_key =
+            passwords.minio; # copies to nix store but don't care since minio is behind tailscale...
         };
       };
 
@@ -50,4 +68,47 @@ in {
       };
     };
   };
+
+  # stolen from https://github.com/heywoodlh/nixos-configs/blob/master/nixos/roles/nixos/cache.nix
+  # and https://github.com/xddxdd/nixos-config/blob/master/nixos/optional-cron-jobs/rebuild-nixos-config.nix 
+  systemd.timers."nix-cache-build" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Unit = "nix-cache-build.service";
+    };
+  };
+  # TODO: figure out auto login need to have the attic module somehow expose atticadmWrapper
+
+  # sudo systemctl start nix-cache-build.service
+  systemd.services."nix-cache-build" = {
+    path = with pkgs; [ git nixos-rebuild attic-client ];
+    environment = {
+      HOME = "/run/nix-cache-build";
+      XDG_CONFIG_HOME = "/run/nix-cache-build/config";
+    };
+    script = ''
+      set -eu
+      rm -rf /tmp/nixos-configs
+      # if weird error make sure has no new lines (echo -n)
+      attic login --set-default local https://thicc-server.tail19e8e.ts.net/attic/ "$(cat ${passwords.atticTokenPath})"
+      RUST_BACKTRACE=1  attic cache info main
+
+      git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
+
+      nixos-rebuild build --flake /tmp/nixos-configs#thicc-server
+      attic push main ./result/
+
+      rm -rf /tmp/nixos-configs
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RuntimeDirectory = "nix-cache-build";
+      WorkingDirectory = "/run/nix-cache-build";
+      RuntimeDirectoryPreserve = true;
+      # User = "root";
+    };
+  };
+
+  environment.systemPackages = [ atticAdminLogin ];
 }

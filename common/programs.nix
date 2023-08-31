@@ -1,6 +1,7 @@
 { pkgs, config, inputs, ... }:
-let attic = inputs.attic.packages.${pkgs.system}.default;
-in with pkgs;
+# let attic = inputs.attic.packages.${pkgs.system}.default;
+# in 
+with pkgs;
 # TODO: move some of this to homemnager
 let
   gcfg = config.myOptions.graphics;
