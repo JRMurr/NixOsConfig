@@ -20,23 +20,6 @@ in {
     plugins = customPlugins;
   };
 
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
-  programs.exa = {
-    enable = true;
-    enableAliases = true;
-  };
-
-  programs.bat = { enable = true; };
-
   home.packages = with pkgs; [ killall jq libnotify ] ++ preBuiltPlugins;
   xdg.configFile.fish = {
     recursive = true;

@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 let
   # getFromInput = name: inputs.${name}.packages.${pkgs.system}.default;
   nurl = inputs.nurl.packages.${pkgs.system}.default;
@@ -11,9 +11,30 @@ let
   # nixd does not work on mac yet :(
   # https://github.com/nix-community/nixd/issues/107
   linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [ nixd nil ];
+
+  # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
+  batExtras = let
+    names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
+  in lib.attrVals names pkgs.bat-extras;
 in {
 
-  home.packages = linuxOnly
+  home.packages = linuxOnly ++ batExtras
     ++ (with pkgs; [ bottom htop cachix nurl dive xclip ]);
 
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
+  programs.exa = {
+    enable = true;
+    enableAliases = true;
+  };
+
+  programs.bat = { enable = true; };
 }
