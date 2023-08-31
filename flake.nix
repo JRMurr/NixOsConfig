@@ -18,6 +18,10 @@
       url = "github:msteen/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    attic = {
+      url = "github:zhaofengli/attic";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # deploy-rs = {
     #   url = "github:serokell/deploy-rs";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -39,8 +43,8 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, wsl, nixos-hardware, vscode-server
-    , flake-utils, nixd, nil, ... }@inputs:
+  outputs =
+    { self, nixpkgs, home-manager, wsl, flake-utils, nixd, nil, ... }@inputs:
     let
 
       defaultModules = [
@@ -139,11 +143,14 @@
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma5.nix"
           ./common/essentials.nix
         ];
-        framework =
-          mkSystem [ nixos-hardware.nixosModules.framework ./hosts/framework ];
+        framework = mkSystem [
+          inputs.nixos-hardware.nixosModules.framework
+          ./hosts/framework
+        ];
         thicc-server = mkSystem [
           ./hosts/thicc-server
-          vscode-server.nixosModule
+          inputs.vscode-server.nixosModule
+          inputs.attic.nixosModules.atticd
           ({ config, pkgs, ... }: { services.vscode-server.enable = true; })
         ];
       };

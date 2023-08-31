@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     ../../common
 
+    ./attic.nix
     ./pi-hole.nix
     ./dashy.nix
     ./caddy.nix
