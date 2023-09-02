@@ -38,20 +38,28 @@
       url = "path:/etc/nixos/secrets/passwords.nix";
       flake = false;
     };
+    agenix.url = "github:ryantm/agenix";
+    secrets = {
+      url = "git+ssh://git@github.com/JRMurr/nix-secrets";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.agenix.follows = "agenix";
+      inputs.flake-utils.follows = "utils";
+    };
     flake-compat = {
       url = "github:inclyc/flake-compat";
       flake = false;
     };
   };
-  outputs =
-    { self, nixpkgs, home-manager, wsl, flake-utils, nixd, nil, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, wsl, flake-utils, ... }@inputs:
     let
       overlays = [
         inputs.attic.overlays.default
+        inputs.agenix.overlays.default
         # TODO: nil and nurl
       ];
       defaultModules = [
         { _module.args = { inherit inputs; }; }
+        inputs.agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
