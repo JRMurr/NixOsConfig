@@ -1,7 +1,5 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
-  passwords = import inputs.passwords;
-
   # tokens https://docs.attic.rs/reference/atticadm-cli.html#atticadm-make-token
   getAdminToken = pkgs.writeShellScriptBin "attic-admin-token" ''
     atticd-atticadm make-token --sub "thicc-server" \
@@ -21,11 +19,14 @@ let
   '';
 
 in {
+  age.secrets.attic-creds.file = "${inputs.secrets}/secrets/attic-creds.age";
+  age.secrets.attic-admin-token.file =
+    "${inputs.secrets}/secrets/attic-admin-token.age";
   services.atticd = {
     enable = true;
 
     # Replace with absolute path to your credentials file
-    credentialsFile = "/etc/atticd.env";
+    credentialsFile = config.age.secrets.attic-creds.path;
 
     # https://github.com/zhaofengli/attic/blob/main/server/src/config-template.toml
     settings = {
@@ -37,11 +38,12 @@ in {
         bucket = "cache";
         region = "us-east-1";
         endpoint = "http://fatnas:7000";
-        credentials = {
-          access_key_id = "minio";
-          secret_access_key =
-            passwords.minio; # copies to nix store but don't care since minio is behind tailscale...
-        };
+        # credentials = {
+        #   access_key_id = "minio";
+        #   # TODO: https://nixos.wiki/wiki/Agenix#Replace_inplace_strings_with_secrets
+        #   secret_access_key =
+        #     passwords.minio; # copies to nix store but don't care since minio is behind tailscale...
+        # };
       };
 
       # Data chunking
@@ -99,7 +101,7 @@ in {
       set -eu
       rm -rf /tmp/nixos-configs
       # if weird error make sure has no new lines (echo -n)
-      attic login --set-default local https://thicc-server.tail19e8e.ts.net/attic/ "$(cat ${passwords.atticTokenPath})"
+      attic login --set-default local https://thicc-server.tail19e8e.ts.net/attic/ "$(cat ${config.age.secrets.attic-admin-token.path})"
       attic cache info main
 
       git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
