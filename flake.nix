@@ -34,10 +34,6 @@
     nixd = { url = "github:nix-community/nixd"; };
     nil = { url = "github:oxalica/nil"; };
 
-    passwords = {
-      url = "path:/etc/nixos/secrets/passwords.nix";
-      flake = false;
-    };
     agenix.url = "github:ryantm/agenix";
     secrets = {
       url = "git+ssh://git@github.com/JRMurr/nix-secrets";
