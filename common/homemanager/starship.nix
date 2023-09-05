@@ -32,7 +32,7 @@
       jobs.disabled = true;
 
       shell.disabled = false;
-      hostname.disabled = true;
+      # hostname.disabled = true;
 
       format = let
         # https://starship.rs/config/#prompt
