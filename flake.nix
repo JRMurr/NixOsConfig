@@ -151,6 +151,8 @@
         graphicalIso = mkSystem [
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma5.nix"
           ./common/essentials.nix
+          ./common/programs.nix
+          ./common/myOptions
         ];
         framework = mkSystem [
           inputs.nixos-hardware.nixosModules.framework
