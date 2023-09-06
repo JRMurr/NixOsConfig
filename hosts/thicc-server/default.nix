@@ -4,9 +4,11 @@
     ../../common
 
     ./attic.nix
-    ./pi-hole.nix
-    ./dashy.nix
     ./caddy.nix
+    ./dashy.nix
+    ./mopidy.nix
+    ./pi-hole.nix
+
   ];
 
   time.timeZone = "America/New_York";

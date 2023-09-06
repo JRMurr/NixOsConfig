@@ -38,6 +38,10 @@ let
       external_path_prefix = "/s3"; # minio
       redirect_path = "fatnas:7000";
     }
+    {
+      external_path_prefix = "/iris";
+      redirect_path = "thicc-server:6680/iris";
+    }
     # TODO: need to use subdomains for pihole to work https://docs.pi-hole.net/guides/webserver/caddy/
     # tailscale does not support multiple subdomains for a machine :(
     # {

@@ -29,5 +29,12 @@ in {
       # "uid=${uid}" "gid=${gid}" 
       options = [ "x-systemd.automount" "noauto" ];
     };
+
+    fileSystems."/mnt/fatnas/media" = {
+      device = "fatnas:/volume1/Media";
+      fsType = "nfs";
+      # "uid=${uid}" "gid=${gid}" 
+      options = [ "x-systemd.automount" "noauto" ];
+    };
   };
 }
