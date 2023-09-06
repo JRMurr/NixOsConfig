@@ -73,6 +73,7 @@ in {
     http = {
       enable = true;
       port = 1780;
+      docRoot = "${pkgs.snapcast}/share/snapserver/snapweb/";
     };
     streams = {
       # pipewire = {
