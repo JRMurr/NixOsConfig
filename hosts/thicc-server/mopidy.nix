@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   # https://github.com/nix-community/home-manager/blob/3c0e381fef63e4fbc6c3292c9e9cbcf479c01794/modules/services/mopidy.nix#L12C3-L20C5
   toMopidyConf = with lib;
@@ -12,6 +12,13 @@ let
       } " = ";
     };
 in {
+  age.secrets.mopidy-spotify = {
+    file = "${inputs.secrets}/secrets/mopidy-spotify.age";
+    mode = "770";
+    owner = "mopidy";
+    group = "mopidy";
+  };
+
   environment.systemPackages = [ pkgs.mopidy ];
   services.mopidy = {
     enable = true;
@@ -19,9 +26,10 @@ in {
       mopidy-spotify
       mopidy-iris
       mopidy-local
-      mopidy-scrobbler
+      # mopidy-scrobbler
       mopidy-mpd
     ];
+    extraConfigFiles = [ config.age.secrets.mopidy-spotify.path ];
     configuration = (toMopidyConf {
       mpd = { hostname = "0.0.0.0"; };
       http = { hostname = "0.0.0.0"; };
