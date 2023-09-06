@@ -28,7 +28,16 @@ in {
       # no need to redefine it in your config for now)
       #media-session.enable = true;
     };
-    environment.systemPackages = [ pkgs.pavucontrol ];
+    environment.systemPackages = [ pkgs.pavucontrol pkgs.snapcast ];
+
+    # TODO: make configurable and look into options
+    # systemd.user.services.snapclient-local = {
+    #   wantedBy = [ "pipewire.service" ];
+    #   after = [ "pipewire.service" ];
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.snapcast}/bin/snapclient -h thicc-server";
+    #   };
+    # };
   };
 
 }
