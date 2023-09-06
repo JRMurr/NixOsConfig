@@ -7,10 +7,10 @@ let
 in {
   config = lib.mkIf networkSharesCfg.enable {
     services.gvfs.enable = true;
-    environment.systemPackages = with pkgs;
-      [
-        lxqt.lxqt-policykit
-      ]; # provides a default authentification client for policykitcle
+    environment.systemPackages = with pkgs; [
+      lxqt.lxqt-policykit
+      nfs-utils
+    ]; # provides a default authentification client for policykitcle
     # fileSystems."/mnt/games" = {
     #   device = "//192.168.1.151/games";
     #   fsType = "cifs";
@@ -24,7 +24,7 @@ in {
     # };
 
     fileSystems."/mnt/fatnas/serverdata" = {
-      device = "192.168.1.151:/volume1/ServerData";
+      device = "fatnas:/volume1/ServerData";
       fsType = "nfs";
       # "uid=${uid}" "gid=${gid}" 
       options = [ "x-systemd.automount" "noauto" ];

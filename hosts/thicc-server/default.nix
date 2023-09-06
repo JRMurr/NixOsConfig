@@ -12,6 +12,7 @@
   time.timeZone = "America/New_York";
   networking.hostName = "thicc-server";
   myOptions.graphics.enable = false;
+  myOptions.networkShares.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   services.openssh.enable = true;
