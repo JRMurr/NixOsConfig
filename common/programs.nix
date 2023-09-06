@@ -40,6 +40,8 @@ let
     dbeaver
     deluge
 
+    insomnia # rest client
+
     # note stuff
     notion-app-enhanced
     obsidian
