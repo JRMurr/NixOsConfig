@@ -12,6 +12,7 @@ let
         }
       }
     '';
+  # TODO: make this an option
   proxyConfigs = [
     {
       external_path_prefix = "/nas/synology";
@@ -33,6 +34,13 @@ let
         header_up Host caddy
       '';
     }
+    # {
+    #   external_path_prefix = "/rss";
+    #   redirect_path = "thicc-server:8282";
+    #   # redirect_directives = ''
+    #   #   header_up Host caddy
+    #   # '';
+    # }
     {
       # this might not be working...
       external_path_prefix = "/s3"; # minio
@@ -65,6 +73,19 @@ in {
         extraConfig = ''
           ${proxyConfigStr}
           reverse_proxy :4000 # default to dashy
+        '';
+      };
+
+      # TOOD: need to buy a real domain to use that....
+      # see https://caddyserver.com/docs/automatic-https#dns-challenge so i dont need to expose caddy externally
+      "mine.local" = {
+        extraConfig = ''
+          reverse_proxy :4000 # default to dashy
+        '';
+      };
+      "rss.${tailscaleHost}" = {
+        extraConfig = ''
+          reverse_proxy :8282
         '';
       };
     };

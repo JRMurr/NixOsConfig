@@ -6,9 +6,10 @@
     ./attic.nix
     ./caddy.nix
     ./dashy.nix
+    ./freshrss.nix
     ./mopidy.nix
     ./pi-hole.nix
-
+    ./postgres.nix
   ];
 
   time.timeZone = "America/New_York";
