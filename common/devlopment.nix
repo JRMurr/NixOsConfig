@@ -15,6 +15,8 @@
     nixfmt
     rnix-lsp # nix lang server
     statix # linter
+
+    (sqlite.override { interactive = true; })
   ];
   programs.java.enable = true;
 }
