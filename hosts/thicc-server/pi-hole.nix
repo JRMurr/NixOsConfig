@@ -2,11 +2,10 @@
 let
   containerCfg = config.myOptions.containers;
   configDir = containerCfg.dataDir;
-  tailscaleCfg = config.myOptions.tailscale;
-  tailscaleHost = "${config.networking.hostName}.${tailscaleCfg.tailNetName}";
   # TODO: Look into blocky instead of pihole, might be easier to configure with nix
   customDnsRules = pkgs.writeText "02-nix-custom.conf" ''
     address=/mine.local/100.100.60.23
+    address=/jrnet.win/100.100.60.23
   '';
 in {
   config = lib.mkIf containerCfg.enable {

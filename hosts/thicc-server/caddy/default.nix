@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   tailscaleCfg = config.myOptions.tailscale;
   tailscaleHost = "${config.networking.hostName}.${tailscaleCfg.tailNetName}";
@@ -64,37 +64,51 @@ let
 
   proxyConfigStr = lib.concatMapStringsSep "\n" toProxyConfig proxyConfigs;
 
-  myDomain = "mine.local";
+  myDomain = "jrnet.win";
 in {
   services.tailscale.permitCertUid = "caddy";
   services.caddy = {
     enable = true;
+    email = "johnreillymurray@gmail.com";
     package = pkgs.caddyWithPlugins.override (prev: {
       plugins = [{ name = "github.com/caddy-dns/cloudflare"; }];
       vendorHash = "sha256-mwIsWJYKuEZpOU38qZOG1LEh4QpK4EO0/8l4UGsroU8=";
     });
     logFormat = lib.mkForce "level info";
     virtualHosts = {
-      "${tailscaleHost}" = {
-        extraConfig = ''
-          ${proxyConfigStr}
-          reverse_proxy :4000 # default to dashy
-        '';
-      };
+      # "${tailscaleHost}" = {
+      #   extraConfig = ''
+      #     ${proxyConfigStr}
+      #     reverse_proxy :4000 # default to dashy
+      #   '';
+      # };
 
       # TOOD: need to buy a real domain to use that....
       # see https://caddyserver.com/docs/automatic-https#dns-challenge so i dont need to expose caddy externally
       "${myDomain}" = {
         extraConfig = ''
+          tls {
+            dns cloudflare {env.CF_API_TOKEN}
+          }
+          ${proxyConfigStr}
           reverse_proxy :4000 # default to dashy
         '';
       };
-      # "rss.${myDomain}" = {
-      #   extraConfig = ''
-      #     reverse_proxy :8282
-      #   '';
-      # };
+      "rss.${myDomain}" = {
+        extraConfig = ''
+          reverse_proxy :8282
+        '';
+      };
     };
+  };
+  systemd.services.caddy.serviceConfig = {
+    EnvironmentFile = config.age.secrets.caddy-cloudflare.path;
+    AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+  };
+  age.secrets.caddy-cloudflare = {
+    file = "${inputs.secrets}/secrets/caddy-cloudflare.age";
+    owner = config.services.caddy.user;
+    group = config.services.caddy.group;
   };
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }

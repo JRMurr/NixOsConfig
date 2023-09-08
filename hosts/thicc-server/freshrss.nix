@@ -1,8 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
-let
-  tailscaleCfg = config.myOptions.tailscale;
-  tailscaleHost = "${config.networking.hostName}.${tailscaleCfg.tailNetName}";
-  virtualHost = "rss.mine.local";
+let virtualHost = "rss.jrnet.win";
 
 in {
   age.secrets.freshrss-user-pass = {

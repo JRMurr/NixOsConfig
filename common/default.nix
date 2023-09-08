@@ -27,7 +27,7 @@
       trusted-users = [ "root" "jr" ];
       auto-optimise-store = true;
       substituters = lib.mkBefore [
-        "https://thicc-server.tail19e8e.ts.net/attic/main?priority=1"
+        "https://jrnet.win/attic/main?priority=1"
         "https://nix-community.cachix.org?priority=25"
         "https://jrmurr.cachix.org?priority=2"
         "https://cache.nixos.org/?priority=20"

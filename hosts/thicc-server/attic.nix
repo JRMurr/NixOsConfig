@@ -15,7 +15,7 @@ let
 
   atticAdminLogin = pkgs.writeShellScriptBin "attic-admin-login" ''
     TOKEN=$(${getAdminToken}/bin/attic-admin-token)
-    attic login local https://thicc-server.tail19e8e.ts.net/attic/ --set-default $token
+    attic login local https://jrnet.win/attic/ --set-default $token
   '';
 
 in {
@@ -30,7 +30,7 @@ in {
     # https://github.com/zhaofengli/attic/blob/main/server/src/config-template.toml
     settings = {
       listen = "[::]:8080";
-      api-endpoint = "https://thicc-server.tail19e8e.ts.net/attic/";
+      api-endpoint = "https://jrnet.win/attic/";
       database.url = "postgres://atticd?host=/run/postgresql&user=atticd";
 
       storage = {
@@ -108,7 +108,7 @@ in {
       set -eu
       rm -rf /tmp/nixos-configs
       # if weird error make sure has no new lines (echo -n)
-      attic login --set-default local https://thicc-server.tail19e8e.ts.net/attic/ "$(cat ${config.age.secrets.attic-admin-token.path})"
+      attic login --set-default local https://jrnet.win/attic/ "$(cat ${config.age.secrets.attic-admin-token.path})"
       attic cache info main
 
       git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
