@@ -25,25 +25,19 @@ in {
   services.atticd = {
     enable = true;
 
-    # Replace with absolute path to your credentials file
     credentialsFile = config.age.secrets.attic-creds.path;
 
     # https://github.com/zhaofengli/attic/blob/main/server/src/config-template.toml
     settings = {
       listen = "[::]:8080";
       api-endpoint = "https://thicc-server.tail19e8e.ts.net/attic/";
+      database.url = "postgres://atticd?host=/run/postgresql&user=atticd";
 
       storage = {
         type = "s3";
         bucket = "cache";
         region = "us-east-1";
         endpoint = "http://fatnas:7000";
-        # credentials = {
-        #   access_key_id = "minio";
-        #   # TODO: https://nixos.wiki/wiki/Agenix#Replace_inplace_strings_with_secrets
-        #   secret_access_key =
-        #     passwords.minio; # copies to nix store but don't care since minio is behind tailscale...
-        # };
       };
 
       # Data chunking
@@ -69,6 +63,19 @@ in {
         max-size = 256 * 1024; # 256 KiB
       };
     };
+  };
+  # https://github.com/xddxdd/nixos-config/blob/master/nixos/optional-apps/attic.nix
+  services.postgresql = {
+    ensureDatabases = [ "atticd" ];
+    ensureUsers = [{
+      name = "atticd";
+      ensurePermissions = { "DATABASE \"atticd\"" = "ALL PRIVILEGES"; };
+    }];
+  };
+
+  systemd.services.atticd = {
+    after = [ "postgresql.service" ];
+    requires = [ "postgresql.service" ];
   };
 
   # stolen from https://github.com/heywoodlh/nixos-configs/blob/master/nixos/roles/nixos/cache.nix
