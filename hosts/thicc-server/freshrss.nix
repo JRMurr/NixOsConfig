@@ -2,7 +2,8 @@
 let
   tailscaleCfg = config.myOptions.tailscale;
   tailscaleHost = "${config.networking.hostName}.${tailscaleCfg.tailNetName}";
-  virtualHost = "freshrss";
+  virtualHost = "rss.mine.local";
+
 in {
   age.secrets.freshrss-user-pass = {
     file = "${inputs.secrets}/secrets/freshrss-user-pass.age";
@@ -19,15 +20,40 @@ in {
       host = "/var/lib/postgresql";
       type = "pgsql";
     };
-    baseUrl = "https://${tailscaleHost}/rss";
-    virtualHost = virtualHost;
+    baseUrl = "https://${virtualHost}";
+    virtualHost = null;
   };
+
   services.postgresql = {
-    ensureUsers = [{ name = "freshrss"; }];
+    ensureUsers = [{
+      name = "freshrss";
+      ensurePermissions = {
+        "DATABASE freshrss" = "ALL";
+        "SCHEMA public" = "ALL";
+        "ALL TABLES IN SCHEMA public" = "ALL";
+      };
+    }];
     ensureDatabases = [ "freshrss" ];
   };
 
-  services.nginx.defaultHTTPListenPort = 8282;
+  # https://github.com/jay-aye-see-kay/nixfiles/blob/0fa095fdc3a4e7a64a442c75b65f1e2c881fce13/hosts/pukeko/services.nix#L61
+  services.caddy.virtualHosts."${virtualHost}" = {
+    extraConfig = ''
+      root * ${pkgs.freshrss}/p 
+      php_fastcgi unix/${config.services.phpfpm.pools.freshrss.socket} {
+          env FRESHRSS_DATA_PATH ${config.services.freshrss.dataDir}
+      }
+      file_server
+    '';
+  };
+
+  services.phpfpm.pools.freshrss.settings = {
+    # use the provided phpfpm pool, but override permissions for caddy
+    "listen.owner" = lib.mkForce "caddy";
+    "listen.group" = lib.mkForce "caddy";
+  };
+
+  # services.nginx.defaultHTTPListenPort = 8282;
   # virtualHosts.${virtualHost}.listen = [{
   #   addr = "localhost";
   #   port = 8282;

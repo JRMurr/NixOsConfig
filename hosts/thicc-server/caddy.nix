@@ -63,6 +63,8 @@ let
   ];
 
   proxyConfigStr = lib.concatMapStringsSep "\n" toProxyConfig proxyConfigs;
+
+  myDomain = "mine.local";
 in {
   services.tailscale.permitCertUid = "caddy";
   services.caddy = {
@@ -78,16 +80,16 @@ in {
 
       # TOOD: need to buy a real domain to use that....
       # see https://caddyserver.com/docs/automatic-https#dns-challenge so i dont need to expose caddy externally
-      "mine.local" = {
+      "${myDomain}" = {
         extraConfig = ''
           reverse_proxy :4000 # default to dashy
         '';
       };
-      "rss.${tailscaleHost}" = {
-        extraConfig = ''
-          reverse_proxy :8282
-        '';
-      };
+      # "rss.${myDomain}" = {
+      #   extraConfig = ''
+      #     reverse_proxy :8282
+      #   '';
+      # };
     };
   };
   networking.firewall.allowedTCPPorts = [ 80 443 ];
