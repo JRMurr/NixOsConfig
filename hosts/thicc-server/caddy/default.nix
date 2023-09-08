@@ -83,8 +83,6 @@ in {
       #   '';
       # };
 
-      # TOOD: need to buy a real domain to use that....
-      # see https://caddyserver.com/docs/automatic-https#dns-challenge so i dont need to expose caddy externally
       "${myDomain}" = {
         extraConfig = ''
           tls {
