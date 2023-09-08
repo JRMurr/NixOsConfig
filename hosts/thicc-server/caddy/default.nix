@@ -69,6 +69,10 @@ in {
   services.tailscale.permitCertUid = "caddy";
   services.caddy = {
     enable = true;
+    package = pkgs.caddyWithPlugins.override (prev: {
+      plugins = [{ name = "github.com/caddy-dns/cloudflare"; }];
+      vendorHash = "sha256-mwIsWJYKuEZpOU38qZOG1LEh4QpK4EO0/8l4UGsroU8=";
+    });
     logFormat = lib.mkForce "level info";
     virtualHosts = {
       "${tailscaleHost}" = {

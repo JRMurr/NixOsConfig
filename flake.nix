@@ -51,6 +51,7 @@
       overlays = [
         inputs.attic.overlays.default
         inputs.agenix.overlays.default
+        (import ./pkgs/overlay.nix)
         # TODO: nil and nurl
       ];
       defaultModules = [

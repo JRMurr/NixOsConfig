@@ -4,7 +4,7 @@
     ../../common
 
     ./attic.nix
-    ./caddy.nix
+    ./caddy
     ./dashy.nix
     ./freshrss.nix
     ./mopidy.nix
