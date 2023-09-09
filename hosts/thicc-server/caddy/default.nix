@@ -1,7 +1,28 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  tailscaleCfg = config.myOptions.tailscale;
-  tailscaleHost = "${config.networking.hostName}.${tailscaleCfg.tailNetName}";
+  cfg = config.myCaddy;
+  reverseProxies = lib.attrValues cfg.reverseProxies;
+  myDomain = "jrnet.win";
+  tlsConf = ''
+    tls {
+      dns cloudflare {env.CF_API_TOKEN}
+    }
+  '';
+  # builtins.listToAttrs
+  mkReverseProxyConf = proxyConf: {
+    name = "${proxyConf.prefix}.${myDomain}";
+    value = {
+      extraConfig = ''
+        ${tlsConf}
+        reverse_proxy ${proxyConf.upstream} {
+          ${proxyConf.proxyOptions}
+        }
+      '' + "\n" + proxyConf.extraConfig;
+    };
+  };
+
+  reverseProxyVhosts =
+    builtins.listToAttrs (builtins.map mkReverseProxyConf reverseProxies);
 
   toProxyConfig = { external_path_prefix, redirect_path
     , redirect_directives ? "", extra_directives ? "" }: ''
@@ -41,15 +62,15 @@ let
     #   #   header_up Host caddy
     #   # '';
     # }
-    {
-      # this might not be working...
-      external_path_prefix = "/s3"; # minio
-      redirect_path = "fatnas:7000";
-    }
-    {
-      external_path_prefix = "/iris";
-      redirect_path = "thicc-server:6680/iris";
-    }
+    # {
+    #   # this might not be working...
+    #   external_path_prefix = "/s3"; # minio
+    #   redirect_path = "fatnas:7000";
+    # }
+    # {
+    #   external_path_prefix = "/iris";
+    #   redirect_path = "thicc-server:6680/iris";
+    # }
     # TODO: need to use subdomains for pihole to work https://docs.pi-hole.net/guides/webserver/caddy/
     # tailscale does not support multiple subdomains for a machine :(
     # {
@@ -63,9 +84,8 @@ let
   ];
 
   proxyConfigStr = lib.concatMapStringsSep "\n" toProxyConfig proxyConfigs;
-
-  myDomain = "jrnet.win";
 in {
+  imports = [ ./options.nix ./reverse-proxies.nix ];
   services.tailscale.permitCertUid = "caddy";
   services.caddy = {
     enable = true;
@@ -75,29 +95,16 @@ in {
       vendorHash = "sha256-mwIsWJYKuEZpOU38qZOG1LEh4QpK4EO0/8l4UGsroU8=";
     });
     logFormat = lib.mkForce "level info";
-    virtualHosts = {
-      # "${tailscaleHost}" = {
-      #   extraConfig = ''
-      #     ${proxyConfigStr}
-      #     reverse_proxy :4000 # default to dashy
-      #   '';
-      # };
-
+    virtualHosts = let
+    in {
       "${myDomain}" = {
         extraConfig = ''
-          tls {
-            dns cloudflare {env.CF_API_TOKEN}
-          }
+          ${tlsConf}
           ${proxyConfigStr}
           reverse_proxy :4000 # default to dashy
         '';
       };
-      "rss.${myDomain}" = {
-        extraConfig = ''
-          reverse_proxy :8282
-        '';
-      };
-    };
+    } // reverseProxyVhosts;
   };
   systemd.services.caddy.serviceConfig = {
     EnvironmentFile = config.age.secrets.caddy-cloudflare.path;

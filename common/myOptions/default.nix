@@ -8,10 +8,8 @@ with lib; {
 
     gestures.enable = mkEnableOption "Enable gestures";
 
-    containers.enable =
-      mkEnableOption "Enable nixos-defined containers";
+    containers.enable = mkEnableOption "Enable nixos-defined containers";
 
-    networkShares.enable =
-      mkEnableOption "enable network shares";
+    networkShares.enable = mkEnableOption "enable network shares";
   };
 }

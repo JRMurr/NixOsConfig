@@ -4,6 +4,7 @@ let
   gcfg = config.myOptions.graphics;
   monitors = gcfg.monitors;
   monitorsByName =
+    # TODO: make  gcfg.monitors an attrsOf type so it can be an attrset and not a list
     attrsets.mapAttrs (_: head) (lists.groupBy (x: x.name) monitors);
 
   # monitor values to autorander config values
