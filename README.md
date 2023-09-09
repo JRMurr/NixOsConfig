@@ -2,7 +2,7 @@
 
 ## common sadness
 
-if my own chace is being weird, use
+if my own cache is being weird, use
 
 ```shell
 nixos-rebuild switch --option substituters 'cache.nixos.org'

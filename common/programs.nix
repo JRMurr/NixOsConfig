@@ -19,6 +19,8 @@ let
     nixpkgs-review
     difftastic
     attic
+
+    dig
   ];
   imageStuff = [ feh gimp ];
   messaging = [

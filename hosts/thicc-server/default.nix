@@ -4,11 +4,11 @@
     ../../common
 
     ./attic.nix
+    ./blocky
     ./caddy
     ./dashy.nix
     ./freshrss.nix
     ./mopidy.nix
-    ./pi-hole.nix
     ./postgres.nix
   ];
 
