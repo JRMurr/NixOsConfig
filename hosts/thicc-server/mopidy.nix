@@ -87,6 +87,13 @@ in {
       };
     };
   };
+  myCaddy.reverseProxies = {
+    "snap" = {
+      upstream = "thicc-server:1780";
+      serverAliases = [ "snapHttp" ];
+    };
+  };
+
   # systemd.user.services.snapcast-sink = {
   #   wantedBy = [ "pipewire.service" ];
   #   after = [ "pipewire.service" ];

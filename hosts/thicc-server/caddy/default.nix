@@ -2,24 +2,27 @@
 let
   cfg = config.myCaddy;
   reverseProxies = lib.attrValues cfg.reverseProxies;
-  myDomain = "jrnet.win";
+  myDomain = cfg.domain;
   tlsConf = ''
     tls {
       dns cloudflare {env.CF_API_TOKEN}
     }
   '';
   # builtins.listToAttrs
-  mkReverseProxyConf = proxyConf: {
-    name = "${proxyConf.prefix}.${myDomain}";
-    value = {
-      extraConfig = ''
-        ${tlsConf}
-        reverse_proxy ${proxyConf.upstream} {
-          ${proxyConf.proxyOptions}
-        }
-      '' + "\n" + proxyConf.extraConfig;
+  mkReverseProxyConf = proxyConf:
+    let mkHost = (name: "${name}.${myDomain}");
+    in {
+      name = mkHost proxyConf.prefix;
+      value = {
+        serverAliases = builtins.map mkHost proxyConf.serverAliases;
+        extraConfig = ''
+          ${tlsConf}
+          reverse_proxy ${proxyConf.upstream} {
+            ${proxyConf.proxyOptions}
+          }
+        '' + "\n" + proxyConf.extraConfig;
+      };
     };
-  };
 
   reverseProxyVhosts =
     builtins.listToAttrs (builtins.map mkReverseProxyConf reverseProxies);

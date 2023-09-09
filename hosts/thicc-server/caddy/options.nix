@@ -14,6 +14,14 @@ let
         example = "cache";
         default = name;
       };
+      serverAliases = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        example = [ "rss" "freshrss" ];
+        description = lib.mdDoc ''
+          Additional names of virtual hosts served by this reverse proxy
+        '';
+      };
       upstream = mkOption {
         type = types.str;
         description = "where to redirct";
@@ -40,6 +48,12 @@ let
   });
 in {
   options.myCaddy = {
+    domain = mkOption {
+      type = types.str;
+      description = "the domain to use";
+      example = "jrnet.win";
+      default = "jrnet.win";
+    };
     reverseProxies = mkOption {
       type = with types; attrsOf reverseProxyCfg;
       default = { };
