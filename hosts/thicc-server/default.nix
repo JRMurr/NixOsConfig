@@ -8,6 +8,7 @@
     ./caddy
     ./dashy.nix
     ./freshrss.nix
+    ./it-tools.nix
     ./mopidy.nix
     ./postgres.nix
   ];
