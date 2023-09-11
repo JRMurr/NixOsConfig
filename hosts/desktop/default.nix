@@ -71,9 +71,9 @@
   system.stateVersion = "20.03"; # Did you read the comment?
 
   # auto upgrade with nixos-rebuild switch --upgrade
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade.enable = false;
   system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.flake = "github:kloenk/JRMurr/NixOsConfig";
+  system.autoUpgrade.flake = "github:JRMurr/NixOsConfig";
 
   # nix = {
   #   package = pkgs.nixUnstable;

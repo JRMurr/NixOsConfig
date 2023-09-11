@@ -19,7 +19,7 @@ let
 in {
 
   home.packages = linuxOnly ++ batExtras
-    ++ (with pkgs; [ bottom htop cachix nurl dive xclip ]);
+    ++ (with pkgs; [ bottom htop cachix nurl dive xclip lastpass-cli ]);
 
   programs.zoxide = {
     enable = true;
