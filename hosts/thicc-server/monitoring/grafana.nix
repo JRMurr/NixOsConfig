@@ -17,6 +17,7 @@ in {
         # root_url = "https://${grafanaDomain}";
       };
     };
+    provision = { enable = true; };
   };
 
   myCaddy.reverseProxies = {
