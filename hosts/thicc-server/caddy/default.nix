@@ -6,6 +6,7 @@ let
   tlsConf = ''
     tls {
       dns cloudflare {env.CF_API_TOKEN}
+      resolvers 1.1.1.1
     }
   '';
   # builtins.listToAttrs
@@ -17,10 +18,11 @@ let
         serverAliases = builtins.map mkHost proxyConf.serverAliases;
         extraConfig = ''
           ${tlsConf}
+          ${proxyConf.extraConfig}
           reverse_proxy ${proxyConf.upstream} {
             ${proxyConf.proxyOptions}
           }
-        '' + "\n" + proxyConf.extraConfig;
+        '';
       };
     };
 
@@ -119,4 +121,5 @@ in {
     group = config.services.caddy.group;
   };
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 ];
 }

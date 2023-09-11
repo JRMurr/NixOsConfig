@@ -10,6 +10,6 @@ in {
       extraOptions = [ "--pull=always" ];
       ports = [ "8070:80" ];
     };
-    myCaddy.reverseProxies = { "tools" = { upstream = ":8070"; }; };
+    myCaddy.reverseProxies = { "tools" = { upstream = "thicc-server:8070"; }; };
   };
 }

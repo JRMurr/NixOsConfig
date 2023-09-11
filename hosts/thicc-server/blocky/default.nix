@@ -1,4 +1,9 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  myDomain = config.myCaddy.domain;
+  port = config.services.blocky.settings.ports.http;
+
+in {
   # https://nixos.wiki/wiki/Blocky
   # https://github.com/JayRovacsek/nix-config/blob/878d57de91dc28440ff5635fd70f23fbe9342cfa/modules/blocky/default.nix
   networking.firewall =
@@ -40,6 +45,11 @@
           ];
         };
         whiteLists = { ads = [ ./whitelist.txt ]; };
+        # definition: which groups should be applied for which client
+        clientGroupsBlock = {
+          # default will be used, if no special definition for a client name exists
+          default = [ "ads" ];
+        };
       };
 
       clientLookup = {
@@ -53,6 +63,23 @@
           "${myDomain}" = "100.100.60.23";
         };
       };
+
+      # optional: configuration for prometheus metrics endpoint
+      prometheus = {
+        # enabled if true
+        enable = true;
+        # url path, optional (default '/metrics')
+        path = "/metrics";
+      };
     };
+  };
+
+  services.prometheus.scrapeConfigs = [{
+    job_name = "blocky";
+    static_configs = [{ targets = [ "127.0.0.1:${builtins.toString port}" ]; }];
+  }];
+
+  myCaddy.reverseProxies = {
+    "blocky" = { upstream = "thicc-server:${builtins.toString port}"; };
   };
 }

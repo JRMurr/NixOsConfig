@@ -8,9 +8,11 @@
     ./caddy
     ./dashy.nix
     ./freshrss.nix
+    ./grafana.nix
     ./it-tools.nix
     ./mopidy.nix
     ./postgres.nix
+    ./prometheus.nix
   ];
 
   time.timeZone = "America/New_York";

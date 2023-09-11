@@ -13,7 +13,7 @@
       '';
     };
     deluge = {
-      upstream = "thicc-server:8080";
+      upstream = "fatnas:8112";
       proxyOptions = ''
         header_up X-Frame-Options SAMEORIGIN
       '';
