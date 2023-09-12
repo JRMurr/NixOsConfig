@@ -29,6 +29,19 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  # https://fwupd.org/lvfs/devices/work.frame.Laptop.TGL.BIOS.firmware
+  # https://www.reddit.com/r/framework/comments/zfudd0/how_do_you_update_biosfirmware/
+  services.fwupd = {
+    enable = true;
+    extraRemotes = [ "lvfs-testing" ];
+    uefiCapsuleSettings = { DisableCapsuleUpdateOnDisk = true; };
+  };
+  # environment.etc."fwupd/uefi_capsule.conf" = {
+  #   text = ''
+  #     DisableCapsuleUpdateOnDisk=true
+  #   '';
+  # };
+
   programs.steam.enable = true;
 
   # This value determines the NixOS release from which the default

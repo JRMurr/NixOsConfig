@@ -1,7 +1,7 @@
-brigand/fast-nvm-fish
+# brigand/fast-nvm-fish
 # oh-my-fish/theme-bobthefish
 barnybug/docker-fish-completion
-lilyball/nix-env.fish
+# lilyball/nix-env.fish
 evanlucas/fish-kubectl-completions
 ryoppippi/fish-poetry
 jorgebucaran/fisher

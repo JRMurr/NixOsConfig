@@ -8,7 +8,17 @@ let
       rev = "ba70b6457228af520751eab48430b1b995e3e0e2";
       hash = "sha256-JdOLsZZ1VFRv7zA2i/QEZ1eovOym/Wccn0SJyhiP9hI=";
     };
-  }];
+  }
+  # {
+  #   name = "nix-env";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "lilyball";
+  #     repo = "nix-env.fish";
+  #     rev = "7b65bd228429e852c8fdfa07601159130a818cfa";
+  #     hash = "sha256-RG/0rfhgq6aEKNZ0XwIqOaZ6K5S4+/Y5EEMnIdtfPhk=";
+  #   };
+  # }
+    ];
   preBuiltPlugins = with pkgs.fishPlugins; [ bass done ];
 in {
 
