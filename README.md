@@ -5,7 +5,7 @@
 if my own cache is being weird, use
 
 ```shell
-nixos-rebuild switch --option substituters 'cache.nixos.org'
+nixos-rebuild switch --option substituters 'https://cache.nixos.org'
 ```
 
 ## Make ISO

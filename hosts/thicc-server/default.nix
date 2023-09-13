@@ -10,6 +10,7 @@
     ./freshrss.nix
     ./it-tools.nix
     ./monitoring
+    ./linkding.nix
     ./mopidy.nix
     ./postgres.nix
   ];
