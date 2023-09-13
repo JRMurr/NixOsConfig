@@ -50,7 +50,12 @@ in {
       };
 
     };
-    myCaddy.reverseProxies = { "linkding" = { upstream = ":9090"; }; };
+    myCaddy.reverseProxies = {
+      "linkding" = {
+        serverAliases = [ "links" ];
+        upstream = ":9090";
+      };
+    };
 
   };
 }
