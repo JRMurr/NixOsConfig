@@ -32,6 +32,12 @@ in {
         };
       };
     };
+
+    # hopefully run on init
+    systemd.services.autorandr = {
+      wantedBy = [ "graphical.target" ];
+      after = [ "graphical.target" ];
+    };
   };
 }
 
