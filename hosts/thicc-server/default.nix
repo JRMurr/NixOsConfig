@@ -17,17 +17,23 @@
 
   time.timeZone = "America/New_York";
   networking.hostName = "thicc-server";
-  myOptions.graphics.enable = false;
-  myOptions.networkShares.enable = true;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  services.openssh.enable = true;
-  # services.openssh.permitRootLogin = "yes";
-  services.openssh.settings.PermitRootLogin = "yes";
-  virtualisation.docker.enable = true;
-  programs.fish.enable = true;
 
-  myOptions.containers.enable = true;
+  myOptions = {
+    graphics.enable = false;
+    networkShares.enable = true;
+    containers.enable = true;
+  };
+
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
+
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "yes";
+  };
+  virtualisation.docker.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
