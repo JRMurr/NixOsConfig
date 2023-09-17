@@ -34,11 +34,7 @@
 
       Please update the rust-toolchain to the latest nightly
 
-      Add this projects name to rust.nix
-
-      run cargo init (for cwd)
-
-      run cargo new (to specify a new dir)
+      Add this projects name to rust.nix and cargo.nix
 
       ## More info
       - Rust Overlay (https://github.com/oxalica/rust-overlay)

@@ -21,7 +21,7 @@ let
 
   macDeps = pkgs.lib.optionals pkgs.stdenv.isDarwin [
     pkgs.darwin.apple_sdk.frameworks.Cocoa
-    rustAttrs.rustPlatform.bindgenHook
+    rustPlatform.bindgenHook
   ];
 
   nativeDeps = linuxDeps ++ macDeps;
