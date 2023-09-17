@@ -15,10 +15,9 @@ in {
     '';
   };
 
-  # TODO: perm issue on nfs share
-  # services.postgresqlBackup = {
-  #   enable = true;
-  #   location = "/mnt/fatnas/serverdata/pg_bak";
-  #   backupAll = true;
-  # };
+  services.postgresqlBackup = {
+    enable = true;
+    location = "/mnt/fatnas/serverdata/pg_bak";
+    backupAll = true;
+  };
 }
