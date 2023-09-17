@@ -93,7 +93,7 @@ in {
             { title = "Steam - Update News"; }
             { class = "Pavucontrol"; }
             {
-              title = "Bevy App";
+              title = "My Bevy App";
               # class = "insta-client";
             }
           ];
