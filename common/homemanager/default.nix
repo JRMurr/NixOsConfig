@@ -1,5 +1,6 @@
 { ... }: {
   imports = [
+    ./cargo.nix
     ./clipcat.nix
     ./direnv.nix
     ./fish
@@ -9,8 +10,8 @@
     ./i3
     ./kitty.nix
     ./nushell
-    ./programs.nix
     ./polybar
+    ./programs.nix
     ./redshift.nix
     ./rofi.nix
     ./starship.nix
