@@ -18,29 +18,31 @@ let
   batExtras = let
     names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
   in lib.attrVals names pkgs.bat-extras;
+
+  exaConf = let
+    opts = {
+      enable = true;
+      enableAliases = true;
+    };
+  in if onUnStable then { eza = opts; } else { exa = opts; };
+
 in {
 
   home.packages = linuxOnly ++ batExtras
     ++ (with pkgs; [ bottom htop cachix nurl dive xclip lastpass-cli ]);
 
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-  };
+  programs = {
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
 
-  programs.fzf = {
-    enable = true;
-    enableFishIntegration = true;
-  };
+    fzf = {
+      enable = true;
+      enableFishIntegration = true;
+    };
 
-  programs.exa = lib.mkIf (!onUnStable) {
-    enable = true;
-    enableAliases = true;
-  };
-  programs.eza = lib.mkIf onUnStable {
-    enable = true;
-    enableAliases = true;
-  };
+    bat = { enable = true; };
+  } // exaConf;
 
-  programs.bat = { enable = true; };
 }
