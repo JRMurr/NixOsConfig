@@ -1,5 +1,7 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, nixosConfig, ... }:
 let
+  sysVersion = nixosConfig.system.nixos.release;
+  onUnStable = lib.versionAtLeast sysVersion "23.11";
   # getFromInput = name: inputs.${name}.packages.${pkgs.system}.default;
   nurl = inputs.nurl.packages.${pkgs.system}.default;
   nixd = inputs.nixd.packages.${pkgs.system}.default;
@@ -31,7 +33,11 @@ in {
     enableFishIntegration = true;
   };
 
-  programs.exa = {
+  programs.exa = lib.mkIf (!onUnStable) {
+    enable = true;
+    enableAliases = true;
+  };
+  programs.eza = lib.mkIf onUnStable {
     enable = true;
     enableAliases = true;
   };

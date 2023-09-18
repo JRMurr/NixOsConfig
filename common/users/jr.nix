@@ -1,5 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  sysVersion = config.system.nixos.release;
+  onUnStable = lib.versionAtLeast sysVersion "23.11";
+
   inputGroup = lib.lists.optional config.myOptions.gestures.enable "input";
   groups = [ "wheel" "networkmanager" "audio" "docker" ] ++ inputGroup;
   userOpts = config.myOptions.users;
@@ -12,7 +15,8 @@ in {
     isNormalUser = true;
 
     extraGroups = groups;
-    passwordFile = config.age.secrets.jr-pass.path;
+    passwordFile = lib.mkIf (!onUnStable) config.age.secrets.jr-pass.path;
+    hashedPasswordFile = lib.mkIf onUnStable config.age.secrets.jr-pass.path;
 
     shell = pkgs.fish;
     openssh.authorizedKeys.keyFiles = [ ./jr-keys.txt ];
