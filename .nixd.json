@@ -1,22 +1,21 @@
 {
-    "eval": {
-        "target": {
-            "args": [
-                "--impure",
-                "--expr",
-                "(import ./default.nix).nixosConfigurations.framework.options"
-            ],
-            "installable": "",
-            "depth": 15,
-            "workers": 8
-        }
-      },
-    "options": {
-        "enable": true,
-        "target": {
-            "args": [
-            ],
-            "installable": ".#nixosConfigurations.framework.options"
-        }
+  "eval": {
+    "target": {
+      "args": [
+        "--impure",
+        "--expr",
+        "(import ./default.nix).nixosConfigurations.framework.options"
+      ],
+      "installable": "",
+      "depth": 15,
+      "workers": 8
     }
+  },
+  "options": {
+    "enable": true,
+    "target": {
+      "args": [],
+      "installable": ".#framework.options"
+    }
+  }
 }

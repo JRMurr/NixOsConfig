@@ -18,6 +18,7 @@
   programs.fish.enable = true;
 
   myOptions.gestures.enable = true;
+  myOptions.musicPrograms.enable = true;
 
   # fonts.optimizeForVeryHighDPI = true;
   fonts.fontconfig.antialias = true;

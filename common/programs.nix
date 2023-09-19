@@ -4,7 +4,9 @@
 with pkgs;
 # TODO: move some of this to homemnager
 let
-  gcfg = config.myOptions.graphics;
+  myOpts = config.myOptions;
+  gcfg = myOpts.graphics;
+  mcfg = myOpts.musicPrograms;
 
   cliPrograms = [
     git
@@ -19,7 +21,6 @@ let
     nixpkgs-review
     difftastic
     attic
-
     dig
   ];
   imageStuff = [ feh gimp ];
@@ -52,9 +53,11 @@ let
     gnome.gucharmap
   ];
 
+  musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
+
   allGraphicalPrograms = if gcfg.enable then
     miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-    ++ imageStuff ++ audio
+    ++ imageStuff ++ audio ++ musicPrograms
   else
     [ ];
 in {
