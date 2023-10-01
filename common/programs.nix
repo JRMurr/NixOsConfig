@@ -51,6 +51,9 @@ let
 
     # show fonts
     gnome.gucharmap
+
+    # ebooks
+    calibre
   ];
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;

@@ -14,7 +14,6 @@ in {
         http_port = port;
         # Grafana needs to know on which domain and URL it's running
         domain = grafanaDomain;
-        # root_url = "https://${grafanaDomain}";
       };
     };
     provision = { enable = true; };
