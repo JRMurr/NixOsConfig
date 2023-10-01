@@ -4,3 +4,4 @@ oauthaccountmanager.googleapis.com
 s.youtube.com
 video-stats.l.google.com
 xeiaso.net
+challenges.cloudflare.com
