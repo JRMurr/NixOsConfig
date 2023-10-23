@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
   nix = {
     # enable flakes
     package = pkgs.nix;

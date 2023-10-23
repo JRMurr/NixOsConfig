@@ -22,7 +22,7 @@
   manual.html.enable = true;
 
   nixpkgs.config = {
-    allowUnfree = true;
+    # allowUnfree = true;
     manual.manpages.enable = true;
   };
 

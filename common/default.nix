@@ -21,7 +21,7 @@
     ./xserver.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
       trusted-users = [ "root" "jr" ];
