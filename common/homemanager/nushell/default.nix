@@ -14,7 +14,7 @@
     enable = true;
     configFile = { source = ./files/config.base.nu; };
     envFile = { source = ./files/env.base.nu; };
-    shellAliases = { ll = "ls -l"; };
+    # shellAliases = { ll = "ls -l"; };
     # TODO: can replace below when off 23.05 and use direnv option disabled above
     extraConfig = ''
       $env.config = ($env | default {} config).config
