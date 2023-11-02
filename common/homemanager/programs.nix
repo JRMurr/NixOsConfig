@@ -28,8 +28,16 @@ let
 
 in {
 
-  home.packages = linuxOnly ++ batExtras
-    ++ (with pkgs; [ bottom htop cachix nurl dive xclip lastpass-cli ]);
+  home.packages = linuxOnly ++ batExtras ++ (with pkgs; [
+    bottom
+    htop
+    cachix
+    nurl
+    dive
+    xclip
+    lastpass-cli
+    tailspin
+  ]);
 
   programs = {
     zoxide = {
