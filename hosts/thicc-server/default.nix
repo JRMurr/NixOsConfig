@@ -7,6 +7,7 @@
     ./blocky
     ./caddy
     ./dashy.nix
+    ./factorio.nix
     ./freshrss.nix
     ./it-tools.nix
     ./monitoring
