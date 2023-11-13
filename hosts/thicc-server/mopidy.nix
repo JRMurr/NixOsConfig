@@ -23,7 +23,8 @@ in {
   services.mopidy = {
     enable = true;
     extensionPackages = with pkgs; [
-      (mopidy-spotify.overridePythonAttrs (old: { doCheck = false; }))
+      # (mopidy-spotify.overridePythonAttrs (old: { doCheck = false; }))
+      mopidy-spotify
       mopidy-iris
       mopidy-local
       # mopidy-scrobbler

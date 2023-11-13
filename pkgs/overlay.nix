@@ -16,6 +16,17 @@ in {
     };
   });
 
+  mopidy-spotify = prev.mopidy-spotify.overridePythonAttrs (old: rec {
+    pname = "mopidy-spotify";
+    version = "unstable-2023-11-1";
+    src = prev.fetchFromGitHub {
+      owner = "mopidy";
+      repo = "mopidy-spotify";
+      rev = "48faaaa2642647b0152231798b46ccd9631694f5";
+      hash = "sha256-RwkUdcbDU7/ndVnPteG/iXB2dloljvCHQlvPk4tacuA=";
+    };
+  });
+
   lastpass-cli = prev.lastpass-cli.overrideAttrs (old: rec {
     pname = "lastpass-cli";
     version = "1.3.6";
