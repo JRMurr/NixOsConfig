@@ -8,6 +8,7 @@ in {
     public = false;
     game-password = "fartbois";
     admins = [ "fatattack" ];
+    saveName = "fart";
   };
 
 }
