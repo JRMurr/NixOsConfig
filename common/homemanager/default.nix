@@ -27,4 +27,6 @@
   };
 
   systemd.user.startServices = true;
+
+  services.ssh-agent.enable = true;
 }

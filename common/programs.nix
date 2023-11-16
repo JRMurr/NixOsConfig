@@ -27,6 +27,7 @@ let
   messaging = [
     tdesktop # telegram
     discord
+    zulip
   ];
   desktopEnviorment = [ lxappearance arandr rofi-power-menu ];
   video = [ streamlink-twitch-gui-bin streamlink vlc ];

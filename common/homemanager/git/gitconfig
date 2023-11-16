@@ -7,7 +7,6 @@
 [gpg]
     format = ssh
 [gpg "ssh"]
-    # TODO: github needs you to upload the key as a signing key :(, look into a shared gpg key instead
     defaultKeyCommand = ssh-add -L
 [core]
 	editor = code --wait
