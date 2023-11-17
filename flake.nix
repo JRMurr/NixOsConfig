@@ -22,6 +22,8 @@
       url = "github:zhaofengli/attic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     # deploy-rs = {
     #   url = "github:serokell/deploy-rs";
     #   inputs.nixpkgs.follows = "nixpkgs";

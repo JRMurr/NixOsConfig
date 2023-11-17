@@ -8,6 +8,8 @@ let
   gcfg = myOpts.graphics;
   mcfg = myOpts.musicPrograms;
 
+  myVscode = (pkgs.callPackage ../pkgs/vscode.nix { inherit inputs; }).myVscode;
+
   cliPrograms = [
     git
     gh
@@ -40,7 +42,8 @@ let
     gparted
     baobab # space sniffer alternative
     pcmanfm
-    vscode
+    myVscode
+    # vscode
     dbeaver
     deluge
 
