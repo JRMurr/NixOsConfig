@@ -57,7 +57,7 @@ let
     pkief.material-icon-theme
     wayou.vscode-todo-highlight
     waderyan.gitblame
-    bungcip.better-toml
+    # bungcip.better-toml
   ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
     skyapps.fish-vscode
@@ -65,8 +65,13 @@ let
     skellock.just
     thebearingedge.vscode-sql-lit
     ms-vscode-remote.remote-ssh-edit
+    ivandemchenko.roc-lang-unofficial
+    tamasfe.even-better-toml
+
+    vivaxy.vscode-conventional-commits
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
+    github.vscode-github-actions
     bbenoist.nix
     dracula-theme.theme-dracula
     ms-azuretools.vscode-docker
@@ -74,6 +79,12 @@ let
     ms-vscode-remote.remote-ssh
     rust-lang.rust-analyzer
     yzhang.markdown-all-in-one
+    editorconfig.editorconfig
+    brettm12345.nixfmt-vscode
+    jnoortheen.nix-ide
+    b4dm4n.vscode-nixpkgs-fmt
+    dbaeumer.vscode-eslint
+    esbenp.prettier-vscode
   ];
 
   vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
