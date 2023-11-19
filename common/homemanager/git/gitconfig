@@ -2,12 +2,13 @@
 [user]
 	name = John Murray
 	email = 5672686+JRMurr@users.noreply.github.com
+    signingKey = ~/.ssh/id_ed25519 
 [commit]
     gpgSign = true
 [gpg]
     format = ssh
-[gpg "ssh"]
-    defaultKeyCommand = ssh-add -L
+# [gpg "ssh"]
+#     signingKey = ~/.ssh/id_ed25519 
 [core]
 	editor = code --wait
 [alias]

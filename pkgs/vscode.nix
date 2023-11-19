@@ -85,6 +85,7 @@ let
     b4dm4n.vscode-nixpkgs-fmt
     dbaeumer.vscode-eslint
     esbenp.prettier-vscode
+    vadimcn.vscode-lldb
   ];
 
   vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
