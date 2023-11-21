@@ -69,6 +69,8 @@ let
     tamasfe.even-better-toml
 
     vivaxy.vscode-conventional-commits
+
+    ziglang.vscode-zig
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions

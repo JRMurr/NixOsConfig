@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
     ./cargo.nix
-    ./clipcat.nix
+    # ./clipcat.nix #TODO: sad and barely helped :(
     ./direnv.nix
     ./fish
     ./git
