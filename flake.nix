@@ -158,7 +158,7 @@
           ./common/myOptions
         ];
         framework = mkSystem [
-          inputs.nixos-hardware.nixosModules.framework
+          inputs.nixos-hardware.nixosModules.framework-11th-gen-intel
           ./hosts/framework
         ];
         thicc-server = mkSystem [
