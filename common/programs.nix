@@ -24,6 +24,8 @@ let
     difftastic
     attic
     dig
+    nix-prefetch
+    brotli # compression program
   ];
   imageStuff = [ feh gimp ];
   messaging = [
