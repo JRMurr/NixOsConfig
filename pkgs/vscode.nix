@@ -39,7 +39,7 @@ let
     "ms-python.python"
     "ms-vscode-remote.remote-ssh"
     # "ms-vscode-remote.remote-ssh-edit"
-    "ms-vscode.cpptools"
+    # "ms-vscode.cpptools"
     "pkief.material-icon-theme"
     "skellock.just"
     "skyapps.fish-vscode"
@@ -71,6 +71,7 @@ let
     vivaxy.vscode-conventional-commits
 
     ziglang.vscode-zig
+    streetsidesoftware.code-spell-checker
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions
@@ -88,6 +89,8 @@ let
     dbaeumer.vscode-eslint
     esbenp.prettier-vscode
     vadimcn.vscode-lldb
+    ms-vscode.cpptools
+
   ];
 
   vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
