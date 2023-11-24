@@ -56,7 +56,7 @@ let
   openVsxExtensions = with linuxExtensions.open-vsx; [
     pkief.material-icon-theme
     wayou.vscode-todo-highlight
-    waderyan.gitblame
+    # waderyan.gitblame
     # bungcip.better-toml
   ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
