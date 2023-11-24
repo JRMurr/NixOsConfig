@@ -72,6 +72,7 @@ let
 
     ziglang.vscode-zig
     streetsidesoftware.code-spell-checker
+    eamodio.gitlens
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions
@@ -98,4 +99,5 @@ let
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
-in { inherit myVscode vscodeExtensions; }
+in
+{ inherit myVscode vscodeExtensions; }
