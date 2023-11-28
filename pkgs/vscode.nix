@@ -74,6 +74,7 @@ let
     streetsidesoftware.code-spell-checker
     eamodio.gitlens
     znck.grammarly
+    bradlc.vscode-tailwindcss
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions
