@@ -73,6 +73,7 @@ let
     ziglang.vscode-zig
     streetsidesoftware.code-spell-checker
     eamodio.gitlens
+    znck.grammarly
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions
