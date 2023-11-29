@@ -17,8 +17,10 @@ let
     rotate = config.rotate;
     crtc = config.crtc;
     dpi = config.dpi;
+    scale = config.scale;
   };
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
     services.autorandr = {
       enable = true;

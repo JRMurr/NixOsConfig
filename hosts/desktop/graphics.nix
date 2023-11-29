@@ -1,7 +1,7 @@
 {
   environment.variables.XCURSOR_SIZE = "10";
   services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.dpi = 100;
+  # services.xserver.dpi = 100;
   myOptions.graphics = {
     enable = true;
     wallPaper = { mode = "scale"; };
@@ -13,7 +13,8 @@
         name = "DP-4";
         enable = true;
         primary = true;
-        position = "2160x0";
+        # position = "2160x0";
+        position = "1440x0";
         resolution = "2560x1440";
         rate = "143.97";
         workspace = 1;
@@ -28,11 +29,17 @@
         enable = true;
         primary = false;
         position = "0x0";
-        resolution = "3840x2160";
+        # resolution = "3840x2160";
+        resolution = "2560x1440"; # scale down so its easier to read...
         rate = "60.00";
         rotate = "left";
         workspace = 2;
         crtc = 1;
+        # dpi = 150;
+        # scale = {
+        #   x = 1;
+        #   y = 1;
+        # };
       }
     ];
   };
