@@ -17,7 +17,8 @@ let
       "";
   monitorWorkspaceConfigs =
     lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
     home.packages = with pkgs; [
       xorg.xwininfo
@@ -59,7 +60,22 @@ in {
           }
           {
             command =
-              "kitti3 --position CT -- --override background_opacity=0.8";
+              let
+                kitti3Args = {
+                  position = "CC";
+                  shape = "0.9 0.9";
+                };
+                kittyArgs = {
+                  override = [ "background_opacity=0.95" ];
+                };
+                toArgs = args:
+                  let
+                    argList = lib.cli.toGNUCommandLine { } args;
+                  in
+                  lib.strings.concatStringsSep " " argList
+                ;
+              in
+              "kitti3 ${toArgs kitti3Args } -- ${toArgs kittyArgs}";
             always = true;
             notification = false;
           }
