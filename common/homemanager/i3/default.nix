@@ -28,6 +28,9 @@ in
       i3lock-blur
     ];
 
+    # TODO: find a good spot for this + needs the system service on
+    services.blueman-applet.enable = true;
+
     xsession.numlock.enable = true;
     xsession.windowManager.i3 = {
       enable = true;

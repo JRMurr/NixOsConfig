@@ -14,6 +14,10 @@ in {
     #   };
     #   # bluetooth.enable = true;
     # };
+
+    hardware.bluetooth.enable = true;
+    services.blueman.enable = true;
+
     sound.mediaKeys.enable = true;
     security.rtkit.enable = true;
     services.pipewire = {
