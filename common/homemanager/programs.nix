@@ -15,18 +15,23 @@ let
   linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [ nixd nil ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
-  batExtras = let
-    names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
-  in lib.attrVals names pkgs.bat-extras;
+  batExtras =
+    let
+      names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
+    in
+    lib.attrVals names pkgs.bat-extras;
 
-  exaConf = let
-    opts = {
-      enable = true;
-      enableAliases = true;
-    };
-  in if onUnStable then { eza = opts; } else { exa = opts; };
+  exaConf =
+    let
+      opts = {
+        enable = true;
+        enableAliases = true;
+      };
+    in
+    if onUnStable then { eza = opts; } else { exa = opts; };
 
-in {
+in
+{
 
   home.packages = linuxOnly ++ batExtras ++ (with pkgs; [
     bottom
@@ -37,6 +42,7 @@ in {
     xclip
     lastpass-cli
     tailspin
+    ouch # file decompresser
   ]);
 
   programs = {

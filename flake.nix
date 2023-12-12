@@ -71,6 +71,10 @@
         import nixpkgs {
           inherit system overlays;
           config.allowUnfree = true;
+          # TODO: not sure what is using this.... its probs chill...
+          config.permittedInsecurePackages = [
+            "electron-25.9.0"
+          ];
         };
       mkSystem = extraModules:
         nixpkgs.lib.nixosSystem rec {
@@ -87,7 +91,8 @@
           #   lib = pkgs.lib;
           # };
           myOptions = { graphics.enable = false; };
-        in home-manager.lib.homeManagerConfiguration {
+        in
+        home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs;
           extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
           modules = [
@@ -140,7 +145,8 @@
             (./common/users + "/${name}" + /home.nix)
           ];
         };
-    in {
+    in
+    {
       inherit overlays;
       lib = { inherit mkSystem; };
       nixosModules.default = { ... }: {
