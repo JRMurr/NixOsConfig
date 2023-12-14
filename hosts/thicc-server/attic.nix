@@ -18,7 +18,8 @@ let
     attic login local https://cache.jrnet.win --set-default $token
   '';
 
-in {
+in
+{
   age.secrets.attic-creds.file = "${inputs.secrets}/secrets/attic-creds.age";
   age.secrets.attic-admin-token.file =
     "${inputs.secrets}/secrets/attic-admin-token.age";
@@ -96,25 +97,27 @@ in {
       HOME = "/run/nix-cache-build";
       XDG_CONFIG_HOME = "/run/nix-cache-build/config";
     };
-    script = let
-      hosts = [ "thicc-server" "framework" "nixos-john" "graphicalIso" ];
-      buildAndPush = host: ''
-        echo "BUILDING ${host}"
-        nixos-rebuild build --flake /tmp/nixos-configs#${host}
-        attic push main ./result/
-      '';
-      buildSteps = lib.concatMapStringsSep "\n" buildAndPush hosts;
-    in ''
-      set -eu
-      rm -rf /tmp/nixos-configs
-      # if weird error make sure has no new lines (echo -n)
-      attic login --set-default local https://cache.jrnet.win "$(cat ${config.age.secrets.attic-admin-token.path})"
-      attic cache info main
+    script =
+      let
+        hosts = [ "framework" "nixos-john" "thicc-server" "graphicalIso" ];
+        buildAndPush = host: ''
+          echo "BUILDING ${host}"
+          nixos-rebuild build --flake /tmp/nixos-configs#${host}
+          attic push main ./result/
+        '';
+        buildSteps = lib.concatMapStringsSep "\n" buildAndPush hosts;
+      in
+      ''
+        set -eu
+        rm -rf /tmp/nixos-configs
+        # if weird error make sure has no new lines (echo -n)
+        attic login --set-default local https://cache.jrnet.win "$(cat ${config.age.secrets.attic-admin-token.path})"
+        attic cache info main
 
-      git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
-    '' + buildSteps + ''
-      rm -rf /tmp/nixos-configs
-    '';
+        git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
+      '' + buildSteps + ''
+        rm -rf /tmp/nixos-configs
+      '';
     serviceConfig = {
       Type = "oneshot";
       # TODO: can probably remove this and enviorment settings
