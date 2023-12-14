@@ -97,7 +97,7 @@ in {
     email = "johnreillymurray@gmail.com";
     package = pkgs.caddyWithPlugins.override (prev: {
       plugins = [{ name = "github.com/caddy-dns/cloudflare"; }];
-      vendorHash = "sha256-uyEjAktinJhV3u5xFWAHbBPAX5NZ5utLiCwUVgZVjGw=";
+      vendorHash = "sha256-LxnYnkFpQFPZfEcJOMJSTkJ3pLSp7VXZUDMf6iH9qk4=";
     });
     logFormat = lib.mkForce "level info";
     virtualHosts = let
