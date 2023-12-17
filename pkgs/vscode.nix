@@ -75,6 +75,7 @@ let
     eamodio.gitlens
     znck.grammarly
     bradlc.vscode-tailwindcss
+    rreverser.llvm
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     github.vscode-github-actions
