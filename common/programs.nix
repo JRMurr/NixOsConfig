@@ -26,6 +26,8 @@ let
     dig
     nix-prefetch
     brotli # compression program
+
+    just
   ];
   imageStuff = [ feh gimp ];
   messaging = [
