@@ -6,7 +6,8 @@ let
   containerServiceName = containerName:
     "${nixContainerCfg.backend}-${containerName}";
 
-in {
+in
+{
   config = lib.mkIf containerCfg.enable {
     systemd.services."${containerServiceName "linkding"}" = {
       after = [ "postgresql.service" ];
