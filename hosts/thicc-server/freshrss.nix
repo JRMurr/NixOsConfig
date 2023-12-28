@@ -36,9 +36,6 @@ in {
   # https://github.com/jay-aye-see-kay/nixfiles/blob/0fa095fdc3a4e7a64a442c75b65f1e2c881fce13/hosts/pukeko/services.nix#L61
   services.caddy.virtualHosts."${virtualHost}" = {
     extraConfig = ''
-      tls {
-          dns cloudflare {env.CF_API_TOKEN}
-        }
       root * ${pkgs.freshrss}/p 
       php_fastcgi unix/${config.services.phpfpm.pools.freshrss.socket} {
           env FRESHRSS_DATA_PATH ${config.services.freshrss.dataDir}
