@@ -2,6 +2,7 @@
   myCaddy.reverseProxies = {
     # s3 = { upstream = "fatnas:7000"; };
     music = { upstream = "thicc-server:6680"; };
+    komga = { upstream = "fatnas:25600"; };
     pihole = {
       upstream = "thicc-server:81";
       extraConfig = "redir / /admin{uri}";
