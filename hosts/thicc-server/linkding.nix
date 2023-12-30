@@ -17,7 +17,8 @@ in {
       ensureDatabases = [ "linkding" ];
       ensureUsers = [{
         name = "linkding";
-        ensurePermissions = { "DATABASE \"linkding\"" = "ALL PRIVILEGES"; };
+        ensureDBOwnership = true;
+        # ensurePermissions = { "DATABASE \"linkding\"" = "ALL PRIVILEGES"; };
       }];
     };
 
