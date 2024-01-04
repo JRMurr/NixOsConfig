@@ -46,7 +46,8 @@ let
     gparted
     baobab # space sniffer alternative
     pcmanfm
-    libsForQt5.dolphin
+    # libsForQt5.dolphin
+    # libsForQt5.dolphin-plugins
     myVscode
     # vscode
     dbeaver
