@@ -22,7 +22,7 @@ let
     asciinema
     nixpkgs-review
     difftastic
-    attic
+    attic-client
     dig
     nix-prefetch
     brotli # compression program
