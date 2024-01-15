@@ -20,8 +20,8 @@ let
       format = ''
         %s %p
         %b'';
-      frame_color = "#282a36";
-      frame_width = "0";
+      frame_color = "black";
+      frame_width = 3;
       height = "300";
       hide_duplicate_count = false;
       history_length = "20";
@@ -43,7 +43,7 @@ let
       mouse_right_click = "close_all";
       notification_limit = "0";
       offset = "10x50";
-      origin = "top-right";
+      origin = "top-center";
       padding = "8";
       progress_bar = true;
       progress_bar_frame_width = "1";
