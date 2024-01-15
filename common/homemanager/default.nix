@@ -3,6 +3,7 @@
     ./cargo.nix
     # ./clipcat.nix #TODO: sad and barely helped :(
     ./direnv.nix
+    ./dunst.nix
     ./fish
     ./git
     ./gitui.nix

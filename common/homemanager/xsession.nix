@@ -6,7 +6,7 @@ in {
       enable = true;
       tray = "always";
     };
-    services.dunst.enable = true;
+    # services.dunst.enable = true;
     xsession = {
       enable = true;
       initExtra = "xset s off -dpms";
