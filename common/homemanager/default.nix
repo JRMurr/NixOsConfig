@@ -19,6 +19,8 @@
     ./xsession.nix
   ];
 
+  programs.bash.enable = true;
+
   # adds home-manager-help tool
   manual.html.enable = true;
 
