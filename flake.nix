@@ -19,7 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     attic = {
-      url = "github:JRMurr/attic/fix-lint";
+      url = "github:zhaofengli/attic";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
