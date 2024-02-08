@@ -1,7 +1,5 @@
 { pkgs, config, lib, ... }:
 let
-  sysVersion = config.system.nixos.release;
-  onUnStable = lib.versionAtLeast sysVersion "23.11";
   myNerdFonts = [ "FiraCode" ];
   polyBarNerdFonts = [
     "Iosevka"
@@ -19,13 +17,9 @@ let
       polyBarIconFonts
       ++ [ (nerdfonts.override { fonts = myNerdFonts ++ polyBarNerdFonts; }) ]);
 in {
-  fonts = (if onUnStable then {
+  fonts = {
     enableDefaultPackages = true;
     packages = fontPkgs;
-  } else {
-    enableDefaultFonts = true;
-    fonts = fontPkgs;
-  }) // {
     fontconfig.defaultFonts.monospace = [ "FiraCode" ];
   };
 }
