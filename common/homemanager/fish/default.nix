@@ -49,4 +49,7 @@ in {
     source = ./files/fish_plugins;
     target = "./fish_plugins";
   };
+
+  xdg.configFile."fish/completions/nix.fish".source =
+    "${pkgs.nix}/share/fish/vendor_completions.d/nix.fish";
 }
