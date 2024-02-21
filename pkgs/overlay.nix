@@ -39,12 +39,12 @@ in {
   });
 
   # build from develop since no release has been made in a while but dev branch has fix for building on gcc 13
-  snapcast = prev.snapcast.overrideAttrs (old: rec {
-    src = prev.fetchFromGitHub {
-      owner = "badaix";
-      repo = "snapcast";
-      rev = "2355dca98dba711e4102cb1502bcef04878103e8";
-      hash = "sha256-FVAQ/BPJDEZhbuKOap8Ezq+twVpJh7hupR+0c5KLIEw=";
-    };
-  });
+  # snapcast = prev.snapcast.overrideAttrs (old: rec {
+  #   src = prev.fetchFromGitHub {
+  #     owner = "badaix";
+  #     repo = "snapcast";
+  #     rev = "2355dca98dba711e4102cb1502bcef04878103e8";
+  #     hash = "sha256-FVAQ/BPJDEZhbuKOap8Ezq+twVpJh7hupR+0c5KLIEw=";
+  #   };
+  # });
 }
