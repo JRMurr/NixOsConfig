@@ -25,6 +25,7 @@ let
     attic-client
     dig
     nix-prefetch
+    nix-output-monitor
     brotli # compression program
 
     just
