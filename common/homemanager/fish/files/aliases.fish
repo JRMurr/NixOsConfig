@@ -7,3 +7,4 @@ alias lzd="lazydocker"
 alias ls="exa --icons"
 
 alias nbf="nix build --file"
+alias nobf="nom build --file"
