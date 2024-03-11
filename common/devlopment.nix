@@ -13,7 +13,7 @@
     rustup
     # nix stuff
     nixfmt
-    rnix-lsp # nix lang server
+    # rnix-lsp # nix lang server
     statix # linter
 
     (sqlite.override { interactive = true; })
