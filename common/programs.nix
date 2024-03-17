@@ -38,7 +38,7 @@ let
   ];
   desktopEnviorment = [ lxappearance arandr rofi-power-menu ];
   video = [ streamlink-twitch-gui-bin streamlink vlc ];
-  audio = [ spotify spotify-tui ];
+  audio = [ spotify ];
   miscGraphicalPrograms = [
     piper # add mouse hotkeys
     firefox
@@ -69,12 +69,14 @@ let
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
 
-  allGraphicalPrograms = if gcfg.enable then
-    miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-    ++ imageStuff ++ audio ++ musicPrograms
-  else
-    [ ];
-in {
+  allGraphicalPrograms =
+    if gcfg.enable then
+      miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
+      ++ imageStuff ++ audio ++ musicPrograms
+    else
+      [ ];
+in
+{
   # these two are for vscode to stop yelling at me
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
