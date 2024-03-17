@@ -56,45 +56,40 @@ let
   openVsxExtensions = with linuxExtensions.open-vsx; [
     pkief.material-icon-theme
     wayou.vscode-todo-highlight
-    # waderyan.gitblame
-    # bungcip.better-toml
   ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
-    skyapps.fish-vscode
-    thenuprojectcontributors.vscode-nushell-lang
-    skellock.just
-    thebearingedge.vscode-sql-lit
-    ms-vscode-remote.remote-ssh-edit
-    ivandemchenko.roc-lang-unofficial
-    tamasfe.even-better-toml
-
-    vivaxy.vscode-conventional-commits
-
-    ziglang.vscode-zig
-    streetsidesoftware.code-spell-checker
-    eamodio.gitlens
-    znck.grammarly
     bradlc.vscode-tailwindcss
+    eamodio.gitlens
+    ivandemchenko.roc-lang-unofficial
+    ms-vscode-remote.remote-ssh-edit
     rreverser.llvm
+    skellock.just
+    skyapps.fish-vscode
+    streetsidesoftware.code-spell-checker
+    tamasfe.even-better-toml
+    thebearingedge.vscode-sql-lit
+    thenuprojectcontributors.vscode-nushell-lang
+    vivaxy.vscode-conventional-commits
+    ziglang.vscode-zig
+    znck.grammarly
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
-    github.vscode-github-actions
+    b4dm4n.vscode-nixpkgs-fmt
     bbenoist.nix
+    brettm12345.nixfmt-vscode
+    dbaeumer.vscode-eslint
     dracula-theme.theme-dracula
+    editorconfig.editorconfig
+    esbenp.prettier-vscode
+    github.vscode-github-actions
+    jnoortheen.nix-ide
     ms-azuretools.vscode-docker
     ms-python.python
     ms-vscode-remote.remote-ssh
-    rust-lang.rust-analyzer
-    yzhang.markdown-all-in-one
-    editorconfig.editorconfig
-    brettm12345.nixfmt-vscode
-    jnoortheen.nix-ide
-    b4dm4n.vscode-nixpkgs-fmt
-    dbaeumer.vscode-eslint
-    esbenp.prettier-vscode
-    vadimcn.vscode-lldb
     ms-vscode.cpptools
-
+    rust-lang.rust-analyzer
+    vadimcn.vscode-lldb
+    yzhang.markdown-all-in-one
   ];
 
   vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
