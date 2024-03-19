@@ -1,7 +1,7 @@
 { pkgs, lib, inputs, nixosConfig, ... }:
 let
-  sysVersion = nixosConfig.system.nixos.release;
-  onUnStable = lib.versionAtLeast sysVersion "23.11";
+  # sysVersion = nixosConfig.system.nixos.release;
+  # onUnStable = lib.versionAtLeast sysVersion "23.11";
   # getFromInput = name: inputs.${name}.packages.${pkgs.system}.default;
   nurl = inputs.nurl.packages.${pkgs.system}.default;
   nixd = inputs.nixd.packages.${pkgs.system}.default;
@@ -15,23 +15,11 @@ let
   linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [ nixd nil ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
-  batExtras =
-    let
-      names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
-    in
-    lib.attrVals names pkgs.bat-extras;
+  batExtras = let
+    names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
+  in lib.attrVals names pkgs.bat-extras;
 
-  exaConf =
-    let
-      opts = {
-        enable = true;
-        enableAliases = true;
-      };
-    in
-    if onUnStable then { eza = opts; } else { exa = opts; };
-
-in
-{
+in {
 
   home.packages = linuxOnly ++ batExtras ++ (with pkgs; [
     bottom
@@ -57,6 +45,11 @@ in
     };
 
     bat = { enable = true; };
-  } // exaConf;
+
+    eza = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+  };
 
 }
