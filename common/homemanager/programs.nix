@@ -31,6 +31,7 @@ in {
     lastpass-cli
     tailspin
     ouch # file decompresser
+    bacon # rust background checker
   ]);
 
   programs = {
