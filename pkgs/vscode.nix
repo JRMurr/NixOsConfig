@@ -53,11 +53,13 @@ let
 
   linuxExtensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
   # https://open-vsx.org/
-  openVsxExtensions = with linuxExtensions.open-vsx; [
-    pkief.material-icon-theme
-    wayou.vscode-todo-highlight
-  ];
+  openVsxExtensions = with linuxExtensions.open-vsx;
+    [
+      pkief.material-icon-theme
+      # wayou.vscode-todo-highlight
+    ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
+    aaron-bond.better-comments
     bradlc.vscode-tailwindcss
     eamodio.gitlens
     ivandemchenko.roc-lang-unofficial
@@ -97,5 +99,4 @@ let
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
-in
-{ inherit myVscode vscodeExtensions; }
+in { inherit myVscode vscodeExtensions; }
