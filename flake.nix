@@ -32,6 +32,7 @@
       url = "github:nix-community/nurl";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-inspect.url = "github:bluskript/nix-inspect";
     # TODO: pick one
     nixd = { url = "github:nix-community/nixd"; };
     nil = { url = "github:oxalica/nil"; };

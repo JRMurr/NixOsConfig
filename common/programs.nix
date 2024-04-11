@@ -1,7 +1,8 @@
 { pkgs, config, inputs, ... }:
 # let attic = inputs.attic.packages.${pkgs.system}.default;
 # in 
-with pkgs;
+let nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
+in with pkgs;
 # TODO: move some of this to homemnager
 let
   myOpts = config.myOptions;
@@ -29,6 +30,8 @@ let
     brotli # compression program
 
     just
+
+    nix-inspect
   ];
   imageStuff = [ feh gimp ];
   messaging = [
@@ -69,14 +72,12 @@ let
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
 
-  allGraphicalPrograms =
-    if gcfg.enable then
-      miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-      ++ imageStuff ++ audio ++ musicPrograms
-    else
-      [ ];
-in
-{
+  allGraphicalPrograms = if gcfg.enable then
+    miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
+    ++ imageStuff ++ audio ++ musicPrograms
+  else
+    [ ];
+in {
   # these two are for vscode to stop yelling at me
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
