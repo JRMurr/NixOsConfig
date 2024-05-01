@@ -6,5 +6,7 @@ alias gitSyncUp="git fetch upstream; git rebase upstream/master"
 alias lzd="lazydocker"
 alias ls="exa --icons"
 
-alias nbf="nix build --file"
-alias nobf="nom build --file"
+alias nbf="nix build -L --file"
+function nobf --wraps 'nix build -L --file' --description 'nom build -L --file'
+    nom build -L --file $argv
+end
