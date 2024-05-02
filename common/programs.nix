@@ -29,6 +29,7 @@ let
     nix-output-monitor
     brotli # compression program
 
+    systemctl-tui
     just
 
     nix-inspect
