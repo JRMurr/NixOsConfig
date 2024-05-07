@@ -69,6 +69,8 @@ let
 
     # ebooks
     calibre
+
+    zed-editor # :pog:
   ];
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
