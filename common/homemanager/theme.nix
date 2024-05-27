@@ -9,7 +9,8 @@ in
   # ];
   config = lib.mkIf gcfg.enable
     {
-
-      # catppuccin.enable = true;
+      programs.swaylock.enable = false; # seems to be a bug when enabling importing catppuccin
+      catppuccin.enable = true;
     };
 }
+ 
