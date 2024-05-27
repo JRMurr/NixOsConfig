@@ -1,4 +1,5 @@
 { pkgs, lib, inputs, ... }:
+# TODO: should move this to use the HM module...
 # TODO: steal from https://gist.github.com/JRMurr/069efda89957a221cf717a8caa988819
 let
   # https://github.com/nix-community/nix-vscode-extensions
@@ -94,8 +95,20 @@ let
     yzhang.markdown-all-in-one
   ];
 
+  catppucin = pkgs.catppuccin-vsc.override {
+    accent = "mauve";
+    boldKeywords = true;
+    italicComments = true;
+    italicKeywords = true;
+    extraBordersEnabled = false;
+    workbenchMode = "default";
+    bracketMode = "rainbow";
+    colorOverrides = { };
+    customUIColors = { };
+  };
+
   vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
-    ++ extensionsFromNixPkgs;
+    ++ extensionsFromNixPkgs ++ [ catppucin ];
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
