@@ -20,17 +20,19 @@ let
   # https://github.com/newmanls/rofi-themes-collection/tree/master/themes
   getRofiTheme = theme: "${rofi-themes}/share/themes/${theme}.rasi";
 
-  myTheme = let mkLiteral = config.lib.formats.rasi.mkLiteral;
-  in {
-    "@import" = getRofiTheme "rounded-blue-dark";
-    # "#inputbar" = { children = map mkLiteral [ "prompt" "entry" ]; };
-    "mainbox" = { children = [ "mode-switcher" "inputbar" "listview" ]; };
-    "button normal.active" = { "text-color" = mkLiteral "var(bg3)"; };
-    "button selected.normal" = { "text-color" = mkLiteral "var(bg3)"; };
-    "button selected.active" = { "text-color" = mkLiteral "var(bg3)"; };
-  };
+  myTheme =
+    let mkLiteral = config.lib.formats.rasi.mkLiteral;
+    in {
+      # "@import" = getRofiTheme "rounded-blue-dark";
+      # "#inputbar" = { children = map mkLiteral [ "prompt" "entry" ]; };
+      "mainbox" = { children = [ "mode-switcher" "inputbar" "listview" ]; };
+      "button normal.active" = { "text-color" = mkLiteral "var(bg3)"; };
+      "button selected.normal" = { "text-color" = mkLiteral "var(bg3)"; };
+      "button selected.active" = { "text-color" = mkLiteral "var(bg3)"; };
+    };
 
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
 
     home.packages = with pkgs; [ rofi-power-menu rofi-themes ];
