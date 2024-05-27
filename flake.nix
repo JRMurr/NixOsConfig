@@ -23,6 +23,8 @@
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    catppuccin.url = "github:catppuccin/nix";
+
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     # deploy-rs = {
     #   url = "github:serokell/deploy-rs";
@@ -49,7 +51,7 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, wsl, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, wsl, catppuccin, ... }@inputs:
     let
       overlays = [
         inputs.attic.overlays.default
@@ -61,6 +63,7 @@
         { _module.args = { inherit inputs; }; }
         inputs.agenix.nixosModules.default
         home-manager.nixosModules.home-manager
+        catppuccin.nixosModules.catppuccin
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -90,7 +93,8 @@
           #   lib = pkgs.lib;
           # };
           myOptions = { graphics.enable = false; };
-        in home-manager.lib.homeManagerConfiguration {
+        in
+        home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs;
           extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
           modules = [
@@ -143,7 +147,8 @@
             (./common/users + "/${name}" + /home.nix)
           ];
         };
-    in {
+    in
+    {
       inherit overlays;
       lib = { inherit mkSystem; };
       nixosModules.default = { ... }: {

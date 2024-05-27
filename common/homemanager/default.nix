@@ -1,7 +1,6 @@
-{ ... }: {
+{ inputs, ... }: {
   imports = [
     ./cargo.nix
-    # ./clipcat.nix #TODO: sad and barely helped :(
     ./direnv.nix
     ./dunst.nix
     ./fish
@@ -16,7 +15,9 @@
     ./redshift.nix
     ./rofi.nix
     ./starship.nix
+    ./theme.nix
     ./xsession.nix
+    # ./clipcat.nix #TODO: sad and barely helped :(
   ];
 
   programs.bash.enable = true;

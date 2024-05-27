@@ -1,5 +1,8 @@
 { inputs, ... }: {
-  imports = [ ../../homemanager ];
+  imports = [
+    ../../homemanager
+    # inputs.catppuccin.homeManagerModules.catppuccin
+  ];
   # Everything in this file will be under home-manager.users.<name>
   # https://rycee.gitlab.io/home-manager/options.html
 

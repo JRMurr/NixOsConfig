@@ -5,20 +5,21 @@
 
     ./audio.nix
     ./autorandr.nix
-    ./devlopment.nix
     ./containers.nix
+    ./devlopment.nix
     ./essentials.nix
     ./fonts.nix
     ./gestures
     ./kernel.nix
     ./network-shares.nix
     ./programs.nix
-    # ./plymouth.nix
     ./ssh.nix
     ./sudo.nix
     ./tailscale.nix
+    ./theme.nix
     ./users
     ./xserver.nix
+    # ./plymouth.nix
   ];
 
   # nixpkgs.config.allowUnfree = true;
