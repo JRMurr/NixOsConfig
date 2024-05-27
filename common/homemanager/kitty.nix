@@ -18,7 +18,7 @@ in {
         macos_option_as_alt = "yes";
         shell = "fish";
       };
-      theme = "Dracula";
+      # theme = "Dracula";
     };
 
     xdg.configFile."kitty/diff.conf" = {

@@ -55,7 +55,7 @@ let
     # libsForQt5.dolphin-plugins
     myVscode
     # vscode
-    dbeaver
+    # dbeaver
     deluge
 
     insomnia # rest client
@@ -75,12 +75,14 @@ let
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
 
-  allGraphicalPrograms = if gcfg.enable then
-    miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-    ++ imageStuff ++ audio ++ musicPrograms
-  else
-    [ ];
-in {
+  allGraphicalPrograms =
+    if gcfg.enable then
+      miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
+      ++ imageStuff ++ audio ++ musicPrograms
+    else
+      [ ];
+in
+{
   # these two are for vscode to stop yelling at me
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;

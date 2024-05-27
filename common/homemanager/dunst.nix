@@ -20,7 +20,7 @@ let
       format = ''
         %s %p
         %b'';
-      frame_color = "black";
+      # frame_color = "black";
       frame_width = 3;
       height = "300";
       hide_duplicate_count = false;
@@ -64,28 +64,30 @@ let
       vertical_alignment = "center";
       width = "300";
     };
-    urgency_critical = {
-      background = "#ff5555";
-      foreground = "#f8f8f2";
-      frame_color = "#ff5555";
-      timeout = "0";
-    };
-    urgency_low = {
-      background = "#282a36";
-      foreground = "#6272a4";
-      timeout = "10";
-    };
-    urgency_normal = {
-      background = "#282a36";
-      foreground = "#bd93f9";
-      timeout = "10";
-    };
+    # urgency_critical = {
+    #   background = "#ff5555";
+    #   foreground = "#f8f8f2";
+    #   frame_color = "#ff5555";
+    #   timeout = "0";
+    # };
+    # urgency_low = {
+    #   background = "#282a36";
+    #   foreground = "#6272a4";
+    #   timeout = "10";
+    # };
+    # urgency_normal = {
+    #   background = "#282a36";
+    #   foreground = "#bd93f9";
+    #   timeout = "10";
+    # };
   };
 
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
     services.dunst = {
       enable = true;
+      # settings.global = 
       settings = dunst_dracula // { };
     };
   };

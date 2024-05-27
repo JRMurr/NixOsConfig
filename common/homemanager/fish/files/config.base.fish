@@ -20,7 +20,7 @@ set -g Z_EXCLUDE $HOME
 set -U fish_greeting
 
 # bob the fish stuff
-source ~/.config/fish/config/dracula.fish
+# source ~/.config/fish/config/dracula.fish
 # source ~/.config/fish/config/bobTheFish.fish
 
 #aliases

@@ -48,7 +48,7 @@ let
     "valentjn.vscode-ltex"
     "waderyan.gitblame"
     "yycalm.linecount"
-    "znck.grammarly"
+    # "znck.grammarly"
   ];
 
   linuxExtensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
@@ -73,7 +73,7 @@ let
     thenuprojectcontributors.vscode-nushell-lang
     vivaxy.vscode-conventional-commits
     ziglang.vscode-zig
-    znck.grammarly
+    # znck.grammarly
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
     b4dm4n.vscode-nixpkgs-fmt
@@ -99,4 +99,5 @@ let
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
-in { inherit myVscode vscodeExtensions; }
+in
+{ inherit myVscode vscodeExtensions; }
