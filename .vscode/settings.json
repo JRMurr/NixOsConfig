@@ -1,1 +1,21 @@
-{}
+{
+  "nix.serverSettings": {
+    "nixd": {
+      // Tell the language server your desired option set, for completion
+      // This is lazily evaluated.
+      "options": {
+        // Map of eval information
+        // If this is ommited, default search path (<nixpkgs>) will be used.
+        "nixos": {
+          // This name "nixos" could be arbitary.
+          // The expression to eval, intepret it as option declarations.
+          "expr": "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.nixos-john.options"
+        },
+
+        "home-manager": {
+          "expr": "(builtins.getFlake \"/etc/nixos\").homeConfigurations.\"jrmurray\".options"
+        }
+      }
+    }
+  }
+}
