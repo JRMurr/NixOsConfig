@@ -10,7 +10,11 @@ in
   config = lib.mkIf gcfg.enable
     {
       programs.swaylock.enable = false; # seems to be a bug when enabling importing catppuccin
-      catppuccin.enable = true;
+
+      # lock global options to nixos ones
+      catppuccin.enable = nixosConfig.catppuccin.enable;
+      catppuccin.accent = nixosConfig.catppuccin.accent;
+      catppuccin.flavor = nixosConfig.catppuccin.flavor;
     };
 }
  

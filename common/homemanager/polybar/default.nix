@@ -51,7 +51,7 @@ let
 
   # https://github.com/catppuccin/catppuccin/blob/main/docs/style-guide.md
   colors = baseColors // {
-    primary = baseColors.pink;
+    primary = baseColors.accent;
   };
 
   formatting = {

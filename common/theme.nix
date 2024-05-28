@@ -22,9 +22,7 @@ let
     border-inactive = hexColors.overlay0;
     cursor = hexColors.rosewater;
 
-
-
-
+    accent = hexColors.${catCfg.accent};
   };
 
 in
