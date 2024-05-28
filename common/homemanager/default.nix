@@ -14,6 +14,7 @@
     ./programs.nix
     ./redshift.nix
     ./rofi.nix
+    ./spicetify.nix
     ./starship.nix
     ./theme.nix
     ./xsession.nix

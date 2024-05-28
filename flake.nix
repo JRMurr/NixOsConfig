@@ -23,6 +23,8 @@
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
+
     catppuccin.url = "github:catppuccin/nix";
     catppuccin-vsc = {
       url = "github:catppuccin/vscode";

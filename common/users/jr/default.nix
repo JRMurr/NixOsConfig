@@ -1,9 +1,12 @@
 { inputs, ... }:
-let catppuccin = inputs.catppuccin.homeManagerModules.catppuccin;
+let
+  catppuccin = inputs.catppuccin.homeManagerModules.catppuccin;
+  spicetify = inputs.spicetify-nix.homeManagerModule;
 in
 {
   imports = [
     catppuccin
+    spicetify
     ../../homemanager
   ];
   # Everything in this file will be under home-manager.users.<name>
