@@ -70,6 +70,7 @@
         home-manager.nixosModules.home-manager
         catppuccin.nixosModules.catppuccin
         {
+          nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           # environment.systemPackages =

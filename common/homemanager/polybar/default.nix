@@ -4,6 +4,10 @@ with lib;
 
 let
   gcfg = nixosConfig.myOptions.graphics;
+  themeCfg = nixosConfig.myOptions.theme;
+
+  baseColors = themeCfg.colors;
+
   monitors = gcfg.monitors;
   # TODO: make lib func for easy group by to single value?
   monitorsByName = attrsets.mapAttrs (name: value: head value)
@@ -19,36 +23,41 @@ let
   #   alternate = "#7cb342";
   # };
   # https://github.com/Trollwut/dotfiles-polybar-dracula/blob/63a650f5b26b87930a822391704cdec22fe1faa8/polybar/.config/polybar/config#L35
-  colors = rec {
-    fg = "#f8f8f2";
-    text-fg = "${fg}";
-    bg = "#282a36";
-    base-bg = bg; # ${self.bg:#dd282a36}
-    text-bg = bg;
-    selection = "#44475a";
-    comment = "#6272a4";
-    glyph-bg = comment;
-    module-bg = comment;
-    cyan = "#8be9fd";
-    green = "#50fa7b";
-    orange = "#ffb86c";
-    pink = "#ff79c6";
-    purple = "#bd93f9";
-    red = "#ff5555";
-    white = "#f8f8f2";
-    yellow = "#f1fa8c";
+  # colors = rec {
+  #   fg = "#f8f8f2";
+  #   text-fg = "${fg}";
+  #   bg = "#282a36";
+  #   base-bg = bg; # ${self.bg:#dd282a36}
+  #   text-bg = bg;
+  #   selection = "#44475a";
+  #   comment = "#6272a4";
+  #   glyph-bg = comment;
+  #   module-bg = comment;
+  #   cyan = "#8be9fd";
+  #   green = "#50fa7b";
+  #   orange = "#ffb86c";
+  #   pink = "#ff79c6";
+  #   purple = "#bd93f9";
+  #   red = "#ff5555";
+  #   white = "#f8f8f2";
+  #   yellow = "#f1fa8c";
 
-    #aliases so i dont change the actual formatting below
-    background = bg;
-    foreground = fg;
-    primary = pink;
-    background-alt = module-bg;
+  #   #aliases so i dont change the actual formatting below
+  #   background = bg;
+  #   foreground = fg;
+  #   primary = pink;
+  #   background-alt = module-bg;
+  # };
+
+  # https://github.com/catppuccin/catppuccin/blob/main/docs/style-guide.md
+  colors = baseColors // {
+    primary = baseColors.pink;
   };
 
   formatting = {
     fixed-center = true;
     background = "${colors.background}";
-    foreground = "${colors.foreground}";
+    foreground = "${colors.text}";
     line-size = 2;
     line-color = "${colors.primary}";
     border-size = 3;
@@ -74,9 +83,9 @@ let
     # eth-speed
     modules-right = "filesystem ram cpu date time "
       + (if nixosConfig.networking.hostName == "framework" then
-        "battery"
-      else
-        "");
+      "battery"
+    else
+      "");
     tray-position = "right";
 
     modules-center = "spotify-prev spotify spotify-next";
@@ -86,20 +95,24 @@ let
     let
       barCfg = {
         monitor = "${monitorConfig.name}";
-        dpi = if monitorConfig.dpi == null then
-          (if nixosConfig.services.xserver.dpi == null then
-            100
+        dpi =
+          if monitorConfig.dpi == null then
+            (if nixosConfig.services.xserver.dpi == null then
+              100
+            else
+              nixosConfig.services.xserver.dpi)
           else
-            nixosConfig.services.xserver.dpi)
-        else
-          monitorConfig.dpi;
+            monitorConfig.dpi;
       };
       inheritedCfg = if monitorConfig.primary then mainBar else simpleBar;
-    in inheritedCfg // barCfg;
+    in
+    inheritedCfg // barCfg;
 
-  bars = attrsets.mapAttrs' (name: monitorConfig:
-    attrsets.nameValuePair ("bar/${monitorConfig.name}")
-    (monitorToBarCfg monitorConfig)) monitorsByName;
+  bars = attrsets.mapAttrs'
+    (name: monitorConfig:
+      attrsets.nameValuePair ("bar/${monitorConfig.name}")
+        (monitorToBarCfg monitorConfig))
+    monitorsByName;
 
   monitorToStartScript = monitorConfig:
     if monitorConfig.enable then
@@ -111,7 +124,8 @@ let
 
   dependentPackages = with pkgs; [ zscroll playerctl spotifyPkg ];
   playerctlPath = "${pkgs.playerctl}/bin/playerctl";
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
     # try to use stuff from https://github.com/adi1090x/polybar-themes
     # this looks good https://github.com/adi1090x/polybar-themes/tree/master/simple/material
@@ -237,7 +251,7 @@ in {
               mode-background = "#e60053";
 
               focused = "%index%";
-              focused-foreground = "${colors.foreground}";
+              # focused-foreground = "${colors.foreground}";
               focused-background = "${colors.background-alt}";
               focused-underline = "${colors.primary}";
               focused-padding = 2;
