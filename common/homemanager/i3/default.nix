@@ -39,7 +39,6 @@ in
         modifier = "${modifier}";
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
-          # "${modifier}+Shift+e" = "exec xfce4-session-logout";
           "${modifier}+Ctrl+l" = "exec i3lock -c 000000";
           "${modifier}+Shift+a" = "exec autorandr normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
@@ -48,6 +47,7 @@ in
           "${modifier}+d" = "exec rofi -show run";
           "${modifier}+Shift+Escape" =
             "exec rofi -show p -modi p:rofi-power-menu";
+
           "--release ${modifier}+Shift+s" =
             "exec scrot -s ~/Pictures/%Y-%m-%d-%H-%M-%S.png";
 

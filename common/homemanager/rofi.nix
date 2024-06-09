@@ -24,7 +24,7 @@ let
     let mkLiteral = config.lib.formats.rasi.mkLiteral;
     in {
       # "@import" = getRofiTheme "rounded-blue-dark";
-      # "#inputbar" = { children = map mkLiteral [ "prompt" "entry" ]; };
+      "#inputbar" = { children = map mkLiteral [ "prompt" "entry" ]; };
       "mainbox" = { children = [ "mode-switcher" "inputbar" "listview" ]; };
       "button normal.active" = { "text-color" = mkLiteral "var(bg3)"; };
       "button selected.normal" = { "text-color" = mkLiteral "var(bg3)"; };
@@ -37,10 +37,8 @@ in
 
     home.packages = with pkgs; [ rofi-power-menu rofi-themes ];
 
-    # try to use stuff from https://github.com/adi1090x/rofi
     programs.rofi = {
       enable = true;
-      # theme = getRofiTheme "rounded-blue-dark";
       theme = myTheme;
       terminal = "${pkgs.kitty}/bin/kitty";
       plugins = [ pkgs.rofi-calc ];
