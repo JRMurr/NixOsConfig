@@ -49,7 +49,7 @@
   hardware = {
     opengl = {
       enable = true;
-      setLdLibraryPath = true;
+      #setLdLibraryPath = true;
     };
   };
 

@@ -112,7 +112,9 @@ in {
       attic cache info main
 
       git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
-    '' + buildSteps + ''
+
+      ${buildSteps}
+
       rm -rf /tmp/nixos-configs
     '';
     serviceConfig = {
