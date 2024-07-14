@@ -28,7 +28,7 @@
       trusted-users = [ "root" "jr" ];
       auto-optimise-store = true;
       substituters = lib.mkBefore [
-        "https://cache.jrnet.win/main?priority=1"
+        # "https://cache.jrnet.win/main?priority=1" # server died :cry:
         "https://nix-community.cachix.org?priority=25"
         "https://jrmurr.cachix.org?priority=2"
         "https://cache.nixos.org/?priority=20"
