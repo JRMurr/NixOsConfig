@@ -74,6 +74,8 @@ let
     thenuprojectcontributors.vscode-nushell-lang
     vivaxy.vscode-conventional-commits
     ziglang.vscode-zig
+    ianic.zig-language-extras
+    webfreak.debug
     # znck.grammarly
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
