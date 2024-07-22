@@ -17,6 +17,7 @@
     ./sudo.nix
     ./tailscale.nix
     ./theme.nix
+    ./thunar.nix
     ./users
     ./xserver.nix
     # ./plymouth.nix

@@ -12,7 +12,7 @@
     python3
     rustup
     # nix stuff
-    nixfmt
+    nixfmt-rfc-style
     # rnix-lsp # nix lang server
     statix # linter
 

@@ -47,7 +47,7 @@
   # networking.firewall.enable = false;
 
   hardware = {
-    opengl = {
+    graphics = {
       enable = true;
       #setLdLibraryPath = true;
     };
