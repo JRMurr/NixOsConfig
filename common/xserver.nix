@@ -52,7 +52,7 @@ in {
         lightdm = {
           enable = true;
           greeters.gtk.cursorTheme = {
-            package = pkgs.gnome.adwaita-icon-theme;
+            package = pkgs.adwaita-icon-theme;
             size = 10;
           };
           # # https://github.com/NixOS/nixos-artwork/tree/master/wallpapers

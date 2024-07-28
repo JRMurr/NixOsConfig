@@ -3,22 +3,9 @@ let gcfg = config.myOptions.graphics;
 in {
   # TODO: for now if graphics are off audio is probably off
   config = lib.mkIf gcfg.enable {
-    # Enable sound.
-    # sound.enable = true;
-    # sound.mediaKeys.enable = true;
-    # hardware = {
-    #   pulseaudio = {
-    #     enable = true;
-    #     support32Bit = true;
-    #     package = pkgs.pulseaudioFull;
-    #   };
-    #   # bluetooth.enable = true;
-    # };
-
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;
 
-    sound.mediaKeys.enable = true;
     security.rtkit.enable = true;
     services.pipewire = {
       enable = true;

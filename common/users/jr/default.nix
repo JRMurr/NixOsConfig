@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   catppuccin = inputs.catppuccin.homeManagerModules.catppuccin;
-  spicetify = inputs.spicetify-nix.homeManagerModule;
+  spicetify = inputs.spicetify-nix.homeManagerModules.default;
 in
 {
   imports = [

@@ -23,7 +23,7 @@ let
     # asciinema
     nixpkgs-review
     difftastic
-    attic-client
+    # attic-client disable for now while the server is sad
     dig
     nix-prefetch
     nix-output-monitor
@@ -65,7 +65,7 @@ let
     obsidian
 
     # show fonts
-    gnome.gucharmap
+    pkgs.gucharmap
 
     # ebooks
     calibre

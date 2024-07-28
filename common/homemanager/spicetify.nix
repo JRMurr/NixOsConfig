@@ -2,13 +2,9 @@
 let
 
   gcfg = nixosConfig.myOptions.graphics;
-  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 in
 {
-  # imports = [
-  #   inputs.spicetify-nix.homeManagerModule
-  # ];
-
   config = lib.mkIf gcfg.enable
     {
 
