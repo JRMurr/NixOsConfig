@@ -63,6 +63,7 @@ let
     aaron-bond.better-comments
     bradlc.vscode-tailwindcss
     eamodio.gitlens
+    ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
     ms-vscode-remote.remote-ssh-edit
     rreverser.llvm
@@ -72,10 +73,10 @@ let
     tamasfe.even-better-toml
     thebearingedge.vscode-sql-lit
     thenuprojectcontributors.vscode-nushell-lang
+    unifiedjs.vscode-mdx
     vivaxy.vscode-conventional-commits
-    ziglang.vscode-zig
-    ianic.zig-language-extras
     webfreak.debug
+    ziglang.vscode-zig
     # znck.grammarly
   ];
   extensionsFromNixPkgs = with pkgs.vscode-extensions; [
