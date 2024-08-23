@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   imports = [
     # where all my custom options are defined (system wide)
     ./myOptions
@@ -26,7 +27,10 @@
   # nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
-      trusted-users = [ "root" "jr" ];
+      trusted-users = [
+        "root"
+        "jr"
+      ];
       auto-optimise-store = true;
       substituters = lib.mkBefore [
         # "https://cache.jrnet.win/main?priority=1" # server died :cry:
@@ -41,11 +45,18 @@
         "main:I3Ud+URwX+SiyP9pBRP3gV5BCGVjQ1/QDapsUHFt9JQ="
       ];
     };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
+    # gc = {
+    #   automatic = true;
+    #   dates = "weekly";
+    #   options = "--delete-older-than 30d";
+    # };
+  };
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 30d --keep 10";
+    flake = "/etc/nixos";
   };
 
   environment.pathsToLink = [ "/share/fish" ];
