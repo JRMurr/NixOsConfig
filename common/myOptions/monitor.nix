@@ -77,7 +77,14 @@ let
       };
 
       rotate = mkOption {
-        type = types.nullOr (types.enum [ "normal" "left" "right" "inverted" ]);
+        type = types.nullOr (
+          types.enum [
+            "normal"
+            "left"
+            "right"
+            "inverted"
+          ]
+        );
         description = "Output rotate configuration.";
         default = null;
         example = "left";
@@ -85,33 +92,37 @@ let
 
       crtc = mkOption {
         type = types.nullOr types.ints.unsigned;
-        description = lib.mdDoc
-          "Output video display controller. Use `xrandr --verbose` to get";
+        description = lib.mdDoc "Output video display controller. Use `xrandr --verbose` to get";
         default = null;
         example = 0;
       };
 
       scale = mkOption {
-        type = types.nullOr (types.submodule {
-          options = {
-            method = mkOption {
-              type = types.enum [ "factor" "pixel" ];
-              description = lib.mdDoc "Output scaling method.";
-              default = "factor";
-              example = "pixel";
-            };
+        type = types.nullOr (
+          types.submodule {
+            options = {
+              method = mkOption {
+                type = types.enum [
+                  "factor"
+                  "pixel"
+                ];
+                description = lib.mdDoc "Output scaling method.";
+                default = "factor";
+                example = "pixel";
+              };
 
-            x = mkOption {
-              type = types.either types.float types.ints.positive;
-              description = lib.mdDoc "Horizontal scaling factor/pixels.";
-            };
+              x = mkOption {
+                type = types.either types.float types.ints.positive;
+                description = lib.mdDoc "Horizontal scaling factor/pixels.";
+              };
 
-            y = mkOption {
-              type = types.either types.float types.ints.positive;
-              description = lib.mdDoc "Vertical scaling factor/pixels.";
+              y = mkOption {
+                type = types.either types.float types.ints.positive;
+                description = lib.mdDoc "Vertical scaling factor/pixels.";
+              };
             };
-          };
-        });
+          }
+        );
         description = lib.mdDoc ''
           Output scale configuration.
 
@@ -131,6 +142,20 @@ let
           {
             x = 1.25;
             y = 1.25;
+          }
+        '';
+      };
+
+      # TODO: this does shallow merge
+      extraBarOpts = mkOption {
+        type = types.nullOr types.attrs;
+        default = { };
+        description = ''
+          Extra polybar config options for this monitor
+        '';
+        example = literalExpression ''
+          extraBarOpts = {
+          modules-center = "spotify-prev spotify spotify-next";
           }
         '';
       };

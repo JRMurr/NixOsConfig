@@ -1,4 +1,10 @@
-{ pkgs, lib, config, nixosConfig, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  nixosConfig,
+  ...
+}:
 # TODO: look into https://github.com/polybar/polybar-scripts
 with lib;
 
@@ -10,8 +16,7 @@ let
 
   monitors = gcfg.monitors;
   # TODO: make lib func for easy group by to single value?
-  monitorsByName = attrsets.mapAttrs (name: value: head value)
-    (lists.groupBy (x: x.name) monitors);
+  monitorsByName = attrsets.mapAttrs (name: value: head value) (lists.groupBy (x: x.name) monitors);
   # colors = {
   #   background = "#1F1F1F";
   #   background-alt = "#3f3f3f";
@@ -78,51 +83,52 @@ let
     enable-ipc = true;
     modules-left = "i3";
   };
-  simpleBar = commonBarOpts // { modules-right = "time"; };
+  simpleBar = commonBarOpts // {
+    modules-right = "time";
+  };
   mainBar = commonBarOpts // {
     # eth-speed
-    modules-right = "filesystem ram cpu date time "
-      + (if nixosConfig.networking.hostName == "framework" then
-      "battery"
-    else
-      "");
+    modules-right =
+      "filesystem ram cpu date time "
+      + (if nixosConfig.networking.hostName == "framework" then "battery" else "");
     tray-position = "right";
 
     modules-center = "spotify-prev spotify spotify-next";
   };
 
-  monitorToBarCfg = monitorConfig:
+  monitorToBarCfg =
+    monitorConfig:
     let
       barCfg = {
         monitor = "${monitorConfig.name}";
         dpi =
           if monitorConfig.dpi == null then
-            (if nixosConfig.services.xserver.dpi == null then
-              100
-            else
-              nixosConfig.services.xserver.dpi)
+            (if nixosConfig.services.xserver.dpi == null then 100 else nixosConfig.services.xserver.dpi)
           else
             monitorConfig.dpi;
       };
       inheritedCfg = if monitorConfig.primary then mainBar else simpleBar;
+      baseConfig = inheritedCfg // barCfg;
     in
-    inheritedCfg // barCfg;
+    # TODO: this does shallow merge
+    monitorConfig.extraBarOpts // baseConfig;
 
-  bars = attrsets.mapAttrs'
-    (name: monitorConfig:
-      attrsets.nameValuePair ("bar/${monitorConfig.name}")
-        (monitorToBarCfg monitorConfig))
-    monitorsByName;
+  bars = attrsets.mapAttrs' (
+    name: monitorConfig:
+    attrsets.nameValuePair ("bar/${monitorConfig.name}") (monitorToBarCfg monitorConfig)
+  ) monitorsByName;
 
-  monitorToStartScript = monitorConfig:
-    if monitorConfig.enable then
-      "polybar --reload ${monitorConfig.name} & disown;"
-    else
-      "";
+  monitorToStartScript =
+    monitorConfig:
+    if monitorConfig.enable then "polybar --reload ${monitorConfig.name} & disown;" else "";
 
   spotifyPkg = pkgs.callPackage ./spotify { };
 
-  dependentPackages = with pkgs; [ zscroll playerctl spotifyPkg ];
+  dependentPackages = with pkgs; [
+    zscroll
+    playerctl
+    spotifyPkg
+  ];
   playerctlPath = "${pkgs.playerctl}/bin/playerctl";
 in
 {
