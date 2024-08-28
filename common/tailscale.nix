@@ -1,6 +1,13 @@
-{ config, pkgs, lib,... }:
-let tailscaleCfg = config.myOptions.tailscale;
-in {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  tailscaleCfg = config.myOptions.tailscale;
+in
+{
   config = lib.mkIf tailscaleCfg.enable {
     environment.systemPackages = [ pkgs.tailscale ];
 
@@ -8,7 +15,11 @@ in {
 
     networking.firewall.checkReversePath = "loose";
 
-    networking.nameservers = [ "100.100.100.100" "1.1.1.1" "8.8.8.8" ];
+    networking.nameservers = [
+      "100.100.100.100"
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
     networking.search = [ "johnreillymurray.gmail.com.beta.tailscale.net" ];
 
   };

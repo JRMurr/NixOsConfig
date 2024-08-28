@@ -1,4 +1,10 @@
-{ pkgs, lib, config, nixosConfig, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  nixosConfig,
+  ...
+}:
 let
   gcfg = nixosConfig.myOptions.graphics;
   tomlFormat = pkgs.formats.toml { };
@@ -6,7 +12,9 @@ let
 
   mkConfigFile = fName: opts: {
     name = "clipcat/${fName}.toml";
-    value = { source = tomlFormat.generate "${fName}.toml" opts; };
+    value = {
+      source = tomlFormat.generate "${fName}.toml" opts;
+    };
   };
 
   daemonConfig = {
@@ -52,7 +60,8 @@ let
     # args = []
   };
 
-in {
+in
+{
   config = lib.mkIf gcfg.enable {
     home.packages = [ clipCatPkg ];
 
@@ -61,8 +70,12 @@ in {
         Description = "clipcat daemon";
         After = [ "graphical-session.target" ];
       };
-      Service = { ExecStart = "${clipCatPkg}/bin/clipcatd --no-daemon"; };
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Service = {
+        ExecStart = "${clipCatPkg}/bin/clipcatd --no-daemon";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
     };
 
     xdg.configFile = lib.listToAttrs [

@@ -1,4 +1,7 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   boot.supportedFilesystems = [ "ntfs" ];
-  services.udisks2 = { enable = true; };
+  services.udisks2 = {
+    enable = true;
+  };
 }

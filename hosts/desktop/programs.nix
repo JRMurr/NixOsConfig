@@ -1,1 +1,4 @@
-{ pkgs, ... }: { environment.systemPackages = [ pkgs.ldtk ]; }
+{ pkgs, ... }:
+{
+  environment.systemPackages = [ pkgs.ldtk ];
+}

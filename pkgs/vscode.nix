@@ -1,4 +1,9 @@
-{ pkgs, lib, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 # TODO: should move this to use the HM module...
 # TODO: steal from https://gist.github.com/JRMurr/069efda89957a221cf717a8caa988819
 let
@@ -54,11 +59,10 @@ let
 
   linuxExtensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
   # https://open-vsx.org/
-  openVsxExtensions = with linuxExtensions.open-vsx;
-    [
-      pkief.material-icon-theme
-      # wayou.vscode-todo-highlight
-    ];
+  openVsxExtensions = with linuxExtensions.open-vsx; [
+    pkief.material-icon-theme
+    # wayou.vscode-todo-highlight
+  ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
     aaron-bond.better-comments
     bradlc.vscode-tailwindcss
@@ -110,10 +114,12 @@ let
     customUIColors = { };
   };
 
-  vscodeExtensions = openVsxExtensions ++ marketPlaceExtensions
-    ++ extensionsFromNixPkgs ++ [ catppucin ];
+  vscodeExtensions =
+    openVsxExtensions ++ marketPlaceExtensions ++ extensionsFromNixPkgs ++ [ catppucin ];
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
 in
-{ inherit myVscode vscodeExtensions; }
+{
+  inherit myVscode vscodeExtensions;
+}

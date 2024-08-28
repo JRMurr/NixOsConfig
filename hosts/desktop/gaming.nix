@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
 
   programs.steam.enable = true;
   # Enable native nixos libs isntead of steam ones

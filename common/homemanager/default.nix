@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   imports = [
     ./cargo.nix
     ./direnv.nix

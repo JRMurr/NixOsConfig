@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   cfg = config.myCaddy;
   reverseProxies = lib.attrValues cfg.reverseProxies;
@@ -10,9 +16,12 @@ let
     }
   '';
   # builtins.listToAttrs
-  mkReverseProxyConf = proxyConf:
-    let mkHost = (name: "${name}.${myDomain}");
-    in {
+  mkReverseProxyConf =
+    proxyConf:
+    let
+      mkHost = (name: "${name}.${myDomain}");
+    in
+    {
       name = mkHost proxyConf.prefix;
       value = {
         serverAliases = builtins.map mkHost proxyConf.serverAliases;
@@ -26,11 +35,16 @@ let
       };
     };
 
-  reverseProxyVhosts =
-    builtins.listToAttrs (builtins.map mkReverseProxyConf reverseProxies);
+  reverseProxyVhosts = builtins.listToAttrs (builtins.map mkReverseProxyConf reverseProxies);
 
-  toProxyConfig = { external_path_prefix, redirect_path
-    , redirect_directives ? "", extra_directives ? "" }: ''
+  toProxyConfig =
+    {
+      external_path_prefix,
+      redirect_path,
+      redirect_directives ? "",
+      extra_directives ? "",
+    }:
+    ''
       handle_path ${external_path_prefix}* {
         ${extra_directives}
         reverse_proxy ${redirect_path} {
@@ -89,27 +103,34 @@ let
   ];
 
   proxyConfigStr = lib.concatMapStringsSep "\n" toProxyConfig proxyConfigs;
-in {
-  imports = [ ./options.nix ./reverse-proxies.nix ];
+in
+{
+  imports = [
+    ./options.nix
+    ./reverse-proxies.nix
+  ];
   services.tailscale.permitCertUid = "caddy";
   services.caddy = {
     enable = true;
     email = "johnreillymurray@gmail.com";
     package = pkgs.caddyWithPlugins.override (prev: {
-      plugins = [{ name = "github.com/caddy-dns/cloudflare"; }];
+      plugins = [ { name = "github.com/caddy-dns/cloudflare"; } ];
       vendorHash = "sha256-IkK9aUaVoKXpY4S34b1tO8fhnn1wwXsPeavVuYCwiYo=";
     });
     logFormat = lib.mkForce "level info";
-    virtualHosts = let
-    in {
-      "${myDomain}" = {
-        extraConfig = ''
-          ${tlsConf}
-          ${proxyConfigStr}
-          reverse_proxy :4000 # default to dashy
-        '';
-      };
-    } // reverseProxyVhosts;
+    virtualHosts =
+      let
+      in
+      {
+        "${myDomain}" = {
+          extraConfig = ''
+            ${tlsConf}
+            ${proxyConfigStr}
+            reverse_proxy :4000 # default to dashy
+          '';
+        };
+      }
+      // reverseProxyVhosts;
   };
   systemd.services.caddy.serviceConfig = {
     EnvironmentFile = config.age.secrets.caddy-cloudflare.path;
@@ -120,6 +141,12 @@ in {
     owner = config.services.caddy.user;
     group = config.services.caddy.group;
   };
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
+  networking.firewall.allowedUDPPorts = [
+    80
+    443
+  ];
 }

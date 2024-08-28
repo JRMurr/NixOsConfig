@@ -3,7 +3,8 @@ let
   myDomain = config.myCaddy.domain;
   grafanaDomain = "grafana.${myDomain}";
   port = 3030;
-in {
+in
+{
   services.grafana = {
     enable = true;
     settings = {
@@ -16,10 +17,14 @@ in {
         domain = grafanaDomain;
       };
     };
-    provision = { enable = true; };
+    provision = {
+      enable = true;
+    };
   };
 
   myCaddy.reverseProxies = {
-    "grafana" = { upstream = "thicc-server:${builtins.toString port}"; };
+    "grafana" = {
+      upstream = "thicc-server:${builtins.toString port}";
+    };
   };
 }

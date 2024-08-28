@@ -1,4 +1,10 @@
-{ pkgs, lib, config, nixosConfig, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  nixosConfig,
+  ...
+}:
 
 let
   modifier = "Mod4"; # windows key
@@ -9,14 +15,11 @@ let
 
   wallPaperPath = xcfg.displayManager.lightdm.background;
 
-  monitorToWorkspaceCfg = with lib;
+  monitorToWorkspaceCfg =
+    with lib;
     config:
-    if config.enable then
-      "workspace ${toString config.workspace} output ${config.name}"
-    else
-      "";
-  monitorWorkspaceConfigs =
-    lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
+    if config.enable then "workspace ${toString config.workspace} output ${config.name}" else "";
+  monitorWorkspaceConfigs = lib.concatMapStringsSep "\n" monitorToWorkspaceCfg gcfg.monitors;
 in
 {
   config = lib.mkIf gcfg.enable {
@@ -45,58 +48,58 @@ in
           "${modifier}+n" = "nop kitti3";
           "${modifier}+F2" = "exec firefox";
           "${modifier}+d" = "exec rofi -show run";
-          "${modifier}+Shift+Escape" =
-            "exec rofi -show p -modi p:rofi-power-menu";
+          "${modifier}+Shift+Escape" = "exec rofi -show p -modi p:rofi-power-menu";
 
-          "--release ${modifier}+Shift+s" =
-            "exec scrot -s ~/Pictures/%Y-%m-%d-%H-%M-%S.png";
+          "--release ${modifier}+Shift+s" = "exec scrot -s ~/Pictures/%Y-%m-%d-%H-%M-%S.png";
 
           # move focused workspace between monitors
           "${modifier}+Ctrl+greater" = "move workspace to output right";
           "${modifier}+Ctrl+less" = "move workspace to output left";
         };
-        startup = [
-          {
-            command = "systemctl --user restart polybar";
+        startup =
+          [
+            {
+              command = "systemctl --user restart polybar";
+              always = true;
+              notification = false;
+            }
+            {
+              command =
+                let
+                  kitti3Args = {
+                    position = "CC";
+                    shape = "0.9 0.9";
+                  };
+                  kittyArgs = {
+                    override = [ "background_opacity=0.95" ];
+                  };
+                  toArgs =
+                    args:
+                    let
+                      argList = lib.cli.toGNUCommandLine { } args;
+                    in
+                    lib.strings.concatStringsSep " " argList;
+                in
+                "kitti3 ${toArgs kitti3Args} -- ${toArgs kittyArgs}";
+              always = true;
+              notification = false;
+            }
+            # {
+            #   command = "feh --bg-${cfg.wallpaper.mode} ${
+            #       lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
+            #     } ${wallPaperPath}";
+            #   notification = false;
+            # }
+            {
+              command = "pa-applet";
+              notification = false;
+            }
+          ]
+          ++ lib.lists.optional gesturesEnable {
+            command = "fusuma -d -c ~/.config/fusuma/config.yml";
             always = true;
             notification = false;
-          }
-          {
-            command =
-              let
-                kitti3Args = {
-                  position = "CC";
-                  shape = "0.9 0.9";
-                };
-                kittyArgs = {
-                  override = [ "background_opacity=0.95" ];
-                };
-                toArgs = args:
-                  let
-                    argList = lib.cli.toGNUCommandLine { } args;
-                  in
-                  lib.strings.concatStringsSep " " argList
-                ;
-              in
-              "kitti3 ${toArgs kitti3Args } -- ${toArgs kittyArgs}";
-            always = true;
-            notification = false;
-          }
-          # {
-          #   command = "feh --bg-${cfg.wallpaper.mode} ${
-          #       lib.optionalString cfg.wallpaper.combineScreens "--no-xinerama"
-          #     } ${wallPaperPath}";
-          #   notification = false;
-          # }
-          {
-            command = "pa-applet";
-            notification = false;
-          }
-        ] ++ lib.lists.optional gesturesEnable {
-          command = "fusuma -d -c ~/.config/fusuma/config.yml";
-          always = true;
-          notification = false;
-        }; # i think i need notification to add the no--startup-id
+          }; # i think i need notification to add the no--startup-id
         window = {
           titlebar = false;
           hideEdgeBorders = "smart";

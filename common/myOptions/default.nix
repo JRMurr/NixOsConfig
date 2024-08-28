@@ -1,6 +1,12 @@
 { config, lib, ... }:
-with lib; {
-  imports = [ ./monitor.nix ./containers.nix ./tailscale.nix ./users.nix ];
+with lib;
+{
+  imports = [
+    ./monitor.nix
+    ./containers.nix
+    ./tailscale.nix
+    ./users.nix
+  ];
 
   options.myOptions = {
     graphics.enable = mkEnableOption "Enable graphics";

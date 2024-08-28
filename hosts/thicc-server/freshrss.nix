@@ -1,7 +1,15 @@
-{ config, pkgs, lib, inputs, ... }:
-let virtualHost = "rss.jrnet.win";
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+let
+  virtualHost = "rss.jrnet.win";
 
-in {
+in
+{
   age.secrets.freshrss-user-pass = {
     file = "${inputs.secrets}/secrets/freshrss-user-pass.age";
     mode = "770";
@@ -22,15 +30,17 @@ in {
   };
 
   services.postgresql = {
-    ensureUsers = [{
-      name = "freshrss";
-      ensureDBOwnership = true;
-      # ensurePermissions = {
-      #   "DATABASE freshrss" = "ALL";
-      #   "SCHEMA public" = "ALL";
-      #   "ALL TABLES IN SCHEMA public" = "ALL";
-      # };
-    }];
+    ensureUsers = [
+      {
+        name = "freshrss";
+        ensureDBOwnership = true;
+        # ensurePermissions = {
+        #   "DATABASE freshrss" = "ALL";
+        #   "SCHEMA public" = "ALL";
+        #   "ALL TABLES IN SCHEMA public" = "ALL";
+        # };
+      }
+    ];
     ensureDatabases = [ "freshrss" ];
   };
 

@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   # TODO: move this into homemanger
   # https://github.com/nix-community/nix-direnv
   nix.extraOptions = ''

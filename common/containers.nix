@@ -1,1 +1,4 @@
-{ pkgs, config, ... }: { virtualisation.oci-containers.backend = "docker"; }
+{ pkgs, config, ... }:
+{
+  virtualisation.oci-containers.backend = "docker";
+}

@@ -1,6 +1,8 @@
 { config, ... }:
-let port = 9001;
-in {
+let
+  port = 9001;
+in
+{
   services.prometheus = {
     retentionTime = "15d";
     port = port;
@@ -20,23 +22,27 @@ in {
       };
     };
 
-    scrapeConfigs = [{
-      job_name = "thicc-server";
-      static_configs = [{
-        targets = [
-          "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
+    scrapeConfigs = [
+      {
+        job_name = "thicc-server";
+        static_configs = [
+          { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ]; }
         ];
-      }];
-    }];
+      }
+    ];
   };
 
-  services.grafana.provision.datasources.settings.datasources = [{
-    name = "Prometheus";
-    type = "prometheus";
-    access = "proxy";
-    url = "http://127.0.0.1:${toString config.services.prometheus.port}";
-  }];
+  services.grafana.provision.datasources.settings.datasources = [
+    {
+      name = "Prometheus";
+      type = "prometheus";
+      access = "proxy";
+      url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+    }
+  ];
   myCaddy.reverseProxies = {
-    "prometheus" = { upstream = "thicc-server:${builtins.toString port}"; };
+    "prometheus" = {
+      upstream = "thicc-server:${builtins.toString port}";
+    };
   };
 }

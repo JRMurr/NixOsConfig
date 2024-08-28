@@ -1,12 +1,25 @@
-{ pkgs, lib, config, ... }:
-let gcfg = config.myOptions.graphics;
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  gcfg = config.myOptions.graphics;
 
-in {
+in
+{
   options.myOptions = {
     graphics.wallPaper = {
       # https://github.com/NixOS/nixpkgs/blob/dfd82985c273aac6eced03625f454b334daae2e8/nixos/modules/services/x11/desktop-managers/default.nix#L31
       mode = lib.mkOption {
-        type = lib.types.enum [ "center" "fill" "max" "scale" "tile" ];
+        type = lib.types.enum [
+          "center"
+          "fill"
+          "max"
+          "scale"
+          "tile"
+        ];
         default = "scale";
         example = "fill";
         description = ''
@@ -24,14 +37,14 @@ in {
   };
   config = lib.mkIf gcfg.enable {
 
-
-
     # TODO-REFACTOR: these were under xserver pre 24.05
     services = {
       libinput = {
         enable = true;
         # disabling touchpad acceleration
-        touchpad = { accelProfile = "flat"; };
+        touchpad = {
+          accelProfile = "flat";
+        };
       };
 
       displayManager = {
@@ -40,7 +53,6 @@ in {
         autoLogin.user = "jr";
       };
     };
-
 
     services.xserver = {
       enable = true;
@@ -82,7 +94,9 @@ in {
         builtins.map monitorConfigMap gcfg.monitors;
     };
 
-    services.picom = { enable = true; };
+    services.picom = {
+      enable = true;
+    };
 
   };
 }

@@ -1,5 +1,11 @@
-{ config, pkgs, lib, ... }:
-let gcfg = config.myOptions.graphics;
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  gcfg = config.myOptions.graphics;
 in
 {
   # https://nixos.wiki/wiki/Thunar

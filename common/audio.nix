@@ -1,6 +1,13 @@
-{ config, pkgs, lib, ... }:
-let gcfg = config.myOptions.graphics;
-in {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  gcfg = config.myOptions.graphics;
+in
+{
   # TODO: for now if graphics are off audio is probably off
   config = lib.mkIf gcfg.enable {
     hardware.bluetooth.enable = true;
@@ -19,7 +26,10 @@ in {
       # no need to redefine it in your config for now)
       #media-session.enable = true;
     };
-    environment.systemPackages = [ pkgs.pavucontrol pkgs.snapcast ];
+    environment.systemPackages = [
+      pkgs.pavucontrol
+      pkgs.snapcast
+    ];
 
     # TODO: make configurable and look into options
     # systemd.user.services.snapclient-local = {

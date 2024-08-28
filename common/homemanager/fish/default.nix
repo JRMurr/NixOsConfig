@@ -29,8 +29,12 @@ let
       };
     }
   ];
-  preBuiltPlugins = with pkgs.fishPlugins; [ bass done ];
-in {
+  preBuiltPlugins = with pkgs.fishPlugins; [
+    bass
+    done
+  ];
+in
+{
 
   programs.fish = {
     enable = true;
@@ -40,7 +44,14 @@ in {
     plugins = customPlugins;
   };
 
-  home.packages = with pkgs; [ killall jq libnotify ] ++ preBuiltPlugins;
+  home.packages =
+    with pkgs;
+    [
+      killall
+      jq
+      libnotify
+    ]
+    ++ preBuiltPlugins;
   xdg.configFile.fish = {
     recursive = true;
     source = ./files;
@@ -50,6 +61,5 @@ in {
     target = "./fish_plugins";
   };
 
-  xdg.configFile."fish/completions/nix.fish".source =
-    "${pkgs.nix}/share/fish/vendor_completions.d/nix.fish";
+  xdg.configFile."fish/completions/nix.fish".source = "${pkgs.nix}/share/fish/vendor_completions.d/nix.fish";
 }

@@ -1,10 +1,18 @@
-{ pkgs, lib, config, nixosConfig, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  nixosConfig,
+  ...
+}:
 let
   gcfg = nixosConfig.myOptions.graphics;
 
   # https://raw.githubusercontent.com/dracula/dunst/master/dunstrc
   dunst_dracula = {
-    experimental = { per_monitor_dpi = false; };
+    experimental = {
+      per_monitor_dpi = false;
+    };
     global = {
       alignment = "left";
       always_run_script = true;

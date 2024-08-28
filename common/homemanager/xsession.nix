@@ -1,6 +1,14 @@
-{ pkgs, lib, config, nixosConfig, ... }:
-let gcfg = nixosConfig.myOptions.graphics;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  nixosConfig,
+  ...
+}:
+let
+  gcfg = nixosConfig.myOptions.graphics;
+in
+{
   config = lib.mkIf gcfg.enable {
     services.udiskie = {
       enable = true;

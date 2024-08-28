@@ -1,4 +1,5 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   options = with lib; {
     myOptions.tailscale = {
       enable = mkOption {

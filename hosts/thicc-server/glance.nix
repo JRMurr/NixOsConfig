@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.glance;
 
@@ -16,9 +21,7 @@ in
   options = {
     services.glance = with lib; {
       enable = mkEnableOption "Glance";
-      package = mkPackageOption pkgs "glance" {
-        example = "glance";
-      };
+      package = mkPackageOption pkgs "glance" { example = "glance"; };
       port = mkOption {
         type = types.port;
         default = 8080;
@@ -65,6 +68,5 @@ in
       };
     };
   };
-
 
 }

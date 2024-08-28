@@ -1,4 +1,7 @@
-{ ... }: {
+{ ... }:
+{
   # https://github.com/noisetorch/NoiseTorch
-  programs.noisetorch = { enable = true; };
+  programs.noisetorch = {
+    enable = true;
+  };
 }

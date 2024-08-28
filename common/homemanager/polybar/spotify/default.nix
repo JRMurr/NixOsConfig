@@ -10,7 +10,8 @@ let
     gnugrep
     procps # pgrep
   ];
-in pkgs.stdenv.mkDerivation rec {
+in
+pkgs.stdenv.mkDerivation rec {
   pname = "polybar-spotify";
   version = "1.0.0";
   src = ./scripts;

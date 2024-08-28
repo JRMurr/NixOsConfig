@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = [ pkgs.carapace ];
 
   xdg.configFile.nushell = {
@@ -12,8 +13,12 @@
 
   programs.nushell = {
     enable = true;
-    configFile = { source = ./files/config.base.nu; };
-    envFile = { source = ./files/env.base.nu; };
+    configFile = {
+      source = ./files/config.base.nu;
+    };
+    envFile = {
+      source = ./files/env.base.nu;
+    };
     # shellAliases = { ll = "ls -l"; };
     # TODO: can replace below when off 23.05 and use direnv option disabled above
     extraConfig = ''

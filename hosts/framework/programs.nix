@@ -1,3 +1,7 @@
-{ pkgs, ... }: {
-  environment.systemPackages = with pkgs; [ ldtk zoom-us ];
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    ldtk
+    zoom-us
+  ];
 }

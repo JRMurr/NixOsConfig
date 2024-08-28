@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   boot = {
     # https://make-linux-fast-again.com/
     # https://transformingembedded.sigmatechnology.se/insight-post/make-linux-fast-again-for-mortals/

@@ -42,8 +42,12 @@
     };
     nix-inspect.url = "github:bluskript/nix-inspect";
     # TODO: pick one
-    nixd = { url = "github:nix-community/nixd"; };
-    nil = { url = "github:oxalica/nil"; };
+    nixd = {
+      url = "github:nix-community/nixd";
+    };
+    nil = {
+      url = "github:oxalica/nil";
+    };
 
     agenix.url = "github:ryantm/agenix";
     secrets = {
@@ -57,7 +61,15 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, home-manager, wsl, catppuccin, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      wsl,
+      catppuccin,
+      ...
+    }@inputs:
     let
       overlays = [
         inputs.attic.overlays.default
@@ -67,7 +79,11 @@
         # TODO: nil and nurl
       ];
       defaultModules = [
-        { _module.args = { inherit inputs; }; }
+        {
+          _module.args = {
+            inherit inputs;
+          };
+        }
         inputs.agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         catppuccin.nixosModules.catppuccin
@@ -79,94 +95,118 @@
           #   [ deploy-rs.packages.x86_64-linux.deploy-rs ];
         }
       ];
-      mkPkgs = system:
+      mkPkgs =
+        system:
         import nixpkgs {
           inherit system overlays;
           config.allowUnfree = true;
           # TODO: not sure what is using this.... its probs chill...
           config.permittedInsecurePackages = [ "electron-25.9.0" ];
         };
-      mkSystem = extraModules:
+      mkSystem =
+        extraModules:
         nixpkgs.lib.nixosSystem rec {
           pkgs = mkPkgs "x86_64-linux";
           system = "x86_64-linux";
           modules = defaultModules ++ extraModules;
         };
 
-      mkHomemanager = name: user: system:
+      mkHomemanager =
+        name: user: system:
         let
           pkgs = mkPkgs system;
           # myOptions = import ./common/myOptions {
           #   config = { };
           #   lib = pkgs.lib;
           # };
-          myOptions = { graphics.enable = false; };
+          myOptions = {
+            graphics.enable = false;
+          };
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs;
-          extraSpecialArgs = { nixosConfig = { inherit myOptions; }; };
+          extraSpecialArgs = {
+            nixosConfig = {
+              inherit myOptions;
+            };
+          };
           modules = [
             {
               _module.args.nixpkgs = nixpkgs;
               _module.args.inputs = inputs;
               # _module.args.vars = { stateVersion = "22.05"; };
             }
-            ({ config, pkgs, lib, ... }: {
-              home = {
-                # TODO: this is the macos path, if used on linux need to switch to home
-                homeDirectory = "/Users/${user}";
-                username = user;
-                # This value determines the Home Manager release that your
-                # configuration is compatible with. This helps avoid breakage
-                # when a new Home Manager release introduces backwards
-                # incompatible changes.
-                #
-                # You can update Home Manager without changing this value. See
-                # the Home Manager release notes for a list of state version
-                # changes in each release.
-                stateVersion = "22.05";
+            (
+              {
+                config,
+                pkgs,
+                lib,
+                ...
+              }:
+              {
+                home = {
+                  # TODO: this is the macos path, if used on linux need to switch to home
+                  homeDirectory = "/Users/${user}";
+                  username = user;
+                  # This value determines the Home Manager release that your
+                  # configuration is compatible with. This helps avoid breakage
+                  # when a new Home Manager release introduces backwards
+                  # incompatible changes.
+                  #
+                  # You can update Home Manager without changing this value. See
+                  # the Home Manager release notes for a list of state version
+                  # changes in each release.
+                  stateVersion = "22.05";
 
-                # # symlink apps to $HOME/Applications so they show up in finder
-                # # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1190875080
-                # activation = lib.mkIf pkgs.stdenv.isDarwin {
-                #   copyApplications = let
-                #     apps = pkgs.buildEnv {
-                #       name = "home-manager-applications";
-                #       paths = config.home.packages;
-                #       pathsToLink = "/Applications";
-                #     };
-                #   in home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                #     baseDir="$HOME/Applications/Home Manager Apps"
-                #     if [ -d "$baseDir" ]; then
-                #       rm -rf "$baseDir"
-                #     fi
-                #     mkdir -p "$baseDir"
-                #     for appFile in ${apps}/Applications/*; do
-                #       target="$baseDir/$(basename "$appFile")"
-                #       $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
-                #       $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
-                #     done
-                #   '';
-                # };
-              };
-              # Let Home Manager install and manage itself.
-              programs.home-manager.enable = true;
-            })
+                  # # symlink apps to $HOME/Applications so they show up in finder
+                  # # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1190875080
+                  # activation = lib.mkIf pkgs.stdenv.isDarwin {
+                  #   copyApplications = let
+                  #     apps = pkgs.buildEnv {
+                  #       name = "home-manager-applications";
+                  #       paths = config.home.packages;
+                  #       pathsToLink = "/Applications";
+                  #     };
+                  #   in home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                  #     baseDir="$HOME/Applications/Home Manager Apps"
+                  #     if [ -d "$baseDir" ]; then
+                  #       rm -rf "$baseDir"
+                  #     fi
+                  #     mkdir -p "$baseDir"
+                  #     for appFile in ${apps}/Applications/*; do
+                  #       target="$baseDir/$(basename "$appFile")"
+                  #       $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
+                  #       $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
+                  #     done
+                  #   '';
+                  # };
+                };
+                # Let Home Manager install and manage itself.
+                programs.home-manager.enable = true;
+              }
+            )
             (./common/users + "/${name}" + /home.nix)
           ];
         };
     in
     {
       inherit overlays;
-      lib = { inherit mkSystem; };
-      nixosModules.default = { ... }: {
-        imports = defaultModules ++ [ ./common ];
+      lib = {
+        inherit mkSystem;
       };
+      nixosModules.default =
+        { ... }:
+        {
+          imports = defaultModules ++ [ ./common ];
+        };
       templates = import ./templates { };
 
       nixosConfigurations = {
         nixos-john = mkSystem [ ./hosts/desktop ];
-        wsl = mkSystem [ wsl.nixosModules.wsl ./hosts/wsl ];
+        wsl = mkSystem [
+          wsl.nixosModules.wsl
+          ./hosts/wsl
+        ];
         graphicalIso = mkSystem [
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma5.nix"
           ./common/essentials.nix
@@ -181,7 +221,12 @@
           ./hosts/thicc-server
           inputs.vscode-server.nixosModule
           inputs.attic.nixosModules.atticd
-          ({ config, pkgs, ... }: { services.vscode-server.enable = true; })
+          (
+            { config, pkgs, ... }:
+            {
+              services.vscode-server.enable = true;
+            }
+          )
         ];
       };
 

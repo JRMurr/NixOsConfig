@@ -12,8 +12,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay, gitignore, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      rust-overlay,
+      gitignore,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         overlays = [ (import rust-overlay) ];
         pkgs = import nixpkgs { inherit system overlays; };
@@ -21,12 +30,14 @@
 
         nativeDeps = rustAttrs.nativeDeps;
 
-      in {
+      in
+      {
         formatter = pkgs.nixpkgs-fmt;
         devShells = {
           default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [ pkg-config ];
-            buildInputs = with pkgs;
+            buildInputs =
+              with pkgs;
               [
                 rustAttrs.rust-shell
 
@@ -35,7 +46,8 @@
 
                 # common
                 just
-              ] ++ nativeDeps;
+              ]
+              ++ nativeDeps;
 
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath nativeDeps;
           };
@@ -44,5 +56,6 @@
           default = pkgs.hello;
           rust-bin = rustAttrs.binary;
         };
-      });
+      }
+    );
 }

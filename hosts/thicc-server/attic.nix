@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   # tokens https://docs.attic.rs/reference/atticadm-cli.html#atticadm-make-token
   getAdminToken = pkgs.writeShellScriptBin "attic-admin-token" ''
@@ -18,10 +24,10 @@ let
     attic login local https://cache.jrnet.win --set-default $token
   '';
 
-in {
+in
+{
   age.secrets.attic-creds.file = "${inputs.secrets}/secrets/attic-creds.age";
-  age.secrets.attic-admin-token.file =
-    "${inputs.secrets}/secrets/attic-admin-token.age";
+  age.secrets.attic-admin-token.file = "${inputs.secrets}/secrets/attic-admin-token.age";
   services.atticd = {
     enable = true;
 
@@ -67,11 +73,13 @@ in {
   # https://github.com/xddxdd/nixos-config/blob/master/nixos/optional-apps/attic.nix
   services.postgresql = {
     ensureDatabases = [ "atticd" ];
-    ensureUsers = [{
-      name = "atticd";
-      ensureDBOwnership = true;
-      # ensurePermissions = { "DATABASE \"atticd\"" = "ALL PRIVILEGES"; };
-    }];
+    ensureUsers = [
+      {
+        name = "atticd";
+        ensureDBOwnership = true;
+        # ensurePermissions = { "DATABASE \"atticd\"" = "ALL PRIVILEGES"; };
+      }
+    ];
   };
 
   systemd.services.atticd = {
@@ -92,31 +100,42 @@ in {
 
   # sudo systemctl start nix-cache-build.service
   systemd.services."nix-cache-build" = {
-    path = with pkgs; [ git nixos-rebuild attic-client ];
+    path = with pkgs; [
+      git
+      nixos-rebuild
+      attic-client
+    ];
     environment = {
       HOME = "/run/nix-cache-build";
       XDG_CONFIG_HOME = "/run/nix-cache-build/config";
     };
-    script = let
-      hosts = [ "framework" "nixos-john" "thicc-server" "graphicalIso" ];
-      buildAndPush = host: ''
-        echo "BUILDING ${host}"
-        (nixos-rebuild build --flake /tmp/nixos-configs#${host} && attic push main ./result/) || true
+    script =
+      let
+        hosts = [
+          "framework"
+          "nixos-john"
+          "thicc-server"
+          "graphicalIso"
+        ];
+        buildAndPush = host: ''
+          echo "BUILDING ${host}"
+          (nixos-rebuild build --flake /tmp/nixos-configs#${host} && attic push main ./result/) || true
+        '';
+        buildSteps = lib.concatMapStringsSep "\n" buildAndPush hosts;
+      in
+      ''
+        set -eu
+        rm -rf /tmp/nixos-configs
+        # if weird error make sure has no new lines (echo -n)
+        attic login --set-default local https://cache.jrnet.win "$(cat ${config.age.secrets.attic-admin-token.path})"
+        attic cache info main
+
+        git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
+
+        ${buildSteps}
+
+        rm -rf /tmp/nixos-configs
       '';
-      buildSteps = lib.concatMapStringsSep "\n" buildAndPush hosts;
-    in ''
-      set -eu
-      rm -rf /tmp/nixos-configs
-      # if weird error make sure has no new lines (echo -n)
-      attic login --set-default local https://cache.jrnet.win "$(cat ${config.age.secrets.attic-admin-token.path})"
-      attic cache info main
-
-      git clone https://github.com/JRMurr/NixOsConfig /tmp/nixos-configs
-
-      ${buildSteps}
-
-      rm -rf /tmp/nixos-configs
-    '';
     serviceConfig = {
       Type = "oneshot";
       # TODO: can probably remove this and enviorment settings

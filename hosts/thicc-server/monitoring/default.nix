@@ -1,1 +1,8 @@
-{ config, ... }: { imports = [ ./grafana.nix ./loki.nix ./prometheus.nix ]; }
+{ config, ... }:
+{
+  imports = [
+    ./grafana.nix
+    ./loki.nix
+    ./prometheus.nix
+  ];
+}

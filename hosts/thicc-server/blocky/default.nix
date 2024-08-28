@@ -3,13 +3,20 @@ let
   myDomain = config.myCaddy.domain;
   port = config.services.blocky.settings.ports.http;
 
-in {
+in
+{
   # https://nixos.wiki/wiki/Blocky
   # https://github.com/JayRovacsek/nix-config/blob/878d57de91dc28440ff5635fd70f23fbe9342cfa/modules/blocky/default.nix
   networking.firewall =
-    let inherit (config.services.blocky.settings.ports) dns tls http;
-    in {
-      allowedTCPPorts = [ dns tls http ];
+    let
+      inherit (config.services.blocky.settings.ports) dns tls http;
+    in
+    {
+      allowedTCPPorts = [
+        dns
+        tls
+        http
+      ];
       allowedUDPPorts = [ dns ];
     };
   services.blocky = {
@@ -35,16 +42,19 @@ in {
       # For initially solving DoH/DoT Requests when no system Resolver is available.
       bootstrapDns = {
         upstream = "https://one.one.one.one/dns-query";
-        ips = [ "1.1.1.1" "1.0.0.1" ];
+        ips = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
       };
       blocking = {
         blackLists = {
           #Adblocking
-          ads = [
-            "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-          ];
+          ads = [ "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" ];
         };
-        whiteLists = { ads = [ ./whitelist.txt ]; };
+        whiteLists = {
+          ads = [ ./whitelist.txt ];
+        };
         # definition: which groups should be applied for which client
         clientGroupsBlock = {
           # default will be used, if no special definition for a client name exists
@@ -54,14 +64,20 @@ in {
 
       clientLookup = {
         upstream = "192.168.50.1";
-        singleNameOrder = [ 2 1 ];
+        singleNameOrder = [
+          2
+          1
+        ];
       };
       customDNS = {
-        mapping = let myDomain = config.myCaddy.domain;
-        in {
-          # TODO: figure out how to use local ip and tailscale
-          "${myDomain}" = "100.100.60.23";
-        };
+        mapping =
+          let
+            myDomain = config.myCaddy.domain;
+          in
+          {
+            # TODO: figure out how to use local ip and tailscale
+            "${myDomain}" = "100.100.60.23";
+          };
       };
 
       # optional: configuration for prometheus metrics endpoint
@@ -74,12 +90,16 @@ in {
     };
   };
 
-  services.prometheus.scrapeConfigs = [{
-    job_name = "blocky";
-    static_configs = [{ targets = [ "127.0.0.1:${builtins.toString port}" ]; }];
-  }];
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "blocky";
+      static_configs = [ { targets = [ "127.0.0.1:${builtins.toString port}" ]; } ];
+    }
+  ];
 
   myCaddy.reverseProxies = {
-    "blocky" = { upstream = "thicc-server:${builtins.toString port}"; };
+    "blocky" = {
+      upstream = "thicc-server:${builtins.toString port}";
+    };
   };
 }

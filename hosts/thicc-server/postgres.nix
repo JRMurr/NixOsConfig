@@ -1,6 +1,14 @@
-{ config, pkgs, lib, inputs, ... }:
-let tailscaleHostIp = "100.100.60.23"; # TODO: make this a config option
-in {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+let
+  tailscaleHostIp = "100.100.60.23"; # TODO: make this a config option
+in
+{
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_14;

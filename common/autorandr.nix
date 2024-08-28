@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   gcfg = config.myOptions.graphics;
@@ -27,10 +32,8 @@ in
       defaultTarget = "normal";
       profiles = {
         "normal" = {
-          fingerprint =
-            attrsets.mapAttrs (name: value: value.fingerprint) monitorsByName;
-          config = attrsets.mapAttrs (name: value: monitorConfigMap value)
-            monitorsByName;
+          fingerprint = attrsets.mapAttrs (name: value: value.fingerprint) monitorsByName;
+          config = attrsets.mapAttrs (name: value: monitorConfigMap value) monitorsByName;
         };
       };
     };
@@ -42,4 +45,3 @@ in
     };
   };
 }
-

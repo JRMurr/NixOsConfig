@@ -1,8 +1,15 @@
-{ pkgs, config, inputs, ... }:
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
 # let attic = inputs.attic.packages.${pkgs.system}.default;
 # in 
-let nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
-in with pkgs;
+let
+  nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
+in
+with pkgs;
 # TODO: move some of this to homemnager
 let
   myOpts = config.myOptions;
@@ -34,14 +41,25 @@ let
 
     nix-inspect
   ];
-  imageStuff = [ feh gimp ];
+  imageStuff = [
+    feh
+    gimp
+  ];
   messaging = [
     tdesktop # telegram
     discord
     zulip
   ];
-  desktopEnviorment = [ lxappearance arandr rofi-power-menu ];
-  video = [ streamlink-twitch-gui-bin streamlink vlc ];
+  desktopEnviorment = [
+    lxappearance
+    arandr
+    rofi-power-menu
+  ];
+  video = [
+    streamlink-twitch-gui-bin
+    streamlink
+    vlc
+  ];
   audio = [ spotify ];
   miscGraphicalPrograms = [
     piper # add mouse hotkeys
@@ -77,8 +95,13 @@ let
 
   allGraphicalPrograms =
     if gcfg.enable then
-      miscGraphicalPrograms ++ video ++ desktopEnviorment ++ messaging
-      ++ imageStuff ++ audio ++ musicPrograms
+      miscGraphicalPrograms
+      ++ video
+      ++ desktopEnviorment
+      ++ messaging
+      ++ imageStuff
+      ++ audio
+      ++ musicPrograms
     else
       [ ];
 in

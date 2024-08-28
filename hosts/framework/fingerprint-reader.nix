@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   # sudo fprintd-enroll user
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;

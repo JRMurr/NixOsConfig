@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = [ pkgs.git ];
   # TODO: move to nix conf
   home.file.gitconfig = {

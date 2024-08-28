@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ./graphics.nix
@@ -35,7 +41,9 @@
   services.fwupd = {
     enable = true;
     extraRemotes = [ "lvfs-testing" ];
-    uefiCapsuleSettings = { DisableCapsuleUpdateOnDisk = true; };
+    uefiCapsuleSettings = {
+      DisableCapsuleUpdateOnDisk = true;
+    };
   };
   # environment.etc."fwupd/uefi_capsule.conf" = {
   #   text = ''

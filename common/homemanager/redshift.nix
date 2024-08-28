@@ -1,8 +1,15 @@
-{ config, pkgs, lib, nixosConfig, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixosConfig,
+  ...
+}:
 let
   gcfg = nixosConfig.myOptions.graphics;
   rCfg = nixosConfig.myOptions.redShift;
-in {
+in
+{
   config = lib.mkIf (gcfg.enable && !rCfg.disable) {
     # # https://nixos.wiki/wiki/Redshift
 

@@ -12,13 +12,23 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay, gitignore, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      rust-overlay,
+      gitignore,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         overlays = [ (import rust-overlay) ];
         pkgs = import nixpkgs { inherit system overlays; };
         rustAttrs = import ./rust.nix { inherit pkgs gitignore; };
-      in {
+      in
+      {
         formatter = pkgs.nixpkgs-fmt;
 
         devShells = {
@@ -36,5 +46,6 @@
           rust-bin = rustAttrs.binary;
           rust-docker = rustAttrs.docker;
         };
-      });
+      }
+    );
 }

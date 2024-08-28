@@ -1,8 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   containerCfg = config.myOptions.containers;
   configDir = containerCfg.dataDir;
-in {
+in
+{
   config = lib.mkIf containerCfg.enable {
     virtualisation.oci-containers.containers = {
       "dashy" = {

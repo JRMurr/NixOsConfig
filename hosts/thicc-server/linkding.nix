@@ -1,10 +1,15 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   nixContainerCfg = config.virtualisation.oci-containers;
   containerCfg = config.myOptions.containers;
   configDir = containerCfg.dataDir;
-  containerServiceName = containerName:
-    "${nixContainerCfg.backend}-${containerName}";
+  containerServiceName = containerName: "${nixContainerCfg.backend}-${containerName}";
 
 in
 {
@@ -16,11 +21,13 @@ in
 
     services.postgresql = {
       ensureDatabases = [ "linkding" ];
-      ensureUsers = [{
-        name = "linkding";
-        ensureDBOwnership = true;
-        # ensurePermissions = { "DATABASE \"linkding\"" = "ALL PRIVILEGES"; };
-      }];
+      ensureUsers = [
+        {
+          name = "linkding";
+          ensureDBOwnership = true;
+          # ensurePermissions = { "DATABASE \"linkding\"" = "ALL PRIVILEGES"; };
+        }
+      ];
     };
 
     age.secrets.linkding-user-pass = {

@@ -34,10 +34,9 @@ in
     };
   };
 
-  config = lib.mkIf gcfg.enable
-    {
-      catppuccin.enable = true;
+  config = lib.mkIf gcfg.enable {
+    catppuccin.enable = true;
 
-      myOptions.theme.colors = aliasedColors;
-    };
+    myOptions.theme.colors = aliasedColors;
+  };
 }

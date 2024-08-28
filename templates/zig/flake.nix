@@ -7,8 +7,15 @@
     zon2nix.url = "github:MidstallSoftware/zon2nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }@inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         overlays = [ inputs.zig.overlays.default ];
         pkgs = import nixpkgs { inherit system overlays; };
@@ -22,18 +29,18 @@
         formatter = pkgs.nixfmt-rfc-style;
         devShells = {
           default = pkgs.mkShell {
-            buildInputs =
-              [
-                # NOTE: these need to be roughly in sync
-                zigPkg
-                zlsPkg
-                zon2nix
+            buildInputs = [
+              # NOTE: these need to be roughly in sync
+              zigPkg
+              zlsPkg
+              zon2nix
 
-                pkgs.just
-              ];
+              pkgs.just
+            ];
           };
         };
 
         # packages = { default = pkgs.hello; };
-      });
+      }
+    );
 }

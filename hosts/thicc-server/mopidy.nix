@@ -1,17 +1,22 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   # https://github.com/nix-community/home-manager/blob/3c0e381fef63e4fbc6c3292c9e9cbcf479c01794/modules/services/mopidy.nix#L12C3-L20C5
-  toMopidyConf = with lib;
+  toMopidyConf =
+    with lib;
     generators.toINI {
       mkKeyValue = generators.mkKeyValueDefault {
-        mkValueString = v:
-          if isList v then
-            "\n  " + concatStringsSep "\n  " v
-          else
-            generators.mkValueStringDefault { } v;
+        mkValueString =
+          v: if isList v then "\n  " + concatStringsSep "\n  " v else generators.mkValueStringDefault { } v;
       } " = ";
     };
-in {
+in
+{
   age.secrets.mopidy-spotify = {
     file = "${inputs.secrets}/secrets/mopidy-spotify.age";
     mode = "770";
@@ -31,21 +36,28 @@ in {
       mopidy-mpd
     ];
     extraConfigFiles = [ config.age.secrets.mopidy-spotify.path ];
-    configuration = (toMopidyConf {
-      mpd = { hostname = "0.0.0.0"; };
-      http = { hostname = "0.0.0.0"; };
-      file.enabled = false;
-      local = { media_dir = "/mnt/fatnas/media/Music"; };
-      audio = {
-        mixer = "none";
-        output =
-          "audioresample ! audioconvert ! audio/x-raw,rate=48000,channels=2,format=S16LE ! filesink location=/run/snapserver/mopidy";
-      };
-      iris = {
-        enabled = true;
-        snapcast_host = "thicc-server";
-      };
-    });
+    configuration = (
+      toMopidyConf {
+        mpd = {
+          hostname = "0.0.0.0";
+        };
+        http = {
+          hostname = "0.0.0.0";
+        };
+        file.enabled = false;
+        local = {
+          media_dir = "/mnt/fatnas/media/Music";
+        };
+        audio = {
+          mixer = "none";
+          output = "audioresample ! audioconvert ! audio/x-raw,rate=48000,channels=2,format=S16LE ! filesink location=/run/snapserver/mopidy";
+        };
+        iris = {
+          enabled = true;
+          snapcast_host = "thicc-server";
+        };
+      }
+    );
   };
   systemd.services.mopidy.after = [ "snapserver.service" ];
 

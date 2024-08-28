@@ -1,6 +1,13 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
-in {
+in
+{
   services.factorio = {
     enable = true;
     openFirewall = true;

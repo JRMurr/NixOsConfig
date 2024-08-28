@@ -1,4 +1,10 @@
-{ pkgs, lib, inputs, nixosConfig, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  nixosConfig,
+  ...
+}:
 let
   # sysVersion = nixosConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";
@@ -12,32 +18,44 @@ let
 
   # nixd does not work on mac yet :(
   # https://github.com/nix-community/nixd/issues/107
-  linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [ nixd nil ];
+  linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [
+    nixd
+    nil
+  ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
   batExtras =
     let
-      names = [ "batdiff" "batgrep" "batman" "batpipe" "batwatch" "prettybat" ];
+      names = [
+        "batdiff"
+        "batgrep"
+        "batman"
+        "batpipe"
+        "batwatch"
+        "prettybat"
+      ];
     in
     lib.attrVals names pkgs.bat-extras;
 
 in
 {
 
-  home.packages = linuxOnly ++
-    # batExtras ++ 
-    (with pkgs; [
-      bottom
-      htop
-      cachix
-      nurl
-      dive
-      xclip
-      lastpass-cli
-      tailspin
-      ouch # file decompresser
-      bacon # rust background checker
-    ]);
+  home.packages =
+    linuxOnly
+    ++
+      # batExtras ++ 
+      (with pkgs; [
+        bottom
+        htop
+        cachix
+        nurl
+        dive
+        xclip
+        lastpass-cli
+        tailspin
+        ouch # file decompresser
+        bacon # rust background checker
+      ]);
 
   programs = {
     zoxide = {
@@ -50,7 +68,9 @@ in
       enableFishIntegration = true;
     };
 
-    bat = { enable = true; };
+    bat = {
+      enable = true;
+    };
 
     eza = {
       enable = true;

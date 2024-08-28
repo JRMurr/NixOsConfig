@@ -1,8 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   containerCfg = config.myOptions.containers;
   configDir = containerCfg.dataDir;
-in {
+in
+{
   config = lib.mkIf containerCfg.enable {
     virtualisation.oci-containers.containers."it-tools" = {
       autoStart = true;
@@ -10,6 +16,10 @@ in {
       extraOptions = [ "--pull=always" ];
       ports = [ "8070:80" ];
     };
-    myCaddy.reverseProxies = { "tools" = { upstream = "thicc-server:8070"; }; };
+    myCaddy.reverseProxies = {
+      "tools" = {
+        upstream = "thicc-server:8070";
+      };
+    };
   };
 }

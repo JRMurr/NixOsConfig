@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   networking = {
     hostName = "framework";
     networkmanager.enable = true;

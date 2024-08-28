@@ -1,10 +1,16 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 let
   uid = "1000";
   gid = "100"; # users
   networkSharesCfg = config.myOptions.networkShares;
-in {
+in
+{
   config = lib.mkIf networkSharesCfg.enable {
     services.gvfs.enable = true;
     environment.systemPackages = with pkgs; [
@@ -27,14 +33,20 @@ in {
       device = "fatnas:/volume1/ServerData";
       fsType = "nfs";
       # "uid=${uid}" "gid=${gid}" 
-      options = [ "x-systemd.automount" "noauto" ];
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
     };
 
     fileSystems."/mnt/fatnas/media" = {
       device = "fatnas:/volume1/Media";
       fsType = "nfs";
       # "uid=${uid}" "gid=${gid}" 
-      options = [ "x-systemd.automount" "noauto" ];
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
     };
   };
 }
