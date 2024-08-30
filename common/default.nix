@@ -12,6 +12,7 @@
     ./fonts.nix
     ./gestures
     ./kernel.nix
+    ./lock.nix
     ./network-shares.nix
     ./programs.nix
     ./ssh.nix

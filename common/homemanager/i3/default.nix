@@ -42,7 +42,7 @@ in
         modifier = "${modifier}";
         terminal = "kitty";
         keybindings = lib.mkOptionDefault {
-          "${modifier}+Ctrl+l" = "exec i3lock -c 000000";
+          "${modifier}+Ctrl+l" = "exec xautolock -locknow";
           "${modifier}+Shift+a" = "exec autorandr normal";
           "${modifier}+Ctrl+m" = "exec pavucontrol";
           "${modifier}+n" = "nop kitti3";
