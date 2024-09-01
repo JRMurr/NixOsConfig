@@ -18,6 +18,8 @@
     statix # linter
 
     (sqlite.override { interactive = true; })
+
+    time
   ];
   programs.java.enable = true;
 }
