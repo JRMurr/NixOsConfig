@@ -37,6 +37,8 @@ in
   };
   config = lib.mkIf gcfg.enable {
 
+    hardware.nvidia.open = false;
+
     # TODO-REFACTOR: these were under xserver pre 24.05
     services = {
       libinput = {

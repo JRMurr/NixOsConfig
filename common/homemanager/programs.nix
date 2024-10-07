@@ -51,10 +51,11 @@ in
         nurl
         dive
         xclip
-        lastpass-cli
+        # lastpass-cli
         tailspin
         ouch # file decompresser
         bacon # rust background checker
+        ripgrep
       ]);
 
   programs = {
