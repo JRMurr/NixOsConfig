@@ -11,6 +11,10 @@ in
     target = ".gitconfig";
   };
 
+  programs.lazygit = {
+    enable = true;
+  };
+
   # programs.gpg = {
   #   enable = true;
   #   mutableTrust = false;
