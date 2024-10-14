@@ -7,7 +7,7 @@ set -x EDITOR "code"
 set -x BROWSER "firefox"
 
 
-alias nixRe="sudo nixos-rebuild switch"
+alias nixRe="nh os switch"
 
 
 function resetPulse

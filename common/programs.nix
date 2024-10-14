@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  inputs,
-  ...
+{ pkgs
+, config
+, inputs
+, ...
 }:
 # let attic = inputs.attic.packages.${pkgs.system}.default;
 # in 
@@ -17,9 +16,9 @@ let
   mcfg = myOpts.musicPrograms;
 
   myVscode = (pkgs.callPackage ../pkgs/vscode.nix { inherit inputs; }).myVscode;
-
+  gitpkg = if gcfg.enable then pkgs.gitFull else pkgs.git;
   cliPrograms = [
-    git
+    gitpkg
     gh
     htop
     vim
@@ -89,6 +88,8 @@ let
     calibre
 
     zed-editor # :pog:
+
+    # github-desktop
   ];
 
   musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
