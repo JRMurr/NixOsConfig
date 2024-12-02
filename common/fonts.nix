@@ -1,29 +1,32 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 let
-  myNerdFonts = [ "FiraCode" ];
+  myNerdFonts = [ "fira-code" ];
   polyBarNerdFonts = [
-    "Iosevka"
-    "FantasqueSansMono"
-    "Noto"
-    "DroidSansMono"
-    "Terminus"
+    "iosevka"
+    "fantasque-sans-mono"
+    "noto"
+    "droid-sans-mono"
+    # "Terminus"
   ]; # https://github.com/adi1090x/polybar-themes#fonts
-  polyBarIconFonts = with pkgs; [
-    material-design-icons
-    material-icons
-  ];
+
+  nerdFonts = builtins.map (font: builtins.getAttr font pkgs.nerd-fonts) (myNerdFonts ++ polyBarNerdFonts);
+
+  polyBarIconFonts = with pkgs;
+    [
+      material-design-icons
+      material-icons
+    ];
 
   fontPkgs =
     with pkgs;
     (
       # valid font names https://github.com/NixOS/nixpkgs/blob/6ba3207643fd27ffa25a172911e3d6825814d155/pkgs/data/fonts/nerdfonts/shas.nix
 
-      polyBarIconFonts ++ [ (nerdfonts.override { fonts = myNerdFonts ++ polyBarNerdFonts; }) ]
+      polyBarIconFonts ++ nerdFonts
     );
 in
 {

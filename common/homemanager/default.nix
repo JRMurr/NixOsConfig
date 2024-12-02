@@ -25,11 +25,11 @@
   programs.bash.enable = true;
 
   # adds home-manager-help tool
-  manual.html.enable = true;
+  # manual.html.enable = true;
 
   nixpkgs.config = {
     # allowUnfree = true;
-    manual.manpages.enable = true;
+    # manual.manpages.enable = true; # disabled as of 11-25-2024, probs just needs a fix upstream
   };
 
   systemd.user.startServices = true;
