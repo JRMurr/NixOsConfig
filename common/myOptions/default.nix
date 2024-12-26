@@ -10,6 +10,9 @@ with lib;
 
   options.myOptions = {
     graphics.enable = mkEnableOption "Enable graphics";
+
+    lock.enable = mkEnableOption "Enable auto lock";
+
     redShift.disable = mkEnableOption "disable redShift";
 
     gestures.enable = mkEnableOption "Enable gestures";

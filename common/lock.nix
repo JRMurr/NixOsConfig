@@ -1,13 +1,14 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 let
-  gcfg = config.myOptions.graphics;
+  lcfg = config.myOptions.lock;
 in
 {
-  config = lib.mkIf gcfg.enable {
+  config = lib.mkIf lcfg.enable {
     security.loginDefs.settings.FAIL_DELAY = 0;
 
     services.xserver.xautolock = {
