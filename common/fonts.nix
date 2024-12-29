@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  config,
+  lib,
+  ...
 }:
 let
   myNerdFonts = [ "fira-code" ];
@@ -13,13 +14,14 @@ let
     # "Terminus"
   ]; # https://github.com/adi1090x/polybar-themes#fonts
 
-  nerdFonts = builtins.map (font: builtins.getAttr font pkgs.nerd-fonts) (myNerdFonts ++ polyBarNerdFonts);
+  nerdFonts = builtins.map (font: builtins.getAttr font pkgs.nerd-fonts) (
+    myNerdFonts ++ polyBarNerdFonts
+  );
 
-  polyBarIconFonts = with pkgs;
-    [
-      material-design-icons
-      material-icons
-    ];
+  polyBarIconFonts = with pkgs; [
+    material-design-icons
+    material-icons
+  ];
 
   fontPkgs =
     with pkgs;

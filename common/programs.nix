@@ -1,10 +1,11 @@
-{ pkgs
-, config
-, inputs
-, ...
+{
+  pkgs,
+  config,
+  inputs,
+  ...
 }:
 # let attic = inputs.attic.packages.${pkgs.system}.default;
-# in 
+# in
 let
   nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
 in
@@ -67,7 +68,7 @@ let
     kitty
     gparted
     baobab # space sniffer alternative
-    pcmanfm
+    # pcmanfm
     # libsForQt5.dolphin
     # libsForQt5.dolphin-plugins
     myVscode

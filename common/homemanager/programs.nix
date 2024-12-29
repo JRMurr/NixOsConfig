@@ -6,12 +6,17 @@
   ...
 }:
 let
+  gcfg = nixosConfig.myOptions.graphics;
+
   # sysVersion = nixosConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";
   # getFromInput = name: inputs.${name}.packages.${pkgs.system}.default;
   nurl = inputs.nurl.packages.${pkgs.system}.default;
   nixd = inputs.nixd.packages.${pkgs.system}.default;
   nil = inputs.nil.packages.${pkgs.system}.default;
+
+  ghostty = inputs.ghostty.packages.${pkgs.system}.default;
+
   # nurl = getFromInput "nurl";
   # nixd = getFromInput "nurl";
   # nil = getFromInput "nurl";
@@ -21,6 +26,10 @@ let
   linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [
     nixd
     nil
+  ];
+
+  graphical = pkgs.lib.optionals gcfg.enable [
+    ghostty
   ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
@@ -42,8 +51,9 @@ in
 
   home.packages =
     linuxOnly
+    ++ graphical
     ++
-      # batExtras ++ 
+      # batExtras ++
       (with pkgs; [
         bottom
         htop
