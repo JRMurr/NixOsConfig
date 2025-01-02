@@ -13,7 +13,7 @@ in
 
     services.xserver.xautolock = {
       enable = true;
-      locker = "${pkgs.xlockmore}/bin/xlock -mode blank";
+      locker = lib.mkDefault "${pkgs.xlockmore}/bin/xlock -mode blank";
     };
   };
 }

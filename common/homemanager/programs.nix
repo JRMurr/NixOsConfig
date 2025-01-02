@@ -48,7 +48,6 @@ let
 
 in
 {
-
   home.packages =
     linuxOnly
     ++ graphical
