@@ -112,7 +112,7 @@
             "spack"
             "memory_usage"
             "aws"
-            "gcloud"
+            # "gcloud"
             "openstack"
             "azure"
             "env_var"
