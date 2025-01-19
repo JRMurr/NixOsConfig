@@ -15,7 +15,7 @@
     wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
+      # inputs.flake-utils.follows = "utils";
     };
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";

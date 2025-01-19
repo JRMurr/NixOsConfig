@@ -1,6 +1,8 @@
+{ config, ... }:
 {
   environment.variables.XCURSOR_SIZE = "10";
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest; # stable by default
   # services.xserver.dpi = 100;
   services.xserver.dpi = 150;
   myOptions.graphics = {

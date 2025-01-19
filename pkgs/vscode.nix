@@ -92,6 +92,8 @@ let
     editorconfig.editorconfig
     esbenp.prettier-vscode
     github.vscode-github-actions
+    haskell.haskell
+    justusadam.language-haskell
     jnoortheen.nix-ide
     ms-azuretools.vscode-docker
     ms-python.python
