@@ -116,8 +116,34 @@ let
     customUIColors = { };
   };
 
+  pestExt = linuxExtensions.vscode-marketplace.pest.pest-ide-tools;
+
+  # copying override logic from rust analyzer
+  # https://github.com/NixOS/nixpkgs/blob/107d5ef05c0b1119749e381451389eded30fb0d5/pkgs/applications/editors/vscode/extensions/rust-lang.rust-analyzer/default.nix#L87
+  customPest = pestExt.overrideAttrs (
+    let
+      # pestIdeTools.serverPath": "/path/to/binary",
+      ide = "${pkgs.pest-ide-tools}/bin/pest-language-server";
+      jq = "${pkgs.jq}/bin/jq";
+      sponge = "${pkgs.moreutils}/bin/sponge";
+    in
+    {
+      preInstall = ''
+        ${jq} '(.contributes.configuration[] | select(.title == "Pest IDE Tools") | .properties."pestIdeTools.serverPath".default) = $s' \
+          --arg s "${ide}" \
+          package.json | ${sponge} package.json
+      '';
+    }
+  );
+
   vscodeExtensions =
-    openVsxExtensions ++ marketPlaceExtensions ++ extensionsFromNixPkgs ++ [ catppucin ];
+    openVsxExtensions
+    ++ marketPlaceExtensions
+    ++ extensionsFromNixPkgs
+    ++ [
+      catppucin
+      customPest
+    ];
 
   myVscode = pkgs.vscode-with-extensions.override { inherit vscodeExtensions; };
 
