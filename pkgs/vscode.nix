@@ -69,7 +69,12 @@ let
     eamodio.gitlens
     ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
-    ms-vscode-remote.remote-ssh-edit
+
+    # TODO: this is sad from unfree even though it should be allowed
+    # best guess is this getting pulled from normal nixpkgs somehow but since its pulled from a flake my nixpkgs settings
+    # is not getting passed through?
+    # ms-vscode-remote.remote-ssh-edit
+
     rreverser.llvm
     skellock.just
     skyapps.fish-vscode

@@ -9,15 +9,19 @@
 let
   nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
 in
-with pkgs;
 # TODO: move some of this to homemnager
 let
   myOpts = config.myOptions;
   gcfg = myOpts.graphics;
   mcfg = myOpts.musicPrograms;
 
-  myVscode = (pkgs.callPackage ../pkgs/vscode.nix { inherit inputs; }).myVscode;
+  myVscode = (pkgs.callPackage ../pkgs/vscode.nix { inherit pkgs inputs; }).myVscode;
+
   gitpkg = if gcfg.enable then pkgs.gitFull else pkgs.git;
+
+in
+with pkgs;
+let
   cliPrograms = [
     gitpkg
     gh
