@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ ... }:
 {
   imports = [
     ./cargo.nix
@@ -19,6 +19,7 @@
     ./starship.nix
     ./theme.nix
     ./xsession.nix
+    ./zed.nix
     # ./clipcat.nix #TODO: sad and barely helped :(
   ];
 

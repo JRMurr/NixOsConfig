@@ -91,9 +91,6 @@ let
 
     # ebooks
     calibre
-
-    zed-editor # :pog:
-
     # github-desktop
   ];
 
