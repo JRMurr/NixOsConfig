@@ -14,6 +14,7 @@
     ./kernel.nix
     ./lock.nix
     ./network-shares.nix
+    ./portals.nix
     ./programs.nix
     ./ssh.nix
     ./sudo.nix
@@ -60,7 +61,11 @@
     flake = "/etc/nixos";
   };
 
-  environment.pathsToLink = [ "/share/fish" ];
+  environment.pathsToLink = [
+    "/share/fish"
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
 
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online.enable = false;

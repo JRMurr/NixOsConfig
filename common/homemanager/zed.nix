@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 {
+
+  # xsession.profileExtra = ''
+  #   eval $(${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon --daemonize --components=ssh,secrets)
+  # '';
+
   programs.zed-editor = {
     enable = true;
     extensions = [

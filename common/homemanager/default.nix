@@ -36,4 +36,7 @@
   systemd.user.startServices = true;
 
   services.ssh-agent.enable = true;
+
+  services.gnome-keyring.enable = true;
+
 }
