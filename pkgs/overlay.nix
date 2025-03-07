@@ -39,6 +39,19 @@ in
     };
   });
 
+  vscode-extensions = prev.vscode-extensions // {
+    ms-python = prev.vscode-extensions.ms-python // {
+      python = prev.vscode-extensions.ms-python.python.overrideAttrs (old: {
+        src = prev.vscode-utils.fetchVsixFromVscodeMarketplace {
+          name = "python";
+          publisher = "ms-python";
+          version = "2025.2.0";
+          hash = "sha256-f573A/7s8jVfH1f3ZYZSTftrfBs6iyMWewhorX4Z0Nc=";
+        };
+      });
+    };
+  };
+
   # build from develop since no release has been made in a while but dev branch has fix for building on gcc 13
   # snapcast = prev.snapcast.overrideAttrs (old: rec {
   #   src = prev.fetchFromGitHub {

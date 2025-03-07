@@ -88,26 +88,30 @@ let
     ziglang.vscode-zig
     # znck.grammarly
   ];
-  extensionsFromNixPkgs = with pkgs.vscode-extensions; [
-    b4dm4n.vscode-nixpkgs-fmt
-    bbenoist.nix
-    brettm12345.nixfmt-vscode
-    dbaeumer.vscode-eslint
-    dracula-theme.theme-dracula
-    editorconfig.editorconfig
-    esbenp.prettier-vscode
-    github.vscode-github-actions
-    haskell.haskell
-    justusadam.language-haskell
-    jnoortheen.nix-ide
-    ms-azuretools.vscode-docker
-    ms-python.python
-    ms-vscode-remote.remote-ssh
-    ms-vscode.cpptools
-    rust-lang.rust-analyzer
-    vadimcn.vscode-lldb
-    yzhang.markdown-all-in-one
-  ];
+
+  extensionsFromNixPkgs = (
+    with pkgs.vscode-extensions;
+    [
+      b4dm4n.vscode-nixpkgs-fmt
+      bbenoist.nix
+      brettm12345.nixfmt-vscode
+      dbaeumer.vscode-eslint
+      dracula-theme.theme-dracula
+      editorconfig.editorconfig
+      esbenp.prettier-vscode
+      github.vscode-github-actions
+      haskell.haskell
+      justusadam.language-haskell
+      jnoortheen.nix-ide
+      ms-azuretools.vscode-docker
+      ms-python.python
+      ms-vscode-remote.remote-ssh
+      ms-vscode.cpptools
+      rust-lang.rust-analyzer
+      vadimcn.vscode-lldb
+      yzhang.markdown-all-in-one
+    ]
+  );
 
   catppucin = pkgs.catppuccin-vsc.override {
     accent = "mauve";

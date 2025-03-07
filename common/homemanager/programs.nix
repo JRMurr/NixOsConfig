@@ -61,7 +61,7 @@ in
         dive
         xclip
         # lastpass-cli
-        tailspin
+        # tailspin
         ouch # file decompresser
         bacon # rust background checker
         ripgrep
