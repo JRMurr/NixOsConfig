@@ -25,7 +25,27 @@ in
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
       #media-session.enable = true;
+
+      # https://old.reddit.com/r/NixOS/comments/1je2ebl/nixos_tips_your_headsets_handsfree_mode_is_gone/
+      # https://nixos.wiki/wiki/PipeWire#Bluetooth_Configuration
+      wireplumber.extraConfig.bluetoothEnhancements = {
+        # https://www.whathifi.com/advice/what-are-the-best-bluetooth-codecs-aptx-aac-ldac-and-more-explained
+        # https://www.reddit.com/r/bluetooth/comments/z2hj48/sbcxq_vs_ldac/
+        "monitor.bluez.properties" = {
+          "bluez5.enable-sbc-xq" = true;
+          # this is to enable some headsets' Handsfree mode
+          "bluez5.enable-msbc" = true;
+          "bluez5.enable-hw-volume" = true;
+          "bluez5.roles" = [
+            "hsp_hs"
+            "hsp_ag"
+            "hfp_hf"
+            "hfp_ag"
+          ];
+        };
+      };
     };
+
     environment.systemPackages = [
       pkgs.pavucontrol
       pkgs.snapcast
