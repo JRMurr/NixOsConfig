@@ -35,7 +35,7 @@ let
       # "@import" = getRofiTheme "rounded-blue-dark";
       "#inputbar" = {
         children = map mkLiteral [
-          "prompt"
+          # "prompt"
           "entry"
         ];
       };
@@ -63,8 +63,12 @@ in
 
     home.packages = with pkgs; [
       rofi-power-menu
-      rofi-themes
+      # rofi-themes
     ];
+
+    catppuccin.rofi = {
+      enable = true;
+    };
 
     programs.rofi = {
       enable = true;

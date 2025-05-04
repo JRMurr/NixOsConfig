@@ -113,16 +113,18 @@ let
     ]
   );
 
-  catppucin = pkgs.catppuccin-vsc.override {
-    accent = "mauve";
-    boldKeywords = true;
-    italicComments = true;
-    italicKeywords = true;
-    extraBordersEnabled = false;
-    workbenchMode = "default";
-    bracketMode = "rainbow";
-    colorOverrides = { };
-    customUIColors = { };
+  catppucin = inputs.catppuccin.packages.${pkgs.system}.vscode.override {
+    catppuccinOptions = {
+      accent = "mauve";
+      boldKeywords = true;
+      italicComments = true;
+      italicKeywords = true;
+      extraBordersEnabled = false;
+      workbenchMode = "default";
+      bracketMode = "rainbow";
+      colorOverrides = { };
+      customUIColors = { };
+    };
   };
 
   pestExt = linuxExtensions.vscode-marketplace.pest.pest-ide-tools;

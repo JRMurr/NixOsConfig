@@ -1,6 +1,6 @@
 { inputs, ... }:
 let
-  catppuccin = inputs.catppuccin.homeManagerModules.catppuccin;
+  catppuccin = inputs.catppuccin.homeModules.catppuccin;
   spicetify = inputs.spicetify-nix.homeManagerModules.default;
 in
 {
@@ -9,6 +9,11 @@ in
     spicetify
     ../../homemanager
   ];
+
+  catppuccin = {
+    mako.enable = false;
+  };
+
   # Everything in this file will be under home-manager.users.<name>
   # https://rycee.gitlab.io/home-manager/options.html
 

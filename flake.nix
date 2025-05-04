@@ -29,10 +29,6 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     catppuccin.url = "github:catppuccin/nix";
-    catppuccin-vsc = {
-      url = "github:catppuccin/vscode";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     # deploy-rs = {
@@ -77,7 +73,6 @@
       overlays = [
         inputs.attic.overlays.default
         inputs.agenix.overlays.default
-        inputs.catppuccin-vsc.overlays.default
         (import ./pkgs/overlay.nix)
         # TODO: nil and nurl
       ];
