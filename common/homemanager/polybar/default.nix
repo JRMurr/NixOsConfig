@@ -12,6 +12,8 @@ let
   gcfg = nixosConfig.myOptions.graphics;
   themeCfg = nixosConfig.myOptions.theme;
 
+  player = "YoutubeMusic";
+
   baseColors = themeCfg.colors;
 
   monitors = gcfg.monitors;
@@ -70,7 +72,7 @@ let
     tray-background = "${colors.background}";
     module-margin-left = 1;
     module-margin-right = 1;
-    # fc-match "Fira Code Nerd Font:style=medium"  
+    # fc-match "Fira Code Nerd Font:style=medium"
     font = [
       "Fira Code Nerd Font:style=medium:size=11;3"
       "Fantasque Sans Mono:pixelsize=12;3"
@@ -122,7 +124,7 @@ let
     monitorConfig:
     if monitorConfig.enable then "polybar --reload ${monitorConfig.name} & disown;" else "";
 
-  spotifyPkg = pkgs.callPackage ./spotify { };
+  spotifyPkg = pkgs.polybar-spotify.override { inherit player; };
 
   dependentPackages = with pkgs; [
     zscroll
@@ -152,7 +154,7 @@ in
         package = pkgs.polybarFull;
         script =
           # ''PATH="${lib.makeBinPath dependentPackages}${"PATH:+:"}$PATH\n''
-          # ++ 
+          # ++
           lib.concatMapStringsSep "\n" monitorToStartScript monitors;
         settings = bars // {
 
@@ -285,14 +287,14 @@ in
             label-minlen = 31;
             label-alignment = "center";
             exec = "${spotifyPkg}/bin/scroll_spotify_status";
-            click-left = "${playerctlPath} play-pause -p spotify";
+            click-left = "${playerctlPath} play-pause -p ${player}";
           };
 
           "module/spotify-prev" = {
             type = "custom/script";
             exec = ''echo "󰒫"'';
             format = "<label>";
-            click-left = "${playerctlPath} previous -p spotify";
+            click-left = "${playerctlPath} previous -p ${player}";
           };
 
           "module/spotify-play-pause" = {
@@ -300,14 +302,14 @@ in
             hook-0 = ''echo "󰐊"'';
             hook-1 = ''echo "󰏤"'';
             initial = 1;
-            click-left = "${playerctlPath} play-pause -p spotify";
+            click-left = "${playerctlPath} play-pause -p ${player}";
           };
 
           "module/spotify-next" = {
             type = "custom/script";
             exec = ''echo "󰒬 "'';
             format = "<label>";
-            click-left = "${playerctlPath} next -p spotify";
+            click-left = "${playerctlPath} next -p ${player}";
           };
 
         };

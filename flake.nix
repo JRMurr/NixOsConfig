@@ -172,5 +172,16 @@
         ];
       };
 
+      packages."x86_64-linux" =
+        let
+          pkgs = mkPkgs "x86_64-linux";
+
+          mine = pkgs.callPackage ./pkgs { };
+        in
+        mine
+        // {
+
+        };
+
     };
 }

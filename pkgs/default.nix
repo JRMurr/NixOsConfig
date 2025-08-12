@@ -8,4 +8,6 @@
   caddyWithPlugins = pkgs.callPackage ./caddy-with-plugins { };
 
   glance = pkgs.callPackage ./glance.nix { buildGoModule = pkgs.buildGo122Module; };
+
+  polybar-spotify = pkgs.callPackage ./polybar-spotify { player = "YoutubeMusic"; };
 }

@@ -65,6 +65,7 @@ in
         ouch # file decompresser
         bacon # rust background checker
         ripgrep
+        youtube-music
       ]);
 
   programs = {
