@@ -1,7 +1,7 @@
 { config, lib, ... }:
 with lib;
 let
-  # TODO: add assertion to make sure workspace is set and name is uniuqe 
+  # TODO: add assertion to make sure workspace is set and name is uniuqe
 
   # TODO: can extend from offical options?
 
@@ -98,53 +98,59 @@ let
       };
 
       scale = mkOption {
-        type = types.nullOr (
-          types.submodule {
-            options = {
-              method = mkOption {
-                type = types.enum [
-                  "factor"
-                  "pixel"
-                ];
-                description = lib.mdDoc "Output scaling method.";
-                default = "factor";
-                example = "pixel";
-              };
-
-              x = mkOption {
-                type = types.either types.float types.ints.positive;
-                description = lib.mdDoc "Horizontal scaling factor/pixels.";
-              };
-
-              y = mkOption {
-                type = types.either types.float types.ints.positive;
-                description = lib.mdDoc "Vertical scaling factor/pixels.";
-              };
-            };
-          }
-        );
-        description = lib.mdDoc ''
-          Output scale configuration.
-
-          Either configure by pixels or a scaling factor. When using pixel method the
-          {manpage}`xrandr(1)`
-          option
-          `--scale-from`
-          will be used; when using factor method the option
-          `--scale`
-          will be used.
-
-          This option is a shortcut version of the transform option and they are mutually
-          exclusive.
-        '';
-        default = null;
-        example = literalExpression ''
-          {
-            x = 1.25;
-            y = 1.25;
-          }
-        '';
+        type = types.nullOr types.str;
+        description = "output's scale, 1 is non scaled";
+        default = 1;
+        example = "1.5";
       };
+      # scale = mkOption {
+      #   type = types.nullOr (
+      #     types.submodule {
+      #       options = {
+      #         method = mkOption {
+      #           type = types.enum [
+      #             "factor"
+      #             "pixel"
+      #           ];
+      #           description = lib.mdDoc "Output scaling method.";
+      #           default = "factor";
+      #           example = "pixel";
+      #         };
+
+      #         x = mkOption {
+      #           type = types.either types.float types.ints.positive;
+      #           description = lib.mdDoc "Horizontal scaling factor/pixels.";
+      #         };
+
+      #         y = mkOption {
+      #           type = types.either types.float types.ints.positive;
+      #           description = lib.mdDoc "Vertical scaling factor/pixels.";
+      #         };
+      #       };
+      #     }
+      #   );
+      #   description = lib.mdDoc ''
+      #     Output scale configuration.
+
+      #     Either configure by pixels or a scaling factor. When using pixel method the
+      #     {manpage}`xrandr(1)`
+      #     option
+      #     `--scale-from`
+      #     will be used; when using factor method the option
+      #     `--scale`
+      #     will be used.
+
+      #     This option is a shortcut version of the transform option and they are mutually
+      #     exclusive.
+      #   '';
+      #   default = null;
+      #   example = literalExpression ''
+      #     {
+      #       x = 1.25;
+      #       y = 1.25;
+      #     }
+      #   '';
+      # };
 
       # TODO: this does shallow merge
       extraBarOpts = mkOption {

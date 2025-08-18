@@ -27,6 +27,7 @@
         rate = "239.99";
         workspace = 1;
         crtc = 0; # xrandr --verbose to get
+        scale = "1.5";
       }
       {
         # 4k portrait on left
@@ -42,6 +43,7 @@
         rotate = "left";
         workspace = 2;
         crtc = 1;
+        scale = "1.5";
         # dpi = 150;
         # scale = {
         #   x = 1;

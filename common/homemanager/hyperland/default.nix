@@ -56,7 +56,7 @@ let
           {
             mode = resolution;
             position = pos;
-            scale = "1.5";
+            scale = m.scale or "1";
             transform = transform;
           };
     in
