@@ -40,4 +40,6 @@
 
   services.gnome-keyring.enable = true;
 
+  xdg.userDirs.createDirectories = true;
+  xdg.userDirs.enable = true;
 }

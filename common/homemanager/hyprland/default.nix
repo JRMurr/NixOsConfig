@@ -211,7 +211,7 @@ in
           "$mainMod SHIFT,E,exec,wlogout" # $mod+Shift+e: exit menu
           "$mainMod,F,fullscreen" # $mod+f: toggle fullscreen
           "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
-          "$mainMod,M,exec,pavucontrol" # from your custom i3
+          "$mainMod Control_L,M,exec,pavucontrol" # from your custom i3
           "$mainMod,F2,exec,firefox"
           "$mainMod Control_L, L,exec,loginctl lock-session"
 
@@ -256,6 +256,7 @@ in
         ];
 
         bindl = [
+          "$mainMod SHIFT, s, exec, ${lib.getExe pkgs.hyprshot} -m region"
           ", XF86AudioNext,  exec, playerctl next"
           ", XF86AudioPause, exec, playerctl play-pause"
           ", XF86AudioPlay,  exec, playerctl play-pause"
@@ -299,7 +300,6 @@ in
 
         env = XCURSOR_SIZE,24
         env = HYPRCURSOR_SIZE,24
-
 
         ###################
         ### PERMISSIONS ###
