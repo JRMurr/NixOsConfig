@@ -72,7 +72,7 @@ in
 {
   imports = [
     ./waybar.nix
-    # ./wofi.nix
+    ./hyprlock.nix
   ];
   config = lib.mkIf gcfg.enable {
 

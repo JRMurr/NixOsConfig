@@ -11,7 +11,7 @@ let
 in
 {
   config = lib.mkIf gcfg.enable {
-    programs.wofi = {
+    programs.hyprlock = {
       enable = true;
     };
   };
