@@ -163,9 +163,9 @@ in
           ", XF86AudioPrev,  exec, playerctl previous"
         ];
 
-        exec-once = [
-          "waybar"
-        ];
+        # exec-once = [
+        #   "waybar"
+        # ];
       };
 
       extraConfig = ''
@@ -186,19 +186,6 @@ in
         # See https://wiki.hypr.land/Configuring/Keywords/
 
         # Set programs that you use
-
-
-
-        #################
-        ### AUTOSTART ###
-        #################
-
-        # Autostart necessary processes (like notifications daemons, status bars, etc.)
-        # Or execute your favorite apps at launch like this:
-
-        # exec-once = $terminal
-        # exec-once = nm-applet &
-        # exec-once = waybar & hyprpaper & firefox
 
 
         #############################
