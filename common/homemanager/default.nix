@@ -15,7 +15,7 @@
     # ./polybar
     ./programs.nix
     ./redshift.nix
-    # ./rofi.nix
+    ./rofi.nix
     ./spicetify.nix
     ./starship.nix
     ./theme.nix

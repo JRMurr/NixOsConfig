@@ -72,7 +72,7 @@ in
 {
   imports = [
     ./waybar.nix
-    ./wofi.nix
+    # ./wofi.nix
   ];
   config = lib.mkIf gcfg.enable {
 
@@ -87,7 +87,7 @@ in
         "$mainMod" = "${modifier}";
         "$terminal" = "kitty";
         "$fileManager" = "dolphin";
-        "$menu" = "wofi --show drun";
+        "$menu" = "rofi -show run";
 
         monitorv2 = monitorLines;
         bind = [
@@ -112,7 +112,7 @@ in
           "$mainMod SHIFT, n, movetoworkspace, special:kitty-ws"
 
           "$mainMod,RETURN,exec,kitty" # $mod+Enter: terminal
-          "$mainMod,D,exec,wofi --show drun" # $mod+d: launcher
+          "$mainMod,D,exec,rofi -show run" # $mod+d: launcher
           "$mainMod SHIFT,Q,killactive" # $mod+Shift+q: kill
           "$mainMod SHIFT,C,exec,hyprctl reload" # $mod+Shift+c: reload config
           "$mainMod SHIFT,R,exec,hyprctl reload" # i3 “restart” → reload hypr config
@@ -121,7 +121,6 @@ in
           "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
           "$mainMod,M,exec,pavucontrol" # from your custom i3
           "$mainMod,F2,exec,firefox"
-          "$mainMod,D,exec,wofi --show drun"
 
           # Workspaces 1–10
           "$mainMod,1,workspace,1"
