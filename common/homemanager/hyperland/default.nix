@@ -107,9 +107,9 @@ in
           "$mainMod SHIFT, up, movewindoworgroup, u"
           "$mainMod SHIFT, down, movewindoworgroup, d"
 
-          # Special workspace (scratchpad-style)
-          "$mainMod, S, togglespecialworkspace, magic"
-          "$mainMod SHIFT, S, movetoworkspace, special:magic"
+          # kitty special workspace
+          "$mainMod, n, togglespecialworkspace, kitty-ws"
+          "$mainMod SHIFT, n, movetoworkspace, special:kitty-ws"
 
           "$mainMod,RETURN,exec,kitty" # $mod+Enter: terminal
           "$mainMod,D,exec,wofi --show drun" # $mod+d: launcher
@@ -170,9 +170,11 @@ in
           ", XF86AudioPrev,  exec, playerctl previous"
         ];
 
-        # exec-once = [
-        #   "waybar"
-        # ];
+        exec-once = [
+          # start kitty in the special kitty ws
+          # idk if this works
+          "[workspace kitty-ws silent] kitty"
+        ];
       };
 
       extraConfig = ''
