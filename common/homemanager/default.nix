@@ -8,13 +8,14 @@
     ./git
     ./gitui.nix
     ./helix.nix
-    ./i3
+    ./hyperland
+    # ./i3
     ./kitty.nix
     ./nushell
-    ./polybar
+    # ./polybar
     ./programs.nix
     ./redshift.nix
-    ./rofi.nix
+    # ./rofi.nix
     ./spicetify.nix
     ./starship.nix
     ./theme.nix

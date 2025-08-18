@@ -39,6 +39,9 @@ in
 
     hardware.nvidia.open = false;
 
+    programs.hyprland.enable = true; # enable Hyprland
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
     # TODO-REFACTOR: these were under xserver pre 24.05
     services = {
       libinput = {
@@ -50,7 +53,7 @@ in
       };
 
       displayManager = {
-        defaultSession = "none+i3";
+        # defaultSession = "none+i3";
         autoLogin.enable = true;
         autoLogin.user = "jr";
       };
@@ -82,7 +85,7 @@ in
           combineScreens = false;
         };
       };
-      windowManager.i3.enable = true;
+      # windowManager.i3.enable = true;
 
       # enable monitors here before arandr to try to get them to start ealier
       # this appears to do nothing but i tried

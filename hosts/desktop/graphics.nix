@@ -21,7 +21,8 @@
         enable = true;
         primary = true;
         # position = "2160x0";
-        position = "2160x0";
+        position = "auto";
+        # position = "2160x0";
         resolution = "3840x2160";
         rate = "239.99";
         workspace = 1;
@@ -30,10 +31,11 @@
       {
         # 4k portrait on left
         fingerprint = "00ffffffffffff001e6d0777b21d0200061d0104b53c22789e3e31ae5047ac270c50542108007140818081c0a9c0d1c08100010101014dd000a0f0703e803020650c58542100001a286800a0f0703e800890650c58542100001a000000fd00383d1e8738000a202020202020000000fc004c472048445220344b0a20202001980203197144900403012309070783010000e305c000e3060501023a801871382d40582c450058542100001e565e00a0a0a029503020350058542100001a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000029";
-        name = "DP-4";
+        name = "DP-3";
         enable = true;
         primary = false;
-        position = "0x0";
+        # position = "0x0";
+        position = "auto-left";
         resolution = "3840x2160";
         # resolution = "2560x1440"; # scale down so its easier to read...
         rate = "60.00";

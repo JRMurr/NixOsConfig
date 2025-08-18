@@ -5,7 +5,7 @@
     ./myOptions
 
     ./audio.nix
-    ./autorandr.nix
+    # ./autorandr.nix
     ./containers.nix
     ./devlopment.nix
     ./essentials.nix
