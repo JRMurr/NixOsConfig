@@ -8,7 +8,7 @@
     ./git
     ./gitui.nix
     ./helix.nix
-    ./hyperland
+    ./hyprland
     # ./i3
     ./kitty.nix
     ./nushell
