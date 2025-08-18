@@ -121,6 +121,7 @@ in
           "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
           "$mainMod,M,exec,pavucontrol" # from your custom i3
           "$mainMod,F2,exec,firefox"
+          "$mainMod Control_L, L,exec,loginctl lock-session"
 
           # Workspaces 1–10
           "$mainMod,1,workspace,1"
