@@ -78,7 +78,13 @@ in
 
     home.packages = with pkgs; [
       wlogout
+      nwg-look
     ];
+
+    gtk.cursorTheme = {
+      # package = pkgs.comixcursors.Opaque_Black;
+      name = "Adwaita";
+    };
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -171,6 +177,7 @@ in
         ];
 
         exec-once = [
+          "hyprctl setcursor Adwaita 24"
           # start kitty in the special kitty ws
           # idk if this works (it does not...)
           # "[workspace kitty-ws silent] kitty"
