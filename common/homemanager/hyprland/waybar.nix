@@ -42,24 +42,24 @@ let
       # format-icons = [ "" ];
     };
     battery = {
-      "bat" = "BAT1"; # Polybar battery = "BAT1"
-      "adapter" = "ACAD"; # Polybar adapter = "ACAD"
-      "states" = {
-        "warning" = 20;
-        "critical" = 10;
+      bat = "BAT1"; # Polybar battery = "BAT1"
+      adapter = "ACAD"; # Polybar adapter = "ACAD"
+      states = {
+        warning = 20;
+        critical = 10;
       };
-      "format" = "{capacity}% {icon}";
-      "format-charging" = " {capacity}%";
-      "format-plugged" = " {capacity}%";
-      "format-alt" = "{time} {icon}";
-      "format-icons" = [
+      format = "{capacity}% {icon}";
+      format-charging = " {capacity}%";
+      format-plugged = " {capacity}%";
+      format-alt = "{time} {icon}";
+      format-icons = [
         ""
         ""
         ""
         ""
         ""
       ];
-      "interval" = 30;
+      interval = 30;
     };
 
     cpu = {
@@ -97,15 +97,24 @@ let
 
     # --- filesystem (root) ---
     "disk#root" = {
-      "path" = "/";
-      "interval" = 30;
-      "format" = "󰆼 {free} free of {total}";
+      path = "/";
+      interval = 30;
+      format = "󰆼 {free} free of {total}";
       # format-icons = [ "󰆼" ];
       # 󰆼
     };
 
+    "pulseaudio/slider" = {
+      min = 0;
+      max = 100;
+      orientation = "horizontal";
+    };
+
     tray = {
-      "spacing" = 8;
+      spacing = 8;
+      icons = {
+        blueman = "bluetooth";
+      };
     };
   };
 
@@ -124,6 +133,7 @@ let
       "battery"
       "clock#date"
       "clock#time"
+      "pulseaudio/slider"
       "tray"
     ];
 
@@ -181,6 +191,27 @@ in
         #window { padding: 0 12px; }
         #cpu, #memory, #disk, #network, #battery, #clock, #tray { padding: 0 10px; }
         #battery.critical { color: #ff6b6b; }
+
+        /*TODO: use catppuccin colors for the slider*/
+        #pulseaudio-slider slider {
+            min-height: 0px;
+            min-width: 0px;
+            opacity: 0;
+            background-image: none;
+            border: none;
+            box-shadow: none;
+        }
+        #pulseaudio-slider trough {
+            min-height: 10px;
+            min-width: 80px;
+            border-radius: 5px;
+            background-color: black;
+        }
+        #pulseaudio-slider highlight {
+            min-width: 10px;
+            border-radius: 5px;
+            background-color: green;
+        }
       '';
     };
   };
