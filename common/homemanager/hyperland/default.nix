@@ -171,13 +171,13 @@ in
 
         exec-once = [
           # start kitty in the special kitty ws
-          # idk if this works
-          "[workspace kitty-ws silent] kitty"
+          # idk if this works (it does not...)
+          # "[workspace kitty-ws silent] kitty"
         ];
       };
 
       extraConfig = ''
-              # This is an example Hyprland config file.
+        # This is an example Hyprland config file.
         # Refer to the wiki for more information.
         # https://wiki.hypr.land/Configuring/
 
@@ -331,8 +331,8 @@ in
 
         # https://wiki.hypr.land/Configuring/Variables/#misc
         misc {
-            force_default_wallpaper = -1 # Set to 0 or 1 to disable the anime mascot wallpapers
-            disable_hyprland_logo = false # If true disables the random hyprland logo / anime girl background. :(
+            force_default_wallpaper = 0 # Set to 0 or 1 to disable the anime mascot wallpapers
+            disable_hyprland_logo = true # If true disables the random hyprland logo / anime girl background. :(
         }
 
 
