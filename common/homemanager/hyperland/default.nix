@@ -100,6 +100,13 @@ in
           "$mainMod, up, movefocus, u"
           "$mainMod, down, movefocus, d"
 
+          # tabbed groups https://wiki.hypr.land/Configuring/Dispatchers/#grouped-tabbed-windows
+          "$mainMod, w, togglegroup"
+          "$mainMod SHIFT, left, movewindoworgroup, l"
+          "$mainMod SHIFT, right, movewindoworgroup, r"
+          "$mainMod SHIFT, up, movewindoworgroup, u"
+          "$mainMod SHIFT, down, movewindoworgroup, d"
+
           # Special workspace (scratchpad-style)
           "$mainMod, S, togglespecialworkspace, magic"
           "$mainMod SHIFT, S, movetoworkspace, special:magic"
