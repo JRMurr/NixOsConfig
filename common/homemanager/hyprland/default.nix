@@ -191,6 +191,7 @@ in
           "$mainMod SHIFT,C,exec,hyprctl reload" # $mod+Shift+c: reload config
           "$mainMod SHIFT,R,exec,hyprctl reload" # i3 “restart” → reload hypr config
           "$mainMod SHIFT,E,exec,wlogout" # $mod+Shift+e: exit menu
+          "$mainMod SHIFT,ESCAPE,exec,rofi -show p -modi p:rofi-power-menu" # $mod+Shift+e: exit menu
           "$mainMod,F,fullscreen" # $mod+f: toggle fullscreen
           "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
           "$mainMod Control_L,M,exec,pavucontrol" # from your custom i3
