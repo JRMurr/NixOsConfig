@@ -124,6 +124,19 @@ let
         blueman = "bluetooth";
       };
     };
+
+    mpris = {
+      player = "YoutubeMusic";
+      format = "{status_icon} {dynamic}";
+      dynamic-order = [
+        "title"
+        "artist"
+      ];
+      status-icons = {
+        playing = "󰐊";
+        paused = "⏸";
+      };
+    };
   };
 
   simpleBar = commonBarOpts // {
@@ -132,6 +145,11 @@ let
 
   mainBar = commonBarOpts // {
     # eth-speed
+
+    modules-center = [
+      "mpris"
+    ];
+
     modules-right = [
       "cpu"
       # "memory"
