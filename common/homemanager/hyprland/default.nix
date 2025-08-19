@@ -297,6 +297,12 @@ in
           };
         };
 
+        group.groupbar = {
+          gradients = true;
+          "col.active" = "$base";
+          "col.inactive" = "$crust";
+        };
+
         animations = {
           enabled = true;
 
@@ -331,7 +337,6 @@ in
             "workspacesOut, 1, 1.94, almostLinear, fade"
             "zoomFactor,    1, 7,    quick"
           ];
-
         };
 
         # windowrule = [
