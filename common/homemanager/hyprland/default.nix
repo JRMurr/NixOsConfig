@@ -226,8 +226,8 @@ in
 
         # https://wiki.hypr.land/Configuring/Variables/#decoration
         decoration = {
-          rounding = 10;
-          rounding_power = 2;
+          rounding = 4;
+          rounding_power = 4;
 
           # Focused / unfocused opacity
           active_opacity = 1.0;
