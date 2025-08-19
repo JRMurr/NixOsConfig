@@ -7,6 +7,10 @@
 let
 
   gcfg = nixosConfig.myOptions.graphics;
+
+  themeCfg = nixosConfig.myOptions.theme;
+  baseColors = themeCfg.colors;
+
   monitors = gcfg.monitors;
   commonBarOpts = {
     layer = "top";
@@ -27,6 +31,10 @@ let
     #     };
     #   };
     # };
+
+    "hyprland/workspaces" = {
+      show-special = true;
+    };
 
     # --- date/time (two separate blocks with prefixes) ---
     "clock#date" = {
@@ -70,12 +78,12 @@ let
     };
 
     # --- ram ---
-    memory = {
-      interval = 3;
-      format = "󰍛 {free:0.1f}G/{total:0.1f}G"; # %gb_free%/%gb_total%
-      # format-icons = [ "󰍛" ];
-      # 󰍛
-    };
+    # memory = {
+    #   interval = 3;
+    #   format = "󰍛 {free:0.1f}G/{total:0.1f}G"; # %gb_free%/%gb_total%
+    #   # format-icons = [ "󰍛" ];
+    #   # 󰍛
+    # };
 
     # # --- ethernet status (enp10s0) ---
     # "network#eth" = {
@@ -126,7 +134,7 @@ let
     # eth-speed
     modules-right = [
       "cpu"
-      "memory"
+      # "memory"
       "disk#root"
       # "network#eth"
       # "network#eth_speed"
@@ -187,6 +195,7 @@ in
         #workspaces button.active { 
           background: @crust; /* rgba(255,255,255,0.10); */ 
           color: #fff;
+          border-bottom: 2px solid ${baseColors.accent};
         }
         #window { padding: 0 12px; }
         #cpu, #memory, #disk, #network, #battery, #clock, #tray { padding: 0 10px; }
