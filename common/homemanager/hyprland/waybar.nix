@@ -193,7 +193,7 @@ in
         target = "hyprland-session.target";
       };
 
-      # ://github.com/catppuccin/waybars
+      # github.com/catppuccin/waybars
       style = ''
         * {
           /* reference the color by using @color-name */
