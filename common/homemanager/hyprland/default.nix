@@ -86,11 +86,15 @@ let
 
     text = ''
       WALLPAPER_DIR="${wallpaper_dir}"
-      CURRENT_WALL=$(hyprctl hyprpaper listloaded)
       # Get the name of the focused monitor with hyprctl
       FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+
+      # NOTE: below is broken, list loaded does not seem to know what monitor has each wallpaper loaded
       # Get a random wallpaper that is not the current one
-      WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+      # CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+      # WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+
+      WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
 
       # Apply the selected wallpaper
       hyprctl hyprpaper reload "$FOCUSED_MONITOR","$WALLPAPER"
