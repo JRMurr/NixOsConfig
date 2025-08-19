@@ -72,6 +72,30 @@ let
   #   names: attrs: getAttrs names (mapAttrs (k: v: mkMerge v) (foldAttrs (n: a: [ n ] ++ a) [ ] attrs));
 
   monitorLines = map hyprMonitorLine monitors;
+
+  wallpaper_dir = "$HOME/Wallpapers/";
+
+  # https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/#using-this-keyword-to-randomize-your-wallpaper
+  randomWallpaper = pkgs.writeShellApplication {
+    name = "random-wallpaper";
+
+    runtimeInputs = [
+      pkgs.jq
+      config.wayland.windowManager.hyprland.finalPackage
+    ];
+
+    text = ''
+      WALLPAPER_DIR="${wallpaper_dir}"
+      CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+      # Get the name of the focused monitor with hyprctl
+      FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+      # Get a random wallpaper that is not the current one
+      WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+
+      # Apply the selected wallpaper
+      hyprctl hyprpaper reload "$FOCUSED_MONITOR","$WALLPAPER"
+    '';
+  };
 in
 
 {
@@ -89,6 +113,15 @@ in
     gtk.cursorTheme = {
       # package = pkgs.comixcursors.Opaque_Black;
       name = "Adwaita";
+    };
+
+    # wallpaper service
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = false;
+      };
     };
 
     wayland.windowManager.hyprland.enable = true;
@@ -148,6 +181,7 @@ in
           "$mainMod Control_L,M,exec,pavucontrol" # from your custom i3
           "$mainMod,F2,exec,firefox"
           "$mainMod Control_L, L,exec,loginctl lock-session"
+          "$mainMod SHIFT,w,exec,${pkgs.lib.getExe randomWallpaper}"
 
           # Workspaces 1–10
           "$mainMod,1,workspace,1"
