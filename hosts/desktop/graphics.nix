@@ -28,6 +28,7 @@
         workspace = 1;
         crtc = 0; # xrandr --verbose to get
         scale = "1.5";
+        wallpaper = "$HOME/Wallpapers/wallhaven-85yl61_3840x2160";
       }
       {
         # 4k portrait on left
@@ -44,6 +45,7 @@
         workspace = 2;
         crtc = 1;
         scale = "1.5";
+        wallpaper = "$HOME/Wallpapers/wallhaven-d8p8zg_2160x3840";
         # dpi = 150;
         # scale = {
         #   x = 1;

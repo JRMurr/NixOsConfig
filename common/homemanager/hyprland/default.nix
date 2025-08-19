@@ -73,7 +73,17 @@ let
 
   monitorLines = map hyprMonitorLine monitors;
 
-  wallpaper_dir = "$HOME/Wallpapers/";
+  setDefaultWallpaperExec = builtins.concatMap (
+    monitor:
+    if monitor.wallpaper == null then
+      [ ]
+    else
+      [
+        "hyprctl hyprpaper reload ${monitor.name}, ${monitor.wallpaper}"
+      ]
+  ) monitors;
+
+  wallpaperDir = "$HOME/Wallpapers/";
 
   # https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/#using-this-keyword-to-randomize-your-wallpaper
   randomWallpaper = pkgs.writeShellApplication {
@@ -85,7 +95,7 @@ let
     ];
 
     text = ''
-      WALLPAPER_DIR="${wallpaper_dir}"
+      WALLPAPER_DIR="${wallpaperDir}"
       # Get the name of the focused monitor with hyprctl
       FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
 
@@ -142,7 +152,8 @@ in
           # start kitty in the special kitty ws
           # idk if this works (it does not...)
           # "[workspace kitty-ws silent] kitty"
-        ];
+        ]
+        ++ setDefaultWallpaperExec;
 
         # init kitty-ws with a slightly transparent smaller terminal
         workspace = [
