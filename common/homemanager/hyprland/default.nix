@@ -158,15 +158,26 @@ in
           "hyprctl setcursor Adwaita 24"
           # start kitty in the special kitty ws
           # idk if this works (it does not...)
-          # "[workspace kitty-ws silent] kitty"
         ]
         ++ setDefaultWallpaperExec;
 
+        workspace = workspacePins;
+
+        debug = {
+          # disable_logs = false;
+        };
+      }
+      # kitty special workspace
+      {
         # init kitty-ws with a slightly transparent smaller terminal
         workspace = [
           "special:kitty-ws, on-created-empty:[float; size 90% 90%; opacity 0.95] kitty"
-        ]
-        ++ workspacePins;
+        ];
+
+        # # only kitty in the special workspace
+        # windowrule = [
+        #   "workspace previous, workspace:name:kitty-ws class:negative:kitty"
+        # ];
       }
       #####################
       ####### BINDS #######
