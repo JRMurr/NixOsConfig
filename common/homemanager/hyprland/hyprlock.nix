@@ -13,6 +13,7 @@ in
   config = lib.mkIf gcfg.enable {
     services.hypridle = {
       enable = true;
+      systemdTarget = "hyprland-session.target";
       settings = {
         general = {
           lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.

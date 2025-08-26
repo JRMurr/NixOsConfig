@@ -18,5 +18,10 @@
       }
     }
   },
-  "cSpell.words": ["monitorv", "polybar"]
+  "cSpell.words": [
+    "Adwaita",
+    "hyprpaper",
+    "monitorv",
+    "polybar"
+  ]
 }

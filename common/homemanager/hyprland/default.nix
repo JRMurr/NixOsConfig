@@ -138,6 +138,13 @@ in
       };
     };
 
+    # TODO: upstream this, hyprpaper start after hyprland
+    # make configurable like hypridle
+    systemd.user.services.hyprpaper.Unit = {
+      After = lib.mkForce [ "hyprland-session.target" ];
+      PartOf = lib.mkForce [ "hyprland-session.target" ];
+    };
+
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.settings = lib.mkMerge [
       {
