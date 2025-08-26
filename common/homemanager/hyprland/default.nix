@@ -63,7 +63,7 @@ let
     { output = name; } // cfg;
 
   workspacePins = lib.concatMap (
-    m: lib.optional (m ? workspace) "workspace = ${toString m.workspace}, monitor:${m.name or ""}"
+    m: lib.optional (m ? workspace) "${toString m.workspace}, monitor:${m.name}"
   ) monitors;
 
   # https://gist.github.com/udf/4d9301bdc02ab38439fd64fbda06ea43#planet-status-h4xed
@@ -165,7 +165,8 @@ in
         # init kitty-ws with a slightly transparent smaller terminal
         workspace = [
           "special:kitty-ws, on-created-empty:[float; size 90% 90%; opacity 0.95] kitty"
-        ];
+        ]
+        ++ workspacePins;
       }
       #####################
       ####### BINDS #######
