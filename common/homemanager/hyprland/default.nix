@@ -110,6 +110,37 @@ let
       hyprctl hyprpaper reload "$FOCUSED_MONITOR","$WALLPAPER"
     '';
   };
+
+  kittyWorkspace = "kitty-ws";
+
+  # https://www.reddit.com/r/hyprland/comments/14pzqi6/is_it_possible_to_limit_only_one_window_client_on/lgh8b2u/
+  limitWorkspace = pkgs.writeShellApplication {
+    name = "limitWorkspace";
+
+    runtimeInputs = [
+      config.wayland.windowManager.hyprland.finalPackage
+      pkgs.gawk
+      pkgs.socat
+    ];
+
+    # lints annoy me...
+    checkPhase = '''';
+
+    text = ''
+      handle() {
+        line=$1
+        if [[ "$line" = openwindow* ]]; then
+          read -r window_address workspace window_class window_title <<<$(echo "$line" | awk -F "[>,]" '{print $3,$4,$5,$6}')
+          if [[ "$workspace" == special:${kittyWorkspace} && "$window_class" != ${kittyWorkspace} ]]; then
+            hyprctl dispatch movetoworkspace e+0,address:0x''${window_address}
+          fi
+        fi
+      }
+
+      socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+    '';
+  };
+
 in
 
 {
@@ -156,6 +187,7 @@ in
 
         exec-once = [
           "hyprctl setcursor Adwaita 24"
+          "${pkgs.lib.getExe limitWorkspace}"
           # start kitty in the special kitty ws
           # idk if this works (it does not...)
         ]
@@ -171,7 +203,7 @@ in
       {
         # init kitty-ws with a slightly transparent smaller terminal
         workspace = [
-          "special:kitty-ws, on-created-empty:[float; size 90% 90%; opacity 0.95] kitty"
+          "special:${kittyWorkspace}, on-created-empty:[float; size 90% 90%; opacity 0.95] kitty --class ${kittyWorkspace}"
         ];
 
         # # only kitty in the special workspace
@@ -201,7 +233,7 @@ in
           "$mainMod SHIFT, down, movewindoworgroup, d"
 
           # kitty special workspace
-          "$mainMod, n, togglespecialworkspace, kitty-ws"
+          "$mainMod, n, togglespecialworkspace, ${kittyWorkspace}"
           # "$mainMod SHIFT, n, movetoworkspace, special:kitty-ws"
 
           "$mainMod,RETURN,exec,kitty" # $mod+Enter: terminal
