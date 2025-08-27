@@ -187,7 +187,7 @@ in
 
         exec-once = [
           "hyprctl setcursor Adwaita 24"
-          "${pkgs.lib.getExe limitWorkspace}"
+          "${pkgs.lib.getExe limitWorkspace}" # TODO: this does not seem to trigger after a rebuild???
           # start kitty in the special kitty ws
           # idk if this works (it does not...)
         ]
