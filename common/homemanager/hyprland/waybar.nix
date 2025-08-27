@@ -133,8 +133,8 @@ let
         "artist"
       ];
       status-icons = {
-        playing = "󰐊";
-        paused = "⏸";
+        paused = "󰐊";
+        playing = "⏸";
       };
     };
   };
