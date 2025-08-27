@@ -199,6 +199,15 @@ in
           # disable_logs = false;
         };
       }
+      # float windows that make sense t
+      {
+        #  hyprctl clients
+        #  to get all open windows
+        windowrule = [
+          "float, class:org.pulseaudio.pavucontrol"
+          "float, title:(Open File)"
+        ];
+      }
       # kitty special workspace
       {
         # init kitty-ws with a slightly transparent smaller terminal
