@@ -71,7 +71,7 @@ in
     };
 
     programs.rofi = {
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi;
       enable = true;
       theme = myTheme;
       terminal = "${pkgs.kitty}/bin/kitty";
