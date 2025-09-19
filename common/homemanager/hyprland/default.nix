@@ -146,7 +146,8 @@ in
 {
   imports = [
     ./waybar.nix
-    ./hyprlock.nix
+    # ./hyprlock.nix
+    ./swaylock.nix
   ];
   config = lib.mkIf gcfg.enable {
 

@@ -25,7 +25,7 @@
     ./xserver.nix
     # ./plymouth.nix
   ];
-
+  security.pam.services.swaylock = { };
   # nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
