@@ -18,5 +18,13 @@
       }
     }
   },
-  "cSpell.words": ["Adwaita", "hyprpaper", "monitorv", "Pavucontrol", "polybar"]
+  "cSpell.words": [
+    "Adwaita",
+    "hyprpaper",
+    "Lanzaboote",
+    "monitorv",
+    "Pavucontrol",
+    "polybar",
+    "sbctl"
+  ]
 }

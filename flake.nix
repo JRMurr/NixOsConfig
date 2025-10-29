@@ -59,6 +59,11 @@
       url = "github:inclyc/flake-compat";
       flake = false;
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -144,7 +149,7 @@
       templates = import ./templates { };
 
       nixosConfigurations = {
-        desktop = mkSystem [ ./hosts/desktop ];
+        desktop = mkSystem [  inputs.lanzaboote.nixosModules.lanzaboote ./hosts/desktop ];
         wsl = mkSystem [
           wsl.nixosModules.wsl
           ./hosts/wsl

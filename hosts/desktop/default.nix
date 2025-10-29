@@ -18,10 +18,23 @@
 
   boot.loader = {
     systemd-boot = {
-      enable = true;
+       enable = true;
+      # using Lanzaboote
+      # enable = pkgs.lib.mkForce false;
       consoleMode = "auto";
     };
     efi.canTouchEfiVariables = true;
+  };
+
+  # boot.lanzaboote = {
+  #   enable = true;
+  #   pkiBundle = "/var/lib/sbctl";
+  # };
+
+  environment = {
+    systemPackages = with pkgs; [
+      sbctl
+    ];
   };
 
   # Set your time zone.
@@ -83,10 +96,6 @@
   #   '';
   # };
 
-  # environment = {
-  #   systemPackages = with pkgs; [
 
-  #   ];
-  # };
   virtualisation.docker.enable = true;
 }
