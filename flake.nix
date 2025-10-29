@@ -144,7 +144,7 @@
       templates = import ./templates { };
 
       nixosConfigurations = {
-        nixos-john = mkSystem [ ./hosts/desktop ];
+        desktop = mkSystem [ ./hosts/desktop ];
         wsl = mkSystem [
           wsl.nixosModules.wsl
           ./hosts/wsl

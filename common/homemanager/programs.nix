@@ -29,7 +29,7 @@ let
   ];
 
   graphical = pkgs.lib.optionals gcfg.enable [
-    ghostty
+    # ghostty
   ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142

@@ -113,7 +113,7 @@ in
       let
         hosts = [
           "framework"
-          "nixos-john"
+          "desktop"
           "thicc-server"
           "graphicalIso"
         ];
