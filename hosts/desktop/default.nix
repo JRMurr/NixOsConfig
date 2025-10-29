@@ -18,18 +18,17 @@
 
   boot.loader = {
     systemd-boot = {
-       enable = true;
       # using Lanzaboote
-      # enable = pkgs.lib.mkForce false;
+      enable = pkgs.lib.mkForce false;
       consoleMode = "auto";
     };
     efi.canTouchEfiVariables = true;
   };
 
-  # boot.lanzaboote = {
-  #   enable = true;
-  #   pkiBundle = "/var/lib/sbctl";
-  # };
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+  };
 
   environment = {
     systemPackages = with pkgs; [
