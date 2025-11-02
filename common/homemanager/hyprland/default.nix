@@ -205,7 +205,9 @@ in
         #  hyprctl clients
         #  to get all open windows
         windowrule = [
-          "float, size 1100 800, center, class:org.pulseaudio.pavucontrol" # TODO: does not look like the size is being set
+          "float, class:org.pulseaudio.pavucontrol"
+          "size 1100 1100, class:org.pulseaudio.pavucontrol"
+          "center, class:org.pulseaudio.pavucontrol"
           "float, title:(Open File)"
         ];
       }
