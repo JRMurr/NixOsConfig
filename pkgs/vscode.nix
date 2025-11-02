@@ -65,6 +65,7 @@ let
   ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
     aaron-bond.better-comments
+    arktypeio.arkdark
     bradlc.vscode-tailwindcss
     eamodio.gitlens
     ianic.zig-language-extras
@@ -101,13 +102,14 @@ let
       esbenp.prettier-vscode
       github.vscode-github-actions
       haskell.haskell
-      justusadam.language-haskell
       jnoortheen.nix-ide
+      justusadam.language-haskell
       ms-azuretools.vscode-docker
       ms-python.python
       ms-vscode-remote.remote-ssh
       ms-vscode.cpptools
       rust-lang.rust-analyzer
+      svelte.svelte-vscode
       vadimcn.vscode-lldb
       yzhang.markdown-all-in-one
     ]

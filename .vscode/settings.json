@@ -20,11 +20,22 @@
   },
   "cSpell.words": [
     "Adwaita",
+    "hyprctl",
     "hyprpaper",
+    "killactive",
     "Lanzaboote",
     "monitorv",
+    "movefocus",
+    "movetoworkspace",
+    "movewindoworgroup",
     "Pavucontrol",
     "polybar",
-    "sbctl"
+    "pulseaudio",
+    "rofi",
+    "sbctl",
+    "togglefloating",
+    "togglegroup",
+    "togglespecialworkspace",
+    "togglesplit"
   ]
 }

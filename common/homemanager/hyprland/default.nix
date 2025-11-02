@@ -205,7 +205,7 @@ in
         #  hyprctl clients
         #  to get all open windows
         windowrule = [
-          "float, class:org.pulseaudio.pavucontrol"
+          "float, size 1100 800, center, class:org.pulseaudio.pavucontrol" # TODO: does not look like the size is being set
           "float, title:(Open File)"
         ];
       }
@@ -255,7 +255,7 @@ in
           "$mainMod SHIFT,ESCAPE,exec,rofi -show p -modi p:rofi-power-menu" # $mod+Shift+e: exit menu
           "$mainMod,F,fullscreen" # $mod+f: toggle fullscreen
           "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
-          "$mainMod Control_L,M,exec,pavucontrol" # from your custom i3
+          "$mainMod Control_L,M,exec,pavucontrol"
           "$mainMod,F2,exec,firefox"
           "$mainMod Control_L, L,exec,loginctl lock-session"
           "$mainMod SHIFT,w,exec,${pkgs.lib.getExe randomWallpaper}"
