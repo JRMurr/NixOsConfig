@@ -66,7 +66,6 @@ in
         nurl
         ouch # file decompresser
         ripgrep
-        slumber # TODO: upstream, from my overlay
         xclip
         youtube-music
       ]);

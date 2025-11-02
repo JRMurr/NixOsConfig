@@ -16,6 +16,7 @@
     ./programs.nix
     ./redshift.nix
     ./rofi.nix
+    ./slumber
     ./spicetify.nix
     ./starship.nix
     ./theme.nix

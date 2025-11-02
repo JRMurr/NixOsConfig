@@ -64,18 +64,14 @@ let
     # wayou.vscode-todo-highlight
   ];
   marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
+
     aaron-bond.better-comments
     arktypeio.arkdark
     bradlc.vscode-tailwindcss
     eamodio.gitlens
     ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
-
-    # TODO: this is sad from unfree even though it should be allowed
-    # best guess is this getting pulled from normal nixpkgs somehow but since its pulled from a flake my nixpkgs settings
-    # is not getting passed through?
-    # ms-vscode-remote.remote-ssh-edit
-
+    redhat.vscode-yaml
     rreverser.llvm
     skellock.just
     skyapps.fish-vscode
