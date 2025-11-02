@@ -54,17 +54,20 @@ in
     ++
       # batExtras ++
       (with pkgs; [
-        bottom
-        htop
-        cachix
-        nurl
-        dive
-        xclip
+
         # lastpass-cli
         # tailspin
-        ouch # file decompresser
         bacon # rust background checker
+        bottom
+        cachix
+        dive
+        htop
+        nix-init
+        nurl
+        ouch # file decompresser
         ripgrep
+        slumber # TODO: upstream, from my overlay
+        xclip
         youtube-music
       ]);
 

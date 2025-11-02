@@ -10,4 +10,6 @@
   glance = pkgs.callPackage ./glance.nix { buildGoModule = pkgs.buildGo122Module; };
 
   polybar-spotify = pkgs.callPackage ./polybar-spotify { player = "YoutubeMusic"; };
+
+  slumber = pkgs.callPackage ./slumber.nix { };
 }
