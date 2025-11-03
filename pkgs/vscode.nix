@@ -80,6 +80,7 @@ let
     thebearingedge.vscode-sql-lit
     thenuprojectcontributors.vscode-nushell-lang
     unifiedjs.vscode-mdx
+    vitest.explorer
     vivaxy.vscode-conventional-commits
     webfreak.debug
     ziglang.vscode-zig
