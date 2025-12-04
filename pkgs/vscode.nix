@@ -71,6 +71,7 @@ let
     eamodio.gitlens
     ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
+    openai.chatgpt
     redhat.vscode-yaml
     rreverser.llvm
     skellock.just
@@ -83,7 +84,7 @@ let
     vitest.explorer
     vivaxy.vscode-conventional-commits
     webfreak.debug
-    ziglang.vscode-zig
+
     # znck.grammarly
   ];
 
@@ -105,10 +106,12 @@ let
       ms-python.python
       ms-vscode-remote.remote-ssh
       ms-vscode.cpptools
+      myriad-dreamin.tinymist
       rust-lang.rust-analyzer
       svelte.svelte-vscode
       vadimcn.vscode-lldb
       yzhang.markdown-all-in-one
+      ziglang.vscode-zig
     ]
   );
 

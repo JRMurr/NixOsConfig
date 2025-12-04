@@ -15,6 +15,7 @@
       allowedTCPPorts = [
         57621 # for spotify
         8050 # for protohackers
+        5173 # sveltekit local app
       ];
     };
   };

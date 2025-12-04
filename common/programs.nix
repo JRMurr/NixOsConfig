@@ -50,7 +50,6 @@ let
     gimp
   ];
   messaging = [
-    tdesktop # telegram
     discord
     zulip
   ];

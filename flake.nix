@@ -60,7 +60,7 @@
       flake = false;
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v0.4.3";
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -149,7 +149,10 @@
       templates = import ./templates { };
 
       nixosConfigurations = {
-        desktop = mkSystem [  inputs.lanzaboote.nixosModules.lanzaboote ./hosts/desktop ];
+        desktop = mkSystem [
+          inputs.lanzaboote.nixosModules.lanzaboote
+          ./hosts/desktop
+        ];
         wsl = mkSystem [
           wsl.nixosModules.wsl
           ./hosts/wsl
