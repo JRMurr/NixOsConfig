@@ -21,6 +21,9 @@
   "cSpell.words": [
     "Adwaita",
     "hyprctl",
+    "hypridle",
+    "hyprlock",
+    "hyprpanel",
     "hyprpaper",
     "killactive",
     "Lanzaboote",
@@ -28,14 +31,17 @@
     "movefocus",
     "movetoworkspace",
     "movewindoworgroup",
+    "openwindow",
     "Pavucontrol",
     "polybar",
     "pulseaudio",
     "rofi",
     "sbctl",
+    "swaylock",
     "togglefloating",
     "togglegroup",
     "togglespecialworkspace",
-    "togglesplit"
+    "togglesplit",
+    "waybar"
   ]
 }

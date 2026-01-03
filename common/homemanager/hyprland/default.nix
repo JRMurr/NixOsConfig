@@ -145,7 +145,8 @@ in
 
 {
   imports = [
-    ./waybar.nix
+    # ./waybar.nix
+    ./hyprpanel.nix
     # ./hyprlock.nix
     ./swaylock.nix
   ];

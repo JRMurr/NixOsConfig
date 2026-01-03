@@ -3,7 +3,7 @@
   imports = [
     ./cargo.nix
     ./direnv.nix
-    ./dunst.nix
+    # ./dunst.nix
     ./fish
     ./git
     ./gitui.nix
