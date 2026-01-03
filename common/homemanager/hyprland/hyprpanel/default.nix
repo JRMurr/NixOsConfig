@@ -53,6 +53,7 @@ let
     {
       inherit name value;
     };
+
 in
 {
 
@@ -63,6 +64,7 @@ in
   };
 
   programs.hyprpanel = {
+    package = pkgs.callPackage ./patched-panel.nix { };
     enable = true;
     # Configure and theme almost all options from the GUI.
     # See 'https://hyprpanel.com/configuration/settings.html'.
@@ -71,11 +73,17 @@ in
     # https://github.com/Jas-SinghFSU/HyprPanel/tree/master/src/components/settings/pages/config
 
     settings = {
-
-      bar.layouts = lib.listToAttrs (map monitorToBarCfg monitors);
-
-      bar.launcher.autoDetectIcon = true;
-      bar.workspaces.show_icons = true;
+      scalingPriority = "hyprland";
+      bar = {
+        layouts = lib.listToAttrs (map monitorToBarCfg monitors);
+        launcher.autoDetectIcon = true;
+        workspaces = {
+          monitorSpecific = true;
+          show_numbered = true;
+          show_icons = false;
+          ignored = "-.*"; # hack to hide the special kitty workspace. It seems to get a negative number?
+        };
+      };
 
       menus.clock = {
         time = {
@@ -91,7 +99,7 @@ in
       };
 
       menus.dashboard.directories.enabled = false;
-      menus.dashboard.stats.enable_gpu = false; # TODO:....
+      menus.dashboard.stats.enable_gpu = false; # TODO: still doesnt work with cuda support in the pkg
 
       # theme.bar.transparent = true;
 
