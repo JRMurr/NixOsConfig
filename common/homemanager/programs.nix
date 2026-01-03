@@ -29,6 +29,7 @@ let
   ];
 
   graphical = pkgs.lib.optionals gcfg.enable [
+    pkgs.pear-desktop # youtube music
     # ghostty
   ];
 
@@ -67,7 +68,6 @@ in
         ouch # file decompresser
         ripgrep
         xclip
-        youtube-music
       ]);
 
   programs = {
