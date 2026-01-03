@@ -97,6 +97,8 @@ in
 
     # can find the keys by looking at the settings dialog src
     # https://github.com/Jas-SinghFSU/HyprPanel/tree/master/src/components/settings/pages/config
+
+    # the patched hyprpanel write to /tmp/hyprpanel-write-attempts on config changes
     settings = lib.mkMerge [
       themeJson
       {
@@ -104,7 +106,8 @@ in
         bar = {
           layouts = lib.listToAttrs (map monitorToBarCfg monitors);
           launcher = {
-            autoDetectIcon = true;
+            icon = "JR";
+            # autoDetectIcon = true;
           };
           workspaces = {
             monitorSpecific = true;
