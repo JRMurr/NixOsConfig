@@ -11,12 +11,12 @@ let
     with pkgs;
     stdenv.mkDerivation rec {
       pname = "rofi-themes-collection";
-      version = "a1bfac5627cc01183fc5e0ff266f1528bd76a8d2";
+      version = "ec731cef79d39fc7ae12ef2a70a2a0dd384f9730";
       src = fetchFromGitHub {
         owner = "newmanls";
         repo = pname;
         rev = version;
-        hash = "sha256-0/0jsoxEU93GdUPbvAbu2Alv47Uwom3zDzjHcm2aPxY=";
+        hash = "sha256-96wSyOp++1nXomnl8rbX5vMzaqRhTi/N7FUq6y0ukS8=";
       };
       buildPhase = "";
       installPhase = ''
@@ -32,7 +32,7 @@ let
       mkLiteral = config.lib.formats.rasi.mkLiteral;
     in
     {
-      # "@import" = getRofiTheme "rounded-blue-dark";
+      "@import" = getRofiTheme "rounded-blue-dark";
       "#inputbar" = {
         children = map mkLiteral [
           # "prompt"
@@ -67,7 +67,7 @@ in
     ];
 
     catppuccin.rofi = {
-      enable = true;
+      enable = false;
     };
 
     programs.rofi = {
