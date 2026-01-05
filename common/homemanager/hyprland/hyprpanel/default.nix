@@ -102,6 +102,7 @@ in
     settings = lib.mkMerge [
       themeJson
       {
+        theme.bar.scaling = 75;
         scalingPriority = "hyprland";
         bar = {
           layouts = lib.listToAttrs (map monitorToBarCfg monitors);
