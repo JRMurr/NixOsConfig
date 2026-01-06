@@ -203,15 +203,19 @@ in
       }
       # float windows that make sense t
       {
-        #  hyprctl clients
-        #  to get all open windows
+        # hyprctl clients
+        # to get all open windows
         windowrule = [
-          "float, class:org.pulseaudio.pavucontrol"
-          "size 1100 1100, class:org.pulseaudio.pavucontrol"
-          "center, class:org.pulseaudio.pavucontrol"
-          "float, title:(Open File)"
+          # pavucontrol
+          "match:class org\\.pulseaudio\\.pavucontrol, float on"
+          "match:class org\\.pulseaudio\\.pavucontrol, size 1100 1100"
+          "match:class org\\.pulseaudio\\.pavucontrol, center on"
+
+          # file picker dialogs
+          "match:title (Open File), float on"
         ];
       }
+
       # kitty special workspace
       {
         # init kitty-ws with a slightly transparent smaller terminal
@@ -415,11 +419,15 @@ in
           "f[1]s[false], gapsout:0, gapsin:0"
         ];
         windowrule = [
-          "bordersize 0, floating:0, onworkspace:w[tv1]s[false]"
-          "rounding 0, floating:0, onworkspace:w[tv1]s[false]"
-          "bordersize 0, floating:0, onworkspace:f[1]s[false]"
-          "rounding 0, floating:0, onworkspace:f[1]s[false]"
+          # Workspace w[tv1]s[false]
+          "border_size 0, match:float 0, match:workspace w[tv1]s[false]"
+          "rounding 0, match:float 0, match:workspace w[tv1]s[false]"
+
+          # Workspace f[1]s[false]
+          "border_size 0, match:float 0, match:workspace f[1]s[false]"
+          "rounding 0, match:float 0, match:workspace f[1]s[false]"
         ];
+
       }
 
     ];
@@ -530,11 +538,12 @@ in
       # Example windowrule
       # windowrule = float,class:^(kitty)$,title:^(kitty)$
 
-      # Ignore maximize requests from apps. You'll probably like this.
-      windowrule = suppressevent maximize, class:.*
+      # Ignore maximize requests from apps.
+      windowrule = suppress_event maximize, match:class .*
+
 
       # Fix some dragging issues with XWayland
-      windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+      windowrule = no_focus 1, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0
     '';
   };
 }
