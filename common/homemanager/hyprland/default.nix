@@ -218,15 +218,16 @@ in
 
       # kitty special workspace
       {
-        # init kitty-ws with a slightly transparent smaller terminal
+        # Create the special workspace and spawn kitty in it
         workspace = [
-          "special:${kittyWorkspace}, on-created-empty:[float; size 90% 90%; opacity 0.95] kitty --class ${kittyWorkspace}"
+          "special:${kittyWorkspace}, on-created-empty:kitty --class ${kittyWorkspace}"
         ];
 
-        # # only kitty in the special workspace
-        # windowrule = [
-        #   "workspace previous, workspace:name:kitty-ws class:negative:kitty"
-        # ];
+        # Make that kitty a floating 90% x 90% slightly transparent window *on that special workspace*
+        windowrule = [
+          "match:class ^${kittyWorkspace}$, match:workspace special:${kittyWorkspace}, float on, center on, size (monitor_w*0.9) (monitor_h*0.9), opacity 0.95"
+        ];
+
       }
       #####################
       ####### BINDS #######
