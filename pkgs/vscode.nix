@@ -71,7 +71,6 @@ let
     eamodio.gitlens
     ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
-    openai.chatgpt
     redhat.vscode-yaml
     rreverser.llvm
     skellock.just
