@@ -64,6 +64,8 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
   outputs =
     {
@@ -72,12 +74,14 @@
       home-manager,
       wsl,
       catppuccin,
+      claude-code,
       ...
     }@inputs:
     let
       overlays = [
         inputs.attic.overlays.default
         inputs.agenix.overlays.default
+        claude-code.overlays.default
         (import ./pkgs/overlay.nix)
         # TODO: nil and nurl
       ];

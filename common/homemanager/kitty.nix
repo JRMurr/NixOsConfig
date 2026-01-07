@@ -13,6 +13,9 @@ in
     programs.kitty = {
       enable = true;
       shellIntegration.enableFishIntegration = true;
+      keybindings = {
+        "shift+enter" = "send_text all \\e\\n";
+      };
       settings = {
         font_family = "FiraCode Nerd Font";
         bold_font = "auto";
