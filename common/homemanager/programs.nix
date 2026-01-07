@@ -10,12 +10,12 @@ let
 
   # sysVersion = nixosConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";
-  # getFromInput = name: inputs.${name}.packages.${pkgs.system}.default;
-  nurl = inputs.nurl.packages.${pkgs.system}.default;
-  nixd = inputs.nixd.packages.${pkgs.system}.default;
-  nil = inputs.nil.packages.${pkgs.system}.default;
+  # getFromInput = name: inputs.${name}.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  nurl = inputs.nurl.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  nixd = inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  nil = inputs.nil.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-  ghostty = inputs.ghostty.packages.${pkgs.system}.default;
+  ghostty = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   # nurl = getFromInput "nurl";
   # nixd = getFromInput "nurl";

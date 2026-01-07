@@ -114,7 +114,7 @@ let
     ]
   );
 
-  catppucin = inputs.catppuccin.packages.${pkgs.system}.vscode.override {
+  catppucin = inputs.catppuccin.packages.${pkgs.stdenv.hostPlatform.system}.vscode.override {
     catppuccinOptions = {
       accent = "mauve";
       boldKeywords = true;

@@ -4,10 +4,10 @@
   inputs,
   ...
 }:
-# let attic = inputs.attic.packages.${pkgs.system}.default;
+# let attic = inputs.attic.packages.${pkgs.stdenv.hostPlatform.system}.default;
 # in
 let
-  nix-inspect = inputs.nix-inspect.packages.${pkgs.system}.default;
+  nix-inspect = inputs.nix-inspect.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 # TODO: move some of this to homemnager
 let
