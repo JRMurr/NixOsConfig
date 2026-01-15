@@ -73,7 +73,7 @@ in
               drawerEnabled = false;
             }
             {
-              formatHorizontal = "HH:mm";
+              formatHorizontal = "h:mm AP";
               formatVertical = "HH mm";
               id = "Clock";
               useMonospacedFont = true;
