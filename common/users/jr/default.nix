@@ -3,12 +3,14 @@ let
   catppuccin = inputs.catppuccin.homeModules.catppuccin;
   spicetify = inputs.spicetify-nix.homeManagerModules.default;
   agenix = inputs.agenix.homeManagerModules.default;
+  noctalia = inputs.noctalia.homeModules.default;
 in
 {
   imports = [
     catppuccin
     spicetify
     agenix
+    noctalia
     ../../homemanager
   ];
 

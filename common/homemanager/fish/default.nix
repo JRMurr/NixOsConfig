@@ -33,6 +33,7 @@ let
     bass
     done
   ];
+
 in
 {
 
@@ -61,5 +62,6 @@ in
     target = "./fish_plugins";
   };
 
-  xdg.configFile."fish/completions/nix.fish".source = "${pkgs.nix}/share/fish/vendor_completions.d/nix.fish";
+  xdg.configFile."fish/completions/nix.fish".source =
+    "${pkgs.nix}/share/fish/vendor_completions.d/nix.fish";
 }

@@ -124,7 +124,7 @@ let
     ];
 
     # lints annoy me...
-    checkPhase = '''';
+    checkPhase = "";
 
     text = ''
       handle() {
@@ -146,7 +146,7 @@ in
 {
   imports = [
     # ./waybar.nix
-    ./hyprpanel
+    # ./hyprpanel
     # ./hyprlock.nix
     ./swaylock.nix
   ];
@@ -190,8 +190,7 @@ in
         exec-once = [
           "hyprctl setcursor Adwaita 24"
           "${pkgs.lib.getExe limitWorkspace}" # TODO: this does not seem to trigger after a rebuild???
-          # start kitty in the special kitty ws
-          # idk if this works (it does not...)
+          # "noctalia-shell"
         ]
         ++ setDefaultWallpaperExec;
 
@@ -200,6 +199,14 @@ in
         debug = {
           # disable_logs = false;
         };
+
+        # spawn-at-startup = [
+        #   {
+        #     command = [
+        #       "noctalia-shell"
+        #     ];
+        #   }
+        # ];
       }
       # float windows that make sense t
       {
