@@ -6,12 +6,15 @@ let
 
     checkPhase = "";
     runtimeInputs = [
-      pkgs.colordiff
-      pkgs.jq
+      # pkgs.colordiff
+      # pkgs.jq
+      pkgs.json-diff
     ];
 
+    #       diff -u <(jq -S . ~/.config/noctalia/settings.json) <(jq -S . ~/.config/noctalia/gui-settings.json) | colordiff
+
     text = ''
-      diff -u <(jq -S . ~/.config/noctalia/settings.json) <(jq -S . ~/.config/noctalia/gui-settings.json) | colordiff
+      json-diff  ~/.config/noctalia/settings.json ~/.config/noctalia/gui-settings.json
     '';
   };
 
@@ -25,10 +28,15 @@ in
     systemd.enable = true;
 
     settings = {
-      # configure noctalia here
+      ui = {
+        fontDefault = "FiraCode Nerd Font";
+        fontFixed = "FiraCode Nerd Font Mono";
+      };
       bar = {
         # density = "compact";
         position = "top";
+        useSeparateOpacity = true;
+        backgroundOpacity = 0.36;
         # showCapsule = false;
         widgets = {
           left = [
@@ -37,24 +45,32 @@ in
               useDistroLogo = true;
             }
             {
+              id = "Workspace";
+              hideUnoccupied = false;
+              labelMode = "index";
+            }
+
+          ];
+          center = [
+            {
+              id = "MediaMini";
+            }
+          ];
+          right = [
+            {
               id = "WiFi";
             }
             {
               id = "Bluetooth";
             }
-          ];
-          center = [
-            {
-              hideUnoccupied = false;
-              id = "Workspace";
-              labelMode = "index";
-            }
-          ];
-          right = [
             {
               alwaysShowPercentage = false;
               id = "Battery";
               warningThreshold = 30;
+            }
+            {
+              id = "Tray";
+              drawerEnabled = false;
             }
             {
               formatHorizontal = "HH:mm";
@@ -66,15 +82,16 @@ in
           ];
         };
       };
-      # colorSchemes.predefinedScheme = "Monochrome";
+      colorSchemes.predefinedScheme = "Catppuccin";
       general = {
         # avatarImage = "/home/drfoobar/.face";
         radiusRatio = 0.2;
       };
-      # location = {
-      #   monthBeforeDay = true;
-      #   name = "Marseille, France";
-      # };
+      location = {
+        monthBeforeDay = true;
+        name = "DC";
+        useFahrenheit = true;
+      };
     };
     # this may also be a string or a path to a JSON file.
   };
