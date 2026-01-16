@@ -13,7 +13,7 @@
     ./kitty.nix
     ./nushell
     # ./polybar
-    ./noctalia.nix
+    # ./noctalia.nix
     ./programs.nix
     ./redshift.nix
     ./rofi.nix
