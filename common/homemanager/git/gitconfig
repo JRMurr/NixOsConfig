@@ -46,7 +46,8 @@ forget = "update-index --skip-worktree"
 remember = "update-index --no-skip-worktree"
 destroy = !"git push -d origin $@ && git branch -d"
 gone = !"git remote prune origin; git branch --merged | grep -Ev \"(\\*|master)\" | xargs git branch -d"
-l = log --first-parent --oneline --decorate --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+l = log --first-parent --oneline --decorate
+lo = log --first-parent --format="%C(yellow bold)%h %C(blue)%an %C(reset)%s"
 lg = log --oneline --decorate --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
 # lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
 # Rebase workflow https://softwaredoug.com/blog/2022/11/09/idiot-proof-git-aliases.html

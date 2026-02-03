@@ -22,6 +22,10 @@
       #   error_symbol = "[λ](bold #ff5555)";
       # };
 
+      git_status = {
+        stashed = "";
+      };
+
       hg_branch = {
         disabled = false;
       };
