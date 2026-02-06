@@ -13,6 +13,8 @@ in
     programs.kitty = {
       enable = true;
       shellIntegration.enableFishIntegration = true;
+      shellIntegration.enableBashIntegration = true;
+      enableGitIntegration = true;
       keybindings = {
         "shift+enter" = "send_text all \\e\\n";
       };

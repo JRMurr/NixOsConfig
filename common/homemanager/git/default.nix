@@ -24,7 +24,7 @@ in
         can = "commit --amend --no-edit";
         co = "checkout";
         cob = "checkout -b";
-        d = "diff";
+        d = "difftool";
         r = "rebase";
         ri = "rebase -i";
         s = "status";
@@ -55,16 +55,6 @@ in
       };
       gpg.format = "ssh";
       core.editor = "code --wait";
-      diff = {
-        tool = "kitty";
-        guitool = "kitty.gui";
-      };
-      difftool = {
-        prompt = false;
-        trustExitCode = true;
-        kitty.cmd = "kitten diff $LOCAL $REMOTE";
-        "kitty.gui".cmd = "kitten diff $LOCAL $REMOTE";
-      };
       pager.branch = false;
       pull.ff = "only";
       push.autoSetupRemote = true;

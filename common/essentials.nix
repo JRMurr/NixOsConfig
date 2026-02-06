@@ -13,6 +13,5 @@
   environment.systemPackages = with pkgs; [
     vim
     mkpasswd
-    htop
   ];
 }

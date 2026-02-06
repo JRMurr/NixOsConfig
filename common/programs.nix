@@ -25,10 +25,7 @@ let
   cliPrograms = [
     gitpkg
     gh
-    htop
-    vim
     wget
-    mkpasswd
     lsof
     unzip
     # asciinema

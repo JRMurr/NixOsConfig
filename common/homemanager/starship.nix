@@ -4,6 +4,7 @@
     enable = true;
     enableFishIntegration = true;
     enableBashIntegration = true;
+    enableNushellIntegration = true;
     # enableTransience = true;
     settings = {
       # stolen from https://draculatheme.com/starship dont think its needed

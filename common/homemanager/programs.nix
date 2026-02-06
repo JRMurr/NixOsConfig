@@ -62,7 +62,6 @@ in
         bottom
         cachix
         dive
-        htop
         nix-init
         nurl
         ouch # file decompresser
@@ -74,20 +73,27 @@ in
     zoxide = {
       enable = true;
       enableFishIntegration = true;
+      enableBashIntegration = true;
+      enableNushellIntegration = true;
     };
 
     fzf = {
       enable = true;
       enableFishIntegration = true;
+      enableBashIntegration = true;
     };
 
     bat = {
       enable = true;
     };
 
+    htop.enable = true;
+    jq.enable = true;
+
     eza = {
       enable = true;
       enableFishIntegration = true;
+      enableBashIntegration = true;
     };
   };
 

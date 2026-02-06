@@ -58,6 +58,7 @@ in
       ls = "exa --icons";
       nbf = "nix build -L --file";
       nixRe = "nh os switch";
+      gdiff = "kitty +kitten diff";
     };
 
     functions = {
@@ -144,7 +145,6 @@ in
     with pkgs;
     [
       killall
-      jq
       libnotify
     ]
     ++ preBuiltPlugins;

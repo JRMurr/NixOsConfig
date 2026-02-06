@@ -7,7 +7,6 @@
     keep-derivations = true
   '';
   environment.systemPackages = with pkgs; [
-    dive
     flyctl
     docker-compose
     python3
