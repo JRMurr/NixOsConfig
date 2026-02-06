@@ -100,7 +100,7 @@
         nil = {
           initialization_options = {
             "formatting" = {
-              command = [ (lib.getExe pkgs.pkgs.nixfmt-rfc-style) ];
+              command = [ (lib.getExe pkgs.pkgs.nixfmt) ];
             };
           };
         };

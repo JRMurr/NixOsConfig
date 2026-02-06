@@ -13,7 +13,7 @@
     python3
     rustup
     # nix stuff
-    nixfmt-rfc-style
+    nixfmt
     # rnix-lsp # nix lang server
     statix # linter
 
