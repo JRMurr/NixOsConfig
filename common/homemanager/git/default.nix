@@ -24,7 +24,7 @@ in
         can = "commit --amend --no-edit";
         co = "checkout";
         cob = "checkout -b";
-        d = "difftool";
+        d = "difftool --dir-diff";
         r = "rebase";
         ri = "rebase -i";
         s = "status";
