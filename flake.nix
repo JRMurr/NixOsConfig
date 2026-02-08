@@ -65,7 +65,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-code.url = "github:sadjow/claude-code-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
@@ -79,14 +79,14 @@
       home-manager,
       wsl,
       catppuccin,
-      claude-code,
+      llm-agents,
       ...
     }@inputs:
     let
       overlays = [
         inputs.attic.overlays.default
         inputs.agenix.overlays.default
-        claude-code.overlays.default
+        llm-agents.overlays.default
         (import ./pkgs/overlay.nix)
         # TODO: nil and nurl
       ];

@@ -6,7 +6,7 @@
 }:
 {
   home.packages = with pkgs; [
-    claude-code
-    ccusage
+    llm-agents.claude-code
+    llm-agents.ccusage
   ];
 }

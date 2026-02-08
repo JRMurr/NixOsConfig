@@ -9,7 +9,6 @@ in
     caddyWithPlugins
     glance
     polybar-spotify
-    ccusage
     ;
 
   # TODO: pr to nix-pkgs
