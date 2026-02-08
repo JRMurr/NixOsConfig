@@ -39,9 +39,6 @@ let
 
     systemctl-tui
     just
-
-    claude-code
-
     nix-inspect
   ];
   imageStuff = [

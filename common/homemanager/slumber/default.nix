@@ -5,7 +5,7 @@
   ...
 }:
 let
-  slumberPkg = pkgs.slumber; # TODO: upstream, from my overlay
+  slumberPkg = pkgs.slumber;
   themeCfg = nixosConfig.myOptions.theme;
   baseColors = themeCfg.colors;
 

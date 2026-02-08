@@ -62,7 +62,7 @@ User-level dotfiles/programs managed via Home Manager. The entry point is:
 - `common/users/jr/default.nix` - imports HM modules (catppuccin, spicetify, agenix) and `common/homemanager/`
 - `common/homemanager/default.nix` - aggregates all HM modules: fish, git, hyprland, kitty, helix, zed, starship, rofi, etc.
 
-Programs configured via HM have their own files in `common/homemanager/` (e.g., `kitty.nix`, `zed.nix`, `helix.nix`). Subdirectories exist for more complex configs (`hyprland/`, `fish/`, `git/`, `i3/`, `nushell/`, `polybar/`, `slumber/`).
+Programs configured via HM have their own files in `common/homemanager/` (e.g., `kitty.nix`, `zed.nix`, `helix.nix`). Subdirectories exist for more complex configs (`hyprland/`, `fish/`, `git/`, `i3/`, `nushell/`, `polybar/`).
 
 ### Custom packages (`pkgs/`)
 `pkgs/overlay.nix` defines a nixpkgs overlay with custom/patched packages (caddy-with-plugins, glance, polybar-spotify, version overrides for mopidy-iris, lastpass-cli, vscode-extensions). `pkgs/default.nix` exposes them as a callPackage set.
