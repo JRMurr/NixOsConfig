@@ -14,6 +14,7 @@
         command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
       };
     };
+    memory.source = ./claude-memory.md;
   };
 
   home.file.".claude/skills/agent-browser" = {
