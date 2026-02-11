@@ -34,5 +34,7 @@ statix check .
 
 ## docs
 
+You can use the nixos mcp to get nix docs for most things, some urls directly listed below as a fallback
+
 - [Nixpkgs reference](https://nixos.org/manual/nixpkgs/stable/)
 - [Home manager options](https://nix-community.github.io/home-manager/options.xhtml)
