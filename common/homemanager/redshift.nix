@@ -2,12 +2,12 @@
   config,
   pkgs,
   lib,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
-  rCfg = nixosConfig.myOptions.redShift;
+  gcfg = osConfig.myOptions.graphics;
+  rCfg = osConfig.myOptions.redShift;
 in
 {
   config = lib.mkIf (gcfg.enable && !rCfg.disable) {

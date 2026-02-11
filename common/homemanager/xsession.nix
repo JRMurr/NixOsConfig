@@ -2,11 +2,11 @@
   pkgs,
   lib,
   config,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 in
 {
   config = lib.mkIf gcfg.enable {

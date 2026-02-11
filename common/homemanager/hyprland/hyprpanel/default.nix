@@ -3,11 +3,11 @@
   lib,
   config,
   inputs,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 
   monitors = gcfg.monitors;
 

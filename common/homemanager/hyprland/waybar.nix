@@ -1,14 +1,14 @@
 {
   pkgs,
   lib,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
 
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 
-  themeCfg = nixosConfig.myOptions.theme;
+  themeCfg = osConfig.myOptions.theme;
   baseColors = themeCfg.colors;
 
   monitors = gcfg.monitors;
@@ -165,7 +165,7 @@ let
 
     # modules-right =
     #   "filesystem ram cpu date time "
-    #   + (if nixosConfig.networking.hostName == "framework" then "battery" else "");
+    #   + (if osConfig.networking.hostName == "framework" then "battery" else "");
     # tray-position = "right";
 
     # modules-center = "spotify-prev spotify spotify-next";

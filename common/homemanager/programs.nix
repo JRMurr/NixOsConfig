@@ -2,13 +2,13 @@
   pkgs,
   lib,
   inputs,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 
-  # sysVersion = nixosConfig.system.nixos.release;
+  # sysVersion = osConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";
   # getFromInput = name: inputs.${name}.packages.${pkgs.stdenv.hostPlatform.system}.default;
   nurl = inputs.nurl.packages.${pkgs.stdenv.hostPlatform.system}.default;

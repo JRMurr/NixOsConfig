@@ -1,12 +1,12 @@
 {
   lib,
-  nixosConfig,
+  osConfig,
   inputs,
   ...
 }:
 let
 
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 in
 {
   # imports = [
@@ -16,8 +16,8 @@ in
     # programs.swaylock.enable = false; # seems to be a bug when enabling importing catppuccin
 
     # lock global options to nixos ones
-    catppuccin.enable = nixosConfig.catppuccin.enable;
-    catppuccin.accent = nixosConfig.catppuccin.accent;
-    catppuccin.flavor = nixosConfig.catppuccin.flavor;
+    catppuccin.enable = osConfig.catppuccin.enable;
+    catppuccin.accent = osConfig.catppuccin.accent;
+    catppuccin.flavor = osConfig.catppuccin.flavor;
   };
 }

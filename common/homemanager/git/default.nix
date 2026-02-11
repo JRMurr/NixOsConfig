@@ -1,6 +1,6 @@
-{ pkgs, nixosConfig, ... }:
+{ pkgs, osConfig, ... }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
   gitpkg = if gcfg.enable then pkgs.gitFull else pkgs.git;
 in
 {

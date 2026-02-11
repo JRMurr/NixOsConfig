@@ -2,7 +2,7 @@
   pkgs,
   lib,
   config,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
@@ -10,7 +10,7 @@ let
   # Original i3 config used Mod4; Hyprland calls that "SUPER"
   modifier = "SUPER";
 
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
   monitors = gcfg.monitors;
 
   rotateToTransform =

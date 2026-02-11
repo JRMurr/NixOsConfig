@@ -1,13 +1,13 @@
 {
   lib,
   pkgs,
-  nixosConfig,
+  osConfig,
   inputs,
   ...
 }:
 let
 
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {

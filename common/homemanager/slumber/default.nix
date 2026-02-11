@@ -1,12 +1,12 @@
 {
   pkgs,
-  nixosConfig,
+  osConfig,
   lib,
   ...
 }:
 let
   slumberPkg = pkgs.slumber;
-  themeCfg = nixosConfig.myOptions.theme;
+  themeCfg = osConfig.myOptions.theme;
   baseColors = themeCfg.colors;
 
   slumberConf = {

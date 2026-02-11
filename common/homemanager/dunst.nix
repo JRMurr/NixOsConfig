@@ -2,11 +2,11 @@
   pkgs,
   lib,
   config,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 
   # https://raw.githubusercontent.com/dracula/dunst/master/dunstrc
   dunst_dracula = {

@@ -2,15 +2,15 @@
   pkgs,
   lib,
   config,
-  nixosConfig,
+  osConfig,
   ...
 }:
 # TODO: look into https://github.com/polybar/polybar-scripts
 with lib;
 
 let
-  gcfg = nixosConfig.myOptions.graphics;
-  themeCfg = nixosConfig.myOptions.theme;
+  gcfg = osConfig.myOptions.graphics;
+  themeCfg = osConfig.myOptions.theme;
 
   player = "YoutubeMusic";
 
@@ -92,7 +92,7 @@ let
     # eth-speed
     modules-right =
       "filesystem ram cpu date time "
-      + (if nixosConfig.networking.hostName == "framework" then "battery" else "");
+      + (if osConfig.networking.hostName == "framework" then "battery" else "");
     tray-position = "right";
 
     modules-center = "spotify-prev spotify spotify-next";
@@ -105,7 +105,7 @@ let
         monitor = "${monitorConfig.name}";
         dpi =
           if monitorConfig.dpi == null then
-            (if nixosConfig.services.xserver.dpi == null then 100 else nixosConfig.services.xserver.dpi)
+            (if osConfig.services.xserver.dpi == null then 100 else osConfig.services.xserver.dpi)
           else
             monitorConfig.dpi;
       };

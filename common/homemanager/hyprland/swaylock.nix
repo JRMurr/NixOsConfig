@@ -1,12 +1,12 @@
 {
   pkgs,
   lib,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
 
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 
 in
 {

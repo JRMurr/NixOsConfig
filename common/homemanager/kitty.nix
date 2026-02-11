@@ -2,11 +2,11 @@
   pkgs,
   config,
   lib,
-  nixosConfig,
+  osConfig,
   ...
 }:
 let
-  gcfg = nixosConfig.myOptions.graphics;
+  gcfg = osConfig.myOptions.graphics;
 in
 {
   config = lib.mkIf (pkgs.stdenv.isDarwin || gcfg.enable) {

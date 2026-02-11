@@ -2,15 +2,15 @@
   pkgs,
   lib,
   config,
-  nixosConfig,
+  osConfig,
   ...
 }:
 
 let
   modifier = "Mod4"; # windows key
-  gcfg = nixosConfig.myOptions.graphics;
-  gesturesEnable = nixosConfig.myOptions.gestures.enable;
-  xcfg = nixosConfig.services.xserver;
+  gcfg = osConfig.myOptions.graphics;
+  gesturesEnable = osConfig.myOptions.gestures.enable;
+  xcfg = osConfig.services.xserver;
   cfg = xcfg.desktopManager;
 
   wallPaperPath = xcfg.displayManager.lightdm.background;
