@@ -26,6 +26,7 @@
     # ./plymouth.nix
   ];
   security.pam.services.swaylock = { };
+  environment.enableAllTerminfo = true;
   # nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
