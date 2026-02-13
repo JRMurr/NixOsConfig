@@ -8,10 +8,7 @@
 # TODO: steal from https://gist.github.com/JRMurr/069efda89957a221cf717a8caa988819
 let
   # https://github.com/nix-community/nix-vscode-extensions
-  # to browse
-  # `nix repl`
-  # :lf .
-  # inputs.nix-vscode-extensions.extensions.x86_64-linux.open-vsx.<thing>
+  # to browse in repl: pkgs.vscode-marketplace.<publisher>.<extension>
 
   # TODO: go through and use nix pkgs version for these if they exist
   exportedExtensions = [
@@ -57,13 +54,16 @@ let
     # "znck.grammarly"
   ];
 
-  linuxExtensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
+  # nix-vscode-extensions overlay adds these to pkgs.vscode-marketplace / pkgs.open-vsx.
+  # Using the overlay (instead of inputs.nix-vscode-extensions.extensions directly)
+  # ensures these evaluate with our nixpkgs config (allowUnfree, etc).
+
   # https://open-vsx.org/
-  openVsxExtensions = with linuxExtensions.open-vsx; [
+  openVsxExtensions = with pkgs.open-vsx; [
     pkief.material-icon-theme
     # wayou.vscode-todo-highlight
   ];
-  marketPlaceExtensions = with linuxExtensions.vscode-marketplace; [
+  marketPlaceExtensions = with pkgs.vscode-marketplace; [
 
     aaron-bond.better-comments
     arktypeio.arkdark
@@ -71,6 +71,7 @@ let
     eamodio.gitlens
     ianic.zig-language-extras
     ivandemchenko.roc-lang-unofficial
+    ms-vscode-remote.remote-ssh
     redhat.vscode-yaml
     rreverser.llvm
     skellock.just
@@ -103,7 +104,7 @@ let
       justusadam.language-haskell
       ms-azuretools.vscode-docker
       ms-python.python
-      ms-vscode-remote.remote-ssh
+      # ms-vscode-remote.remote-ssh
       ms-vscode.cpptools
       myriad-dreamin.tinymist
       rust-lang.rust-analyzer
@@ -128,7 +129,7 @@ let
     };
   };
 
-  pestExt = linuxExtensions.vscode-marketplace.pest.pest-ide-tools;
+  pestExt = pkgs.vscode-marketplace.pest.pest-ide-tools;
 
   # copying override logic from rust analyzer
   # https://github.com/NixOS/nixpkgs/blob/107d5ef05c0b1119749e381451389eded30fb0d5/pkgs/applications/editors/vscode/extensions/rust-lang.rust-analyzer/default.nix#L87
