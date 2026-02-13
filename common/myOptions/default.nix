@@ -22,5 +22,7 @@ with lib;
     networkShares.enable = mkEnableOption "enable network shares";
 
     musicPrograms.enable = mkEnableOption "enable network shares";
+
+    laptop = mkEnableOption "this host is a laptop (enables battery widget, etc.)";
   };
 }

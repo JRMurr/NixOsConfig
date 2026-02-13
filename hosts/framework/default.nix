@@ -23,6 +23,7 @@
   virtualisation.docker.enable = true;
   programs.fish.enable = true;
 
+  myOptions.laptop = true;
   myOptions.gestures.enable = true;
   myOptions.musicPrograms.enable = false;
 

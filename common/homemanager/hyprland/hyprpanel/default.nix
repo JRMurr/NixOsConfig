@@ -8,6 +8,7 @@
 }:
 let
   gcfg = osConfig.myOptions.graphics;
+  isLaptop = osConfig.myOptions.laptop;
 
   monitors = gcfg.monitors;
 
@@ -37,7 +38,9 @@ let
       "volume"
       "network"
       "bluetooth"
-      # "battery"
+    ]
+    ++ lib.optional isLaptop "battery"
+    ++ [
       "systray"
       "clock"
       "notifications"

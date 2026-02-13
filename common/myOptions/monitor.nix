@@ -100,7 +100,7 @@ let
       scale = mkOption {
         type = types.nullOr types.str;
         description = "output's scale, 1 is non scaled";
-        default = 1;
+        default = "1";
         example = "1.5";
       };
 
