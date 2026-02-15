@@ -1351,11 +1351,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1771122241,
-        "narHash": "sha256-EionzegVC6ZlMCkEJVlvJ+ava/CwuKSeStZtiqybA+Y=",
+        "lastModified": 1771128851,
+        "narHash": "sha256-Fl/VSveU1wp1nnpTReto1Lu79IpOajSKwr8LlX6qGPo=",
         "owner": "JRMurr",
         "repo": "tix",
-        "rev": "6037b9e4afd74551f7498208241dd034b30a25b3",
+        "rev": "fb72d90c60f2fc8cf7d79ed74d2f40c9edba8f04",
         "type": "github"
       },
       "original": {

@@ -1,0 +1,16 @@
+[context.nixos]
+paths = [
+  "common/*.nix",
+  "common/myOptions/**/*.nix",
+  "common/users/**/*.nix",
+  "common/gestures/**/*.nix",
+  "hosts/**/*.nix",
+  "default.nix",
+]
+stubs = ["@nixos"]
+
+[context.home]
+paths = [
+  "common/homemanager/**/*.nix",
+]
+stubs = ["@home-manager"]
