@@ -71,6 +71,12 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tix = {
+      url = "github:JRMurr/tix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     {
@@ -108,6 +114,10 @@
             };
             overlays = overlays;
           };
+
+          environment.systemPackages = [
+            inputs.tix.packages."x86_64-linux".default
+          ];
 
           home-manager = {
             useGlobalPkgs = true;

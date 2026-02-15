@@ -144,7 +144,7 @@ let
 in
 
 {
-  imports = [
+  imports = lib.optionals (gcfg.enable) [
     # ./waybar.nix
     ./hyprpanel
     # ./hyprlock.nix
