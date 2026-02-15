@@ -6,6 +6,16 @@
 
 While working, if you come across any bugs, missing features, or other oddities about the implementation, structure, or workflow, add a concise description of them to SESSION.md to defer solving such incidental tasks until later. You do not need to fix them all straight away unless they block your progress; writing them down is often sufficient. Do not write your accomplishments into this file.
 
+## Testing
+
+Always think how changes can get under test. If no testing framework is setup. prompt the user on if you should make one.
+When possible do property based testing. In rust prefer proptest
+
+
+## Commits
+
+Make commits as you go when its reasonable. Prompt the user if its on a main/release branch.
+
 ## Documentation preferences
 
 ### Documentation examples
