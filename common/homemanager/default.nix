@@ -33,4 +33,8 @@
 
   xdg.userDirs.createDirectories = true;
   xdg.userDirs.enable = true;
+
+  programs.tmux = {
+    enable = true;
+  };
 }
