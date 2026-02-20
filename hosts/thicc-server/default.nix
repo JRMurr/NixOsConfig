@@ -5,16 +5,16 @@
     ../../common
 
     #./attic.nix
-    #./blocky
+    ./blocky
     ./caddy
-    #./dashy.nix
+    ./dashy.nix
     #./factorio.nix
     #./freshrss.nix
     #./it-tools.nix
-    #./monitoring
+    # ./monitoring
     #./linkding.nix
     #./mopidy.nix
-    #./postgres.nix
+    ./postgres.nix
   ];
 
   time.timeZone = "America/New_York";

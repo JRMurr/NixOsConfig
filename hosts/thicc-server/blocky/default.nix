@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 let
-  myDomain = config.myCaddy.domain;
   port = config.services.blocky.settings.ports.http;
 
 in
@@ -76,7 +75,7 @@ in
           in
           {
             # TODO: figure out how to use local ip and tailscale
-            "${myDomain}" = "100.100.60.23";
+            "${myDomain}" = "100.95.204.122";
           };
       };
 

@@ -6,7 +6,7 @@
   ...
 }:
 let
-  tailscaleHostIp = "100.100.60.23"; # TODO: make this a config option
+  tailscaleHostIp = "100.95.204.122"; # TODO: make this a config option
 in
 {
   services.postgresql = {
