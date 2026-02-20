@@ -22,9 +22,11 @@
     recursive = true;
   };
 
-  home.packages = with pkgs; [
-    llm-agents.agent-browser
-    llm-agents.ccusage
+  home.packages = with pkgs.llm-agents; [
+    agent-browser
+    ccusage
+    agent-deck
+
     # llm-agents.happy-coder
   ];
 }
