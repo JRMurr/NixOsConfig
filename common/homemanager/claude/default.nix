@@ -25,5 +25,6 @@
   home.packages = with pkgs; [
     llm-agents.agent-browser
     llm-agents.ccusage
+    # llm-agents.happy-coder
   ];
 }

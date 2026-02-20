@@ -14,6 +14,7 @@
     # ./monitoring
     #./linkding.nix
     #./mopidy.nix
+    # ./happy-server.nix
     ./postgres.nix
   ];
 

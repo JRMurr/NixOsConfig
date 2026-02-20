@@ -7,6 +7,7 @@ in
 {
   inherit (extras)
     glance
+    happy-server
     polybar-spotify
     ;
 

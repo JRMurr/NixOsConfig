@@ -7,7 +7,7 @@
     ./fish
     ./git
     ./gitui.nix
-    ./helix.nix
+    # ./helix.nix
     ./hyprland
     ./kitty.nix
     ./nushell
