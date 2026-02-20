@@ -6,7 +6,6 @@ let
 in
 {
   inherit (extras)
-    caddyWithPlugins
     glance
     polybar-spotify
     ;

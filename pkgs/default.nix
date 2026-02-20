@@ -4,9 +4,6 @@
 }:
 
 {
-  # caddy with extra plugins
-  caddyWithPlugins = pkgs.callPackage ./caddy-with-plugins { };
-
   ccusage = pkgs.callPackage ./ccusage.nix { };
 
   glance = pkgs.callPackage ./glance.nix { buildGoModule = pkgs.buildGo122Module; };

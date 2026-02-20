@@ -6,7 +6,7 @@
 
     #./attic.nix
     #./blocky
-    # ./caddy
+    ./caddy
     #./dashy.nix
     #./factorio.nix
     #./freshrss.nix
