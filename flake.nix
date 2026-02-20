@@ -116,7 +116,7 @@
           };
 
           environment.systemPackages = [
-            inputs.tix.packages."x86_64-linux".default
+            inputs.tix.packages."x86_64-linux".with-stubs
           ];
 
           home-manager = {
