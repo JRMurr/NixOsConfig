@@ -178,7 +178,13 @@
           ./hosts/wsl
         ];
         graphicalIso = mkSystem [
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma5.nix"
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
+          ./common/essentials.nix
+          ./common/programs.nix
+          ./common/myOptions
+        ];
+        simpleIso = mkSystem [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
           ./common/essentials.nix
           ./common/programs.nix
           ./common/myOptions

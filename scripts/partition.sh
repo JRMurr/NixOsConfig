@@ -7,7 +7,7 @@ set -euo pipefail
 # Examples, update before use
 prefix=""
 suffix=""
-device=/dev/sde
+device=/dev/sda
 swap_size="32GB"
 
 lsblk --output "NAME,SIZE,FSTYPE,FSVER,LABEL,PARTLABEL,UUID,FSAVAIL,FSUSE%,MOUNTPOINTS,DISC-MAX" "$device"
