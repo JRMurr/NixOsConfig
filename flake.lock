@@ -288,6 +288,22 @@
         "type": "github"
       }
     },
+    "flake-compat_7": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -1381,6 +1397,7 @@
     "tix": {
       "inputs": {
         "crane": "crane_4",
+        "flake-compat": "flake-compat_6",
         "flake-utils": "flake-utils_2",
         "home-manager": "home-manager_4",
         "nixpkgs": [
@@ -1389,11 +1406,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1771886097,
-        "narHash": "sha256-FNAvNERZadltgCFKuYxzz8d7rYS9t8CEtLrO6Io017w=",
+        "lastModified": 1771945550,
+        "narHash": "sha256-nSP1sURoCCpnG05hgo1wgXJdMJ2WUWjl17eMBRx2Z1o=",
         "owner": "JRMurr",
         "repo": "tix",
-        "rev": "8a4110bd8c7c596ed98333eed071189d755c84ed",
+        "rev": "b7e630e51d79ce91b512d64a7682b49de69b28e8",
         "type": "github"
       },
       "original": {
@@ -1507,7 +1524,7 @@
     },
     "wsl": {
       "inputs": {
-        "flake-compat": "flake-compat_6",
+        "flake-compat": "flake-compat_7",
         "nixpkgs": [
           "nixpkgs"
         ]
