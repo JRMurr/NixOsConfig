@@ -36,6 +36,7 @@
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+  services.upower.enable = true;
 
   # https://fwupd.org/lvfs/devices/work.frame.Laptop.TGL.BIOS.firmware
   # https://www.reddit.com/r/framework/comments/zfudd0/how_do_you_update_biosfirmware/
