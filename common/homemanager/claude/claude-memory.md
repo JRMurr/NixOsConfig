@@ -9,7 +9,10 @@ While working, if you come across any bugs, missing features, or other oddities 
 ## Testing
 
 Always think how changes can get under test. If no testing framework is setup. prompt the user on if you should make one.
-When possible do property based testing. In rust prefer proptest
+When possible do property based testing. In rust prefer proptest.
+
+**IMPORTANT** Whenever possible follow red green test driven development. Ie when making a feature or trying to fix a user reported issue, first make a test that is failing. 
+Then work on the implementation until it passes. Follow a similar idea for refactors. 
 
 
 ## Commits
