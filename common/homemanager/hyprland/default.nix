@@ -178,6 +178,15 @@ in
       PartOf = lib.mkForce [ "hyprland-session.target" ];
     };
 
+    # hyprpanel needs WAYLAND_DISPLAY which isn't set until hyprland-session.target
+    systemd.user.services.hyprpanel.Unit = {
+      After = lib.mkForce [ "hyprland-session.target" ];
+      PartOf = lib.mkForce [ "hyprland-session.target" ];
+    };
+    systemd.user.services.hyprpanel.Install = {
+      WantedBy = lib.mkForce [ "hyprland-session.target" ];
+    };
+
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.settings = lib.mkMerge [
       {
