@@ -84,8 +84,7 @@ let
     # show fonts
     pkgs.gucharmap
 
-    # ebooks
-    calibre
+    # TODO: calibre removed — broken build in nixpkgs unstable (missing qmake in qt6 setup hook)
     # github-desktop
   ];
 

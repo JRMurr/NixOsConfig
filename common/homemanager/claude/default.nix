@@ -9,11 +9,11 @@
     enable = true;
     package = pkgs.llm-agents.claude-code;
     skills = { };
-    mcpServers = {
-      nixos = {
-        command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-      };
-    };
+    # mcpServers = {
+    #   nixos = {m
+    #     command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+    #   };
+    # };
     memory.source = ./claude-memory.md;
   };
 
