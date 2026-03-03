@@ -2,7 +2,6 @@
 {
   imports = [
     ./cargo.nix
-    ./claude
     ./direnv.nix
     ./fish
     ./git
@@ -10,6 +9,7 @@
     # ./helix.nix
     ./hyprland
     ./kitty.nix
+    ./llms
     ./nushell
     # ./noctalia.nix
     ./programs.nix

@@ -14,7 +14,7 @@
     #     command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
     #   };
     # };
-    memory.source = ./claude-memory.md;
+    memory.source = ../memory.md;
   };
 
   home.file.".claude/skills/agent-browser" = {
@@ -23,10 +23,6 @@
   };
 
   home.packages = with pkgs.llm-agents; [
-    agent-browser
-    ccusage
-    agent-deck
-
-    # llm-agents.happy-coder
+    ccstatusline # TODO: set the config of this
   ];
 }
