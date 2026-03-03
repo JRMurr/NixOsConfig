@@ -11,6 +11,7 @@
       agent-browser
       ccusage
       agent-deck
+      backlog-md
     ];
   };
 }

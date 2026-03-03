@@ -6,6 +6,8 @@
 
 While working, if you come across any bugs, missing features, or other oddities about the implementation, structure, or workflow, add a concise description of them to SESSION.md to defer solving such incidental tasks until later. You do not need to fix them all straight away unless they block your progress; writing them down is often sufficient. Do not write your accomplishments into this file.
 
+If configured add track them with backlog mcp instead writing it directly to SESSION.md
+
 ## Testing
 
 Always think how changes can get under test. If no testing framework is setup. prompt the user on if you should make one.
