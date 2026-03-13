@@ -23,10 +23,10 @@
     memory.source = ../memory.md;
   };
 
-  home.file.".claude/skills/agent-browser" = {
-    source = "${pkgs.llm-agents.agent-browser}/etc/agent-browser/skills/agent-browser";
-    recursive = true;
-  };
+  # home.file.".claude/skills/agent-browser" = {
+  #   source = "${pkgs.llm-agents.agent-browser}/etc/agent-browser/skills/agent-browser";
+  #   recursive = true;
+  # };
 
   home.file.".config/ccstatusline/settings.json".text = builtins.toJSON {
     version = 3;

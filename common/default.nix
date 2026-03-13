@@ -40,12 +40,14 @@
         "https://nix-community.cachix.org?priority=25"
         # "https://jrmurr.cachix.org?priority=2"
         "https://cache.nixos.org/?priority=20"
+        "https://cache.numtide.com"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         # "jrmurr.cachix.org-1:nE2/Ms3YbTPe8SrFOWsHfcNAuJtJtz9UCoohiSn6Elg="
         "main:doBjjo8BjzYQ+YJG6YNQ/7RqgVsgYWL+1Pv86p0/7fk="
         "main:I3Ud+URwX+SiyP9pBRP3gV5BCGVjQ1/QDapsUHFt9JQ="
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       ];
     };
     # gc = {
