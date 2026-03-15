@@ -56,4 +56,5 @@ stubs = ["@callpackage"]
 # flake files (no context needed): flake.nix, templates/bevy/flake.nix, templates/common/flake.nix, templates/rust/flake.nix, templates/zig/flake.nix
 
 [project]
+analyze = ["**/*.nix"]
 exclude = ["result", ".direnv"]
