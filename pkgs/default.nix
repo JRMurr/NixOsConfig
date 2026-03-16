@@ -1,10 +1,11 @@
 {
+  # type: pkgs :: Pkgs
   pkgs ? (import ../pinned_from_flake.nix { }).pkgs,
   ...
 }:
 
 {
-  ccusage = pkgs.callPackage ./ccusage.nix { };
+  # ccusage = pkgs.callPackage ./ccusage.nix { };
 
   glance = pkgs.callPackage ./glance.nix { buildGoModule = pkgs.buildGo122Module; };
 
