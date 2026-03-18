@@ -473,6 +473,22 @@
         "type": "github"
       }
     },
+    "get-shit-done": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773690154,
+        "narHash": "sha256-emkIUrJo4PwTG9RUODsZ3CAlBG/qi+4cpZUoCvN4da0=",
+        "owner": "gsd-build",
+        "repo": "get-shit-done",
+        "rev": "4915d28f980e27a89110b3e6a439e166c22d6337",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gsd-build",
+        "repo": "get-shit-done",
+        "type": "github"
+      }
+    },
     "ghostty": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -1230,6 +1246,7 @@
         "attic": "attic",
         "catppuccin": "catppuccin",
         "flake-compat": "flake-compat_2",
+        "get-shit-done": "get-shit-done",
         "ghostty": "ghostty",
         "home-manager": "home-manager_3",
         "lanzaboote": "lanzaboote",
