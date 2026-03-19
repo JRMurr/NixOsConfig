@@ -2,12 +2,8 @@
   pkgs,
   lib,
   osConfig,
-  inputs,
   ...
 }:
-let
-  gsd = inputs.get-shit-done;
-in
 {
   programs.claude-code = {
     enable = true;
@@ -31,27 +27,6 @@ in
   #   source = "${pkgs.llm-agents.agent-browser}/etc/agent-browser/skills/agent-browser";
   #   recursive = true;
   # };
-
-  # ===========================================================================
-  # Get Shit Done (GSD) - meta-prompting & context engineering system
-  # https://github.com/gsd-build/get-shit-done
-  # ===========================================================================
-  home.file.".claude/commands/gsd" = {
-    source = "${gsd}/commands/gsd";
-    recursive = true;
-  };
-  home.file.".claude/get-shit-done" = {
-    source = "${gsd}/get-shit-done";
-    recursive = true;
-  };
-  home.file.".claude/agents" = {
-    source = "${gsd}/agents";
-    recursive = true;
-  };
-  home.file.".claude/hooks" = {
-    source = "${gsd}/hooks";
-    recursive = true;
-  };
 
   home.file.".config/ccstatusline/settings.json".text = builtins.toJSON {
     version = 3;

@@ -67,11 +67,6 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
 
-    get-shit-done = {
-      url = "github:gsd-build/get-shit-done";
-      flake = false;
-    };
-
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
