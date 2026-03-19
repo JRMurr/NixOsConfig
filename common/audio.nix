@@ -49,6 +49,7 @@ in
     environment.systemPackages = [
       pkgs.pavucontrol
       pkgs.snapcast
+      pkgs.alsa-utils # provides arecord, needed as fallback for claude-code /voice on NixOS
     ];
 
     # TODO: make configurable and look into options
