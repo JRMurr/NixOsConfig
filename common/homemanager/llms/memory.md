@@ -84,6 +84,10 @@ Avoid over-documenting:
 - Trivial getters/setters or obvious wrapper code
 - Code that's primarily syntactic sugar over well-known patterns
 
+## Debugging
+
+**IMPORTANT** Always verify your assumptions. If you read code and form a hypothesis about a bug, don't just propose a fix based on that guess. Confirm it first by adding logging, running the code, or otherwise empirically validating what's actually happening. Reading code can mislead — runtime behavior is the source of truth.
+
 # Common failure modes when helping
 
 ## The XY Problem
