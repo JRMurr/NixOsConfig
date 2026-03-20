@@ -46,6 +46,10 @@ in
       # };
     };
 
+    # Enable the BlueZ-provided mpris-proxy service so Bluetooth
+    # headphone buttons (AVRCP) control media players (MPRIS)
+    systemd.user.services.mpris-proxy.wantedBy = [ "default.target" ];
+
     environment.systemPackages = [
       pkgs.pavucontrol
       pkgs.snapcast
