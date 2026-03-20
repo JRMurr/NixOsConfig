@@ -347,7 +347,7 @@ in
           border_size = 1;
 
           # https://wiki.hypr.land/Configuring/Variables/#variable-types for info about colors
-          "col.active_border" = "$accent"; # rgba(33ccffee) rgba(00ff99ee) 45deg
+          "col.active_border" = "rgba(ca9ee6ff) rgba(f2d5cfff) 45deg"; # catppuccin mauve → rosewater gradient
           "col.inactive_border" = "rgba(595959aa)";
 
           # Set to true enable resizing windows by clicking and dragging on borders and gaps
@@ -361,10 +361,9 @@ in
 
         # https://wiki.hypr.land/Configuring/Variables/#decoration
         decoration = {
-          rounding = 4;
+          rounding = 10;
           rounding_power = 4;
 
-          # Focused / unfocused opacity
           active_opacity = 1.0;
           inactive_opacity = 1.0;
 
@@ -377,8 +376,12 @@ in
 
           blur = {
             enabled = true;
-            size = 3;
-            passes = 1;
+            size = 8;
+            passes = 3;
+            new_optimizations = true;
+            noise = 0.02;
+            contrast = 0.9;
+            brightness = 0.8;
             vibrancy = 0.1696;
           };
         };
@@ -392,36 +395,24 @@ in
         animations = {
           enabled = true;
 
-          # Default curves, see https://wiki.hypr.land/Configuring/Animations/#curves
-          # NAME,           X0,   Y0,   X1,   Y1
           bezier = [
-            "easeOutQuint,   0.23, 1,    0.32, 1"
-            "easeInOutCubic, 0.65, 0.05, 0.36, 1"
-            "linear,         0,    0,    1,    1"
-            "almostLinear,   0.5,  0.5,  0.75, 1"
-            "quick,          0.15, 0,    0.1,  1"
+            "wind, 0.05, 0.9, 0.1, 1.05"       # slight overshoot, feels springy
+            "winIn, 0.1, 1.1, 0.1, 1.1"         # bouncy open
+            "winOut, 0.3, -0.3, 0, 1"            # quick shrink on close
+            "liner, 1, 1, 1, 1"                  # pure linear for borders
           ];
 
-          # Default animations, see https://wiki.hypr.land/Configuring/Animations/
-          #  NAME,      ONOFF, SPEED, CURVE,        [STYLE]
           animation = [
-            "global,        1, 10,   default"
-            "border,        1, 5.39, easeOutQuint"
-            "windows,       1, 4.79, easeOutQuint"
-            "windowsIn,     1, 4.1,  easeOutQuint, popin 87%"
-            "windowsOut,    1, 1.49, linear,       popin 87%"
-            "fadeIn,        1, 1.73, almostLinear"
-            "fadeOut,       1, 1.46, almostLinear"
-            "fade,          1, 3.03, quick"
-            "layers,        1, 3.81, easeOutQuint"
-            "layersIn,      1, 4,    easeOutQuint, fade"
-            "layersOut,     1, 1.5,  linear,       fade"
-            "fadeLayersIn,  1, 1.79, almostLinear"
-            "fadeLayersOut, 1, 1.39, almostLinear"
-            "workspaces,    1, 1.94, almostLinear, fade"
-            "workspacesIn,  1, 1.21, almostLinear, fade"
-            "workspacesOut, 1, 1.94, almostLinear, fade"
-            "zoomFactor,    1, 7,    quick"
+            "windows, 1, 6, wind, slide"
+            "windowsIn, 1, 6, winIn, slide"
+            "windowsOut, 1, 3, wind, popin 80%"
+            "windowsMove, 1, 5, wind, slide"
+            "border, 1, 1, liner"
+            "borderangle, 1, 30, liner, loop"    # animated rotating border gradient
+            "fade, 1, 10, default"
+            "workspaces, 1, 5, wind"
+            "specialWorkspace, 1, 5, wind, fade"
+            "zoomFactor, 1, 5, wind"
           ];
         };
 
