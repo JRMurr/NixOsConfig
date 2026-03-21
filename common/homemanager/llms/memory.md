@@ -88,6 +88,8 @@ Avoid over-documenting:
 
 **IMPORTANT** Always verify your assumptions. If you read code and form a hypothesis about a bug, don't just propose a fix based on that guess. Confirm it first by adding logging, running the code, or otherwise empirically validating what's actually happening. Reading code can mislead — runtime behavior is the source of truth.
 
+Prefer fixes that address the root cause, even if it means a larger change. Avoid band-aid solutions that paper over symptoms without solving the underlying problem.
+
 # Common failure modes when helping
 
 ## The XY Problem
