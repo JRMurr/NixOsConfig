@@ -47,7 +47,13 @@ paths = [
     "templates/bevy/rust.nix",
     "templates/rust/rust.nix",
 ]
+
+
 stubs = ["@callpackage"]
+
+[stubs.generate]
+nixpkgs = { expr = "(builtins.getFlake (toString ./.)).inputs.nixpkgs" }
+home-manager = { expr = "(builtins.getFlake (toString ./.)).inputs.home-manager" }
 
 # overlay files (no context needed): pkgs/overlay.nix
 
