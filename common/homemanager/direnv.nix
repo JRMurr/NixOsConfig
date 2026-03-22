@@ -13,7 +13,7 @@
           echo "''${direnv_layout_dirs[$PWD]:=$(
               hash="$(sha1sum - <<< "$PWD" | head -c40)"
               path="''${PWD//[^a-zA-Z0-9]/-}"
-              echo "''${XDG_RUNTIME_DIR}/direnv/layouts/''${hash}''${path}"
+              echo "''${HOME}/.cache/direnv/layouts/''${hash}''${path}"
           )}"
       }
     '';

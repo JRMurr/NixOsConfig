@@ -8,7 +8,7 @@
 
   config = {
     home.packages = with pkgs.llm-agents; [
-      # agent-browser
+      agent-browser
       ccusage
       # agent-deck
       # backlog-md
