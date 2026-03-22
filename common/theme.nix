@@ -8,7 +8,7 @@ let
 
   # https://catppuccin.com/palette
   # https://github.com/catppuccin/palette/blob/main/palette.json
-  palette = (lib.importJSON "${catppuccin-sources.palette}/palette.json").${catCfg.flavor}.colors;
+  palette = (lib.importJSON (catppuccin-sources.palette + "/palette.json")).${catCfg.flavor}.colors;
 
   hexColors = lib.attrsets.mapAttrs (_: color: color.hex) palette;
 
