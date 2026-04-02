@@ -32,7 +32,7 @@ in
     fileSystems."/mnt/fatnas/serverdata" = {
       device = "fatnas:/volume1/ServerData";
       fsType = "nfs";
-      # "uid=${uid}" "gid=${gid}" 
+      # "uid=${uid}" "gid=${gid}"
       options = [
         "x-systemd.automount"
         "noauto"
@@ -42,7 +42,7 @@ in
     fileSystems."/mnt/fatnas/media" = {
       device = "fatnas:/volume1/Media";
       fsType = "nfs";
-      # "uid=${uid}" "gid=${gid}" 
+      # "uid=${uid}" "gid=${gid}"
       options = [
         "x-systemd.automount"
         "noauto"

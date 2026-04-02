@@ -51,6 +51,7 @@
     "togglegroup",
     "togglespecialworkspace",
     "togglesplit",
+    "udisk",
     "waybar"
   ]
 }

@@ -30,6 +30,9 @@ let
 
   graphical = pkgs.lib.optionals gcfg.enable [
     pkgs.pear-desktop # youtube music
+    pkgs.obs-studio
+    pkgs.losslesscut-bin
+    pkgs.mpv
     # ghostty
   ];
 
