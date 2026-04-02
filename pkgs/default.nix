@@ -11,5 +11,7 @@
 
   happy-server = pkgs.callPackage ./happy-server.nix { };
 
+  herdr = pkgs.callPackage ./herdr.nix { };
+
   polybar-spotify = pkgs.callPackage ./polybar-spotify { player = "YoutubeMusic"; };
 }

@@ -95,7 +95,7 @@ in
   config = lib.mkIf gcfg.enable {
     services.dunst = {
       enable = true;
-      # settings.global = 
+      # settings.global =
       settings = dunst_dracula // { };
     };
   };

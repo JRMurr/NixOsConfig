@@ -8,6 +8,7 @@ in
   inherit (extras)
     glance
     happy-server
+    herdr
     polybar-spotify
     ;
 
