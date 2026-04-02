@@ -396,23 +396,21 @@ in
           enabled = true;
 
           bezier = [
-            "wind, 0.05, 0.9, 0.1, 1.05"       # slight overshoot, feels springy
-            "winIn, 0.1, 1.1, 0.1, 1.1"         # bouncy open
-            "winOut, 0.3, -0.3, 0, 1"            # quick shrink on close
-            "liner, 1, 1, 1, 1"                  # pure linear for borders
+            "easeOut, 0.25, 1, 0.5, 1"          # smooth decel, no overshoot
+            "liner, 1, 1, 1, 1"
           ];
 
           animation = [
-            "windows, 1, 6, wind, slide"
-            "windowsIn, 1, 6, winIn, slide"
-            "windowsOut, 1, 3, wind, popin 80%"
-            "windowsMove, 1, 5, wind, slide"
+            "windows, 1, 3, easeOut"
+            "windowsIn, 1, 3, easeOut, popin 90%"
+            "windowsOut, 1, 2, easeOut, popin 90%"
+            "windowsMove, 1, 3, easeOut"
             "border, 1, 1, liner"
-            "borderangle, 1, 30, liner, loop"    # animated rotating border gradient
-            "fade, 1, 10, default"
-            "workspaces, 1, 5, wind"
-            "specialWorkspace, 1, 5, wind, fade"
-            "zoomFactor, 1, 5, wind"
+            "borderangle, 1, 30, liner, loop"
+            "fade, 1, 3, easeOut"
+            "workspaces, 1, 3, easeOut"
+            "specialWorkspace, 1, 3, easeOut, fade"
+            "zoomFactor, 1, 3, easeOut"
           ];
         };
 
