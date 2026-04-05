@@ -67,6 +67,9 @@ stubs = ["@callpackage"]
 [stubs.generate]
 nixpkgs = { expr = "(builtins.getFlake (toString ./.)).inputs.nixpkgs" }
 home-manager = { expr = "(builtins.getFlake (toString ./.)).inputs.home-manager" }
+nixos-modules = [
+    { expr = "(builtins.getFlake (toString ./.)).nixosModules.default" },
+]
 
 # overlay files (no context needed): pkgs/overlay.nix
 

@@ -92,7 +92,7 @@ let
 
       crtc = mkOption {
         type = types.nullOr types.ints.unsigned;
-        description = lib.mdDoc "Output video display controller. Use `xrandr --verbose` to get";
+        description = "Output video display controller. Use `xrandr --verbose` to get";
         default = null;
         example = 0;
       };
