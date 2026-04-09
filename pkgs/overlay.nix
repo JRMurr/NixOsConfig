@@ -44,6 +44,18 @@ in
     };
   });
 
+  bespokesynth-with-vst2 = prev.bespokesynth-with-vst2.overrideAttrs (old: {
+    version = "unstable-2026-04-08";
+    src = prev.fetchFromGitHub {
+      owner = "BespokeSynth";
+      repo = "BespokeSynth";
+      rev = "3c78dcf405d2c1e0fe31aa49a40686b180311b32";
+      hash = "sha256-ey3zvF6hA566tXotfLXdRcbu+kVbKzaL0PUH2EeItkY=";
+      fetchSubmodules = true;
+    };
+    patches = [ ]; # upstream patch likely doesn't apply to latest main
+  });
+
   vscode-extensions = prev.vscode-extensions // {
     ms-python = prev.vscode-extensions.ms-python // {
       python = prev.vscode-extensions.ms-python.python.overrideAttrs (old: {

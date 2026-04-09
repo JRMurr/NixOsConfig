@@ -90,7 +90,7 @@ let
 
   musicPrograms = lib.optionals mcfg.enable [
     audacity
-    # bespokesynth-with-vst2
+    bespokesynth-with-vst2
   ];
 
   allGraphicalPrograms =
