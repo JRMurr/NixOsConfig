@@ -73,7 +73,7 @@
     };
 
     tix = {
-      url = "github:JRMurr/tix/context-improvements";
+      url = "github:JRMurr/tix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

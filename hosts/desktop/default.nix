@@ -32,6 +32,8 @@
     ];
   };
 
+  myOptions.musicPrograms.enable = true;
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 

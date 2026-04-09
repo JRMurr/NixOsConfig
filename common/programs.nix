@@ -88,7 +88,10 @@ let
     # github-desktop
   ];
 
-  musicPrograms = lib.optional mcfg.enable bespokesynth-with-vst2;
+  musicPrograms = lib.optionals mcfg.enable [
+    audacity
+    # bespokesynth-with-vst2
+  ];
 
   allGraphicalPrograms =
     if gcfg.enable then
