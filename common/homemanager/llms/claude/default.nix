@@ -20,7 +20,7 @@
         env = { };
       };
     };
-    memory.source = ../memory.md;
+    context = ../memory.md;
   };
 
   home.file.".claude/skills/agent-browser" = {
