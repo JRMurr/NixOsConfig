@@ -33,6 +33,9 @@
 
   xdg.userDirs.createDirectories = true;
   xdg.userDirs.enable = true;
+  xdg.userDirs.setSessionVariables = false;
+
+  programs.beets.enable = false;
 
   programs.tmux = {
     enable = true;

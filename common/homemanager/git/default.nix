@@ -8,6 +8,7 @@ in
     enable = true;
     package = gitpkg;
     signing = {
+      format = "ssh";
       key = "~/.ssh/id_ed25519";
       signByDefault = true;
     };
@@ -53,7 +54,6 @@ in
         rbm = "!git fetch origin && git rebase origin/$(git mainbranch)";
         mm = "!git fetch origin && git merge origin/$(git mainbranch)";
       };
-      gpg.format = "ssh";
       core.editor = "code --wait";
       pager.branch = false;
       pull.ff = "only";
