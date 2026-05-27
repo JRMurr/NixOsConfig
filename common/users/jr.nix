@@ -19,7 +19,9 @@ let
   userOpts = config.myOptions.users;
 in
 {
-  age.secrets.jr-pass.file = "${inputs.secrets}/secrets/jr-pass.age";
+  age.secrets = lib.mkIf userOpts.makeJr {
+    jr-pass.file = "${inputs.secrets}/secrets/jr-pass.age";
+  };
   services.getty.autologinUser = lib.mkIf userOpts.jrAutoLogin "jr";
   home-manager.users.jr = (import ./jr { inherit inputs; });
 
