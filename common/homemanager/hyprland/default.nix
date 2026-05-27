@@ -12,6 +12,7 @@ let
 
   gcfg = osConfig.myOptions.graphics;
   monitors = gcfg.monitors;
+  colors = osConfig.myOptions.theme.colors;
 
   rotateToTransform =
     rot:
@@ -151,6 +152,13 @@ in
     ./swaylock.nix
   ];
   config = lib.mkIf gcfg.enable {
+
+    # The catppuccin/nix hyprland module injects
+    #   colors._var = mkLuaInline "require('themes.catppuccin')"
+    # expecting a Lua-aware hyprland generator, but home-manager dumps it as
+    # raw `_type=lua-inline` / `expr=...` keys and Hyprland rejects them.
+    # We pull palette hex values from myOptions.theme.colors directly instead.
+    catppuccin.hyprland.enable = false;
 
     home.packages = with pkgs; [
       wlogout
@@ -388,8 +396,9 @@ in
 
         group.groupbar = {
           gradients = true;
-          "col.active" = "$base";
-          "col.inactive" = "$crust";
+          # palette hex values include a leading '#' which hyprland's rgb() rejects
+          "col.active" = "rgb(${lib.removePrefix "#" colors.base})";
+          "col.inactive" = "rgb(${lib.removePrefix "#" colors.crust})";
         };
 
         animations = {

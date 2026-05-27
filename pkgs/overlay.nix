@@ -44,6 +44,21 @@ in
     };
   });
 
+  # Termite is unmaintained; its bundled vte-0.84.0 fork fails to compile
+  # against current glib (vte::to_integral gone from vtegtk.cc). It's pulled
+  # in only by `environment.enableAllTerminfo`, which reads `.terminfo`.
+  # Replace with an empty multi-output stub so eval succeeds and nothing
+  # tries to build the broken vte fork.
+  termite = prev.stdenv.mkDerivation {
+    pname = "termite-stub";
+    version = "0";
+    dontUnpack = true;
+    outputs = [ "out" "terminfo" ];
+    installPhase = ''
+      mkdir -p $out $terminfo/share/terminfo
+    '';
+  };
+
   bespokesynth-with-vst2 = prev.bespokesynth-with-vst2.overrideAttrs (old: {
     version = "unstable-2026-04-08";
     src = prev.fetchFromGitHub {
