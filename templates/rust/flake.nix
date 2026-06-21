@@ -29,7 +29,7 @@
         rustAttrs = import ./rust.nix { inherit pkgs gitignore; };
       in
       {
-        formatter = pkgs.nixpkgs-fmt;
+        formatter = pkgs.nixfmt;
 
         devShells = {
           default = pkgs.mkShell {
