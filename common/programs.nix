@@ -47,7 +47,6 @@ let
   ];
   messaging = [
     discord
-    zulip
   ];
   desktopEnviorment = [
     lxappearance

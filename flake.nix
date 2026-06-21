@@ -60,7 +60,7 @@
       flake = false;
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.3";
+      url = "github:nix-community/lanzaboote"; # master; v1.0.0 still sets removed boot.bootspec.enable
 
       inputs.nixpkgs.follows = "nixpkgs";
     };

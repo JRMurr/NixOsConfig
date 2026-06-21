@@ -259,7 +259,7 @@ in
       {
         bind = [
           "$mainMod, P, pseudo" # dwindle pseudo-tile
-          "$mainMod, J, togglesplit" # dwindle split toggle
+          # "$mainMod, J, togglesplit" # dwindle split toggle
 
           # Move focus with mainMod + arrows
           "$mainMod, left, movefocus, l"
@@ -405,7 +405,7 @@ in
           enabled = true;
 
           bezier = [
-            "easeOut, 0.25, 1, 0.5, 1"          # smooth decel, no overshoot
+            "easeOut, 0.25, 1, 0.5, 1" # smooth decel, no overshoot
             "liner, 1, 1, 1, 1"
           ];
 
@@ -494,7 +494,7 @@ in
 
       # See https://wiki.hypr.land/Configuring/Dwindle-Layout/ for more
       dwindle {
-          pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+          # pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           preserve_split = true # You probably want this
       }
 
