@@ -7,6 +7,8 @@
 }:
 let
 
+  inherit (lib.generators) mkLuaInline;
+
   # Original i3 config used Mod4; Hyprland calls that "SUPER"
   modifier = "SUPER";
 
@@ -14,32 +16,51 @@ let
   monitors = gcfg.monitors;
   colors = osConfig.myOptions.theme.colors;
 
+  # ==============================================================================
+  # Lua dispatcher / bind helpers
+  # ==============================================================================
+  #
+  # Since Hyprland 0.55 the config is Lua: each bind is an `hl.bind(keys,
+  # dispatcher, opts?)` call rather than a `bind = mod, key, dispatcher, args`
+  # string. home-manager's lua renderer turns a `settings.bind` list entry of the
+  # form `{ _args = [ keys dispatcher opts ]; }` into exactly that call, running
+  # each arg through its Lua generator. A `mkLuaInline` value is emitted verbatim
+  # (so it becomes a real `hl.dsp.*()` call, not a quoted string); plain strings
+  # are quoted; attrsets become Lua tables.
+  #
+  # mkBind/mkBindF wrap the dispatcher in mkLuaInline for us so call sites read
+  # like the wiki examples.
+
+  mkBind = keys: dispatcher: { _args = [ keys (mkLuaInline dispatcher) ]; };
+  mkBindF = keys: dispatcher: flags: { _args = [ keys (mkLuaInline dispatcher) flags ]; };
+
+  # Common dispatchers as small builders to avoid hand-escaping quotes.
+  exec = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
+  focusDir = d: ''hl.dsp.focus({ direction = "${d}" })'';
+  moveDir = d: ''hl.dsp.window.move({ direction = "${d}", group_aware = true })'';
+  focusWs = n: "hl.dsp.focus({ workspace = ${toString n} })";
+  moveToWs = n: "hl.dsp.window.move({ workspace = ${toString n} })";
+
+  # ==============================================================================
+  # Monitor configuration -> hl.monitor(spec)
+  # ==============================================================================
+  #
+  # Transforms map to Hyprland's integer rotation codes. monitorv2's per-key
+  # hyprlang form is gone; hl.monitor takes a single spec table instead.
   rotateToTransform =
     rot:
     if rot == "left" then
-      "1"
+      1
     else if rot == "right" then
-      "3"
+      3
     else if rot == "inverted" then
-      "2"
+      2
     else
       0;
 
-  # scaleOf =
-  #   m:
-  #   if m ? scale then
-  #     if builtins.isAttrs m.scale then toString (m.scale.x or m.scale.y or 1) else toString m.scale
-  #   else
-  #     "1";
-  # TODO: can do https://wiki.hypr.land/Configuring/Monitors/#monitor-v2
-  # to not make it a line ...
-  hyprMonitorLine =
+  hyprMonitorSpec =
     m:
     let
-      name = m.name;
-      # disable takes precedence if enable=false
-      disabled = m.enable == false;
-
       pos = m.position or "auto";
       resolution =
         let
@@ -47,32 +68,33 @@ let
           rate = if m ? rate then "@${m.rate}" else "";
         in
         "${res}${rate}";
-
       transform = if m ? rotate then rotateToTransform m.rotate else 0;
-
-      cfg =
-        if disabled then
-          { disabled = 1; }
-        else
-          {
-            mode = resolution;
-            position = pos;
-            scale = m.scale or "1";
-            transform = transform;
-          };
     in
-    { output = name; } // cfg;
+    if m.enable == false then
+      {
+        output = m.name;
+        disabled = true;
+      }
+    else
+      {
+        output = m.name;
+        mode = resolution;
+        position = pos;
+        scale = m.scale or 1;
+        inherit transform;
+      };
 
+  monitorSpecs = map hyprMonitorSpec monitors;
+
+  # Pin workspaces declared on a monitor to that monitor (was `workspace = N,
+  # monitor:X`, now a workspace rule).
   workspacePins = lib.concatMap (
-    m: lib.optional (m ? workspace) "${toString m.workspace}, monitor:${m.name}"
+    m:
+    lib.optional (m ? workspace) {
+      workspace = toString m.workspace;
+      monitor = m.name;
+    }
   ) monitors;
-
-  # https://gist.github.com/udf/4d9301bdc02ab38439fd64fbda06ea43#planet-status-h4xed
-  # mkMergeTopLevel =
-  #   with lib;
-  #   names: attrs: getAttrs names (mapAttrs (k: v: mkMerge v) (foldAttrs (n: a: [ n ] ++ a) [ ] attrs));
-
-  monitorLines = map hyprMonitorLine monitors;
 
   setDefaultWallpaperExec = builtins.concatMap (
     monitor:
@@ -142,6 +164,15 @@ let
     '';
   };
 
+  # Things to run once on session start. Was `exec-once`; the Lua API listens on
+  # the `hyprland.start` event instead (see extraConfig below).
+  startupExecs = [
+    "hyprctl setcursor Adwaita 24"
+    "${lib.getExe limitWorkspace}" # TODO: this does not seem to trigger after a rebuild???
+    # "noctalia-shell"
+  ]
+  ++ setDefaultWallpaperExec;
+
 in
 
 {
@@ -153,11 +184,12 @@ in
   ];
   config = lib.mkIf gcfg.enable {
 
-    # The catppuccin/nix hyprland module injects
-    #   colors._var = mkLuaInline "require('themes.catppuccin')"
-    # expecting a Lua-aware hyprland generator, but home-manager dumps it as
-    # raw `_type=lua-inline` / `expr=...` keys and Hyprland rejects them.
-    # We pull palette hex values from myOptions.theme.colors directly instead.
+    # Catppuccin's hyprland module emits `colors._var = mkLuaInline
+    # "require('themes.catppuccin')"`, which the Lua renderer CAN handle now that
+    # we're on configType = "lua". We keep it off here on purpose: this change is
+    # the bare hyprlang->lua port, validated on its own. Re-enabling catppuccin
+    # (and dropping the manual palette wiring below) is a deliberate follow-up
+    # once the core lua config is confirmed working in a live session.
     catppuccin.hyprland.enable = false;
 
     home.packages = with pkgs; [
@@ -196,369 +228,438 @@ in
     };
 
     wayland.windowManager.hyprland.enable = true;
+
+    # Hyprland 0.55+ deprecates hyprlang in favour of Lua. home-manager renders
+    # `settings` as `hl.*()` calls into ~/.config/hypr/hyprland.lua under this
+    # mode. (Default would be "hyprlang" only because our home.stateVersion is
+    # ancient; set explicitly.)
+    wayland.windowManager.hyprland.configType = "lua";
+
     wayland.windowManager.hyprland.settings = lib.mkMerge [
+      # Monitors + workspace->monitor pins
       {
-        "$mainMod" = "${modifier}";
-        "$terminal" = "kitty";
-        "$fileManager" = "dolphin";
-        "$menu" = "rofi -show run";
-        monitorv2 = monitorLines;
-
-        exec-once = [
-          "hyprctl setcursor Adwaita 24"
-          "${pkgs.lib.getExe limitWorkspace}" # TODO: this does not seem to trigger after a rebuild???
-          # "noctalia-shell"
-        ]
-        ++ setDefaultWallpaperExec;
-
-        workspace = workspacePins;
-
-        debug = {
-          # disable_logs = false;
-        };
-
-        # spawn-at-startup = [
-        #   {
-        #     command = [
-        #       "noctalia-shell"
-        #     ];
-        #   }
-        # ];
+        monitor = monitorSpecs;
+        workspace_rule = workspacePins;
       }
-      # float windows that make sense t
-      {
-        # hyprctl clients
-        # to get all open windows
-        windowrule = [
-          # pavucontrol
-          "match:class org\\.pulseaudio\\.pavucontrol, float on"
-          "match:class org\\.pulseaudio\\.pavucontrol, size 1100 1100"
-          "match:class org\\.pulseaudio\\.pavucontrol, center on"
 
+      # float windows that make sense
+      {
+        # `hyprctl clients` to inspect open windows. Each rule is one
+        # hl.window_rule({ match = {...props}, ...effects }).
+        window_rule = [
+          {
+            match.class = "org\\.pulseaudio\\.pavucontrol";
+            float = true;
+            size = [
+              1100
+              1100
+            ];
+            center = true;
+          }
           # file picker dialogs
-          "match:title (Open File), float on"
+          {
+            match.title = "(Open File)";
+            float = true;
+          }
         ];
       }
 
       # kitty special workspace
       {
         # Create the special workspace and spawn kitty in it
-        workspace = [
-          "special:${kittyWorkspace}, on-created-empty:kitty --class ${kittyWorkspace}"
+        workspace_rule = [
+          {
+            workspace = "special:${kittyWorkspace}";
+            on_created_empty = "kitty --class ${kittyWorkspace}";
+          }
         ];
 
-        # Make that kitty a floating 90% x 90% slightly transparent window *on that special workspace*
-        windowrule = [
-          "match:class ^${kittyWorkspace}$, match:workspace special:${kittyWorkspace}, float on, center on, size (monitor_w*0.9) (monitor_h*0.9), opacity 0.95"
+        # Make that kitty a floating 90% x 90% slightly transparent window *on
+        # that special workspace*. size/move take vec2 tables; opacity is a string
+        # multiplier.
+        window_rule = [
+          {
+            match = {
+              class = "^${kittyWorkspace}$";
+              workspace = "special:${kittyWorkspace}";
+            };
+            float = true;
+            center = true;
+            size = [
+              "(monitor_w*0.9)"
+              "(monitor_h*0.9)"
+            ];
+            opacity = "0.95";
+          }
         ];
-
       }
+
       #####################
       ####### BINDS #######
       #####################
       {
         bind = [
-          "$mainMod, P, pseudo" # dwindle pseudo-tile
-          # "$mainMod, J, togglesplit" # dwindle split toggle
+          (mkBind "${modifier} + P" "hl.dsp.window.pseudo()") # dwindle pseudo-tile
 
           # Move focus with mainMod + arrows
-          "$mainMod, left, movefocus, l"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, up, movefocus, u"
-          "$mainMod, down, movefocus, d"
+          (mkBind "${modifier} + left" (focusDir "l"))
+          (mkBind "${modifier} + right" (focusDir "r"))
+          (mkBind "${modifier} + up" (focusDir "u"))
+          (mkBind "${modifier} + down" (focusDir "d"))
 
           # tabbed groups https://wiki.hypr.land/Configuring/Dispatchers/#grouped-tabbed-windows
-          "$mainMod, w, togglegroup"
-          "$mainMod SHIFT, left, movewindoworgroup, l"
-          "$mainMod SHIFT, right, movewindoworgroup, r"
-          "$mainMod SHIFT, up, movewindoworgroup, u"
-          "$mainMod SHIFT, down, movewindoworgroup, d"
+          (mkBind "${modifier} + w" "hl.dsp.group.toggle()")
+          (mkBind "${modifier} + SHIFT + left" (moveDir "l"))
+          (mkBind "${modifier} + SHIFT + right" (moveDir "r"))
+          (mkBind "${modifier} + SHIFT + up" (moveDir "u"))
+          (mkBind "${modifier} + SHIFT + down" (moveDir "d"))
 
           # kitty special workspace
-          "$mainMod, n, togglespecialworkspace, ${kittyWorkspace}"
-          # "$mainMod SHIFT, n, movetoworkspace, special:kitty-ws"
+          (mkBind "${modifier} + n" ''hl.dsp.workspace.toggle_special("${kittyWorkspace}")'')
 
-          "$mainMod,RETURN,exec,kitty" # $mod+Enter: terminal
-          "$mainMod,D,exec,rofi -show run" # $mod+d: launcher
-          "$mainMod SHIFT,Q,killactive" # $mod+Shift+q: kill
-          "$mainMod SHIFT,C,exec,hyprctl reload" # $mod+Shift+c: reload config
-          "$mainMod SHIFT,R,exec,hyprctl reload" # i3 “restart” → reload hypr config
-          "$mainMod SHIFT,E,exec,wlogout" # $mod+Shift+e: exit menu
-          "$mainMod SHIFT,ESCAPE,exec,rofi -show p -modi p:rofi-power-menu" # $mod+Shift+e: exit menu
-          "$mainMod,F,fullscreen" # $mod+f: toggle fullscreen
-          "$mainMod SHIFT,SPACE,togglefloating" # $mod+Shift+space: toggle float
-          "$mainMod Control_L,M,exec,pavucontrol"
-          "$mainMod,F2,exec,firefox"
-          "$mainMod Control_L, L,exec,loginctl lock-session"
-          "$mainMod SHIFT,w,exec,${pkgs.lib.getExe randomWallpaper}"
-
-          # Workspaces 1–10
-          "$mainMod,1,workspace,1"
-          "$mainMod,2,workspace,2"
-          "$mainMod,3,workspace,3"
-          "$mainMod,4,workspace,4"
-          "$mainMod,5,workspace,5"
-          "$mainMod,6,workspace,6"
-          "$mainMod,7,workspace,7"
-          "$mainMod,8,workspace,8"
-          "$mainMod,9,workspace,9"
-          "$mainMod,0,workspace,10"
-
-          # Move focused window to workspace (i3: $mod+Shift+[1-0])
-          "$mainMod SHIFT,1,movetoworkspace,1"
-          "$mainMod SHIFT,2,movetoworkspace,2"
-          "$mainMod SHIFT,3,movetoworkspace,3"
-          "$mainMod SHIFT,4,movetoworkspace,4"
-          "$mainMod SHIFT,5,movetoworkspace,5"
-          "$mainMod SHIFT,6,movetoworkspace,6"
-          "$mainMod SHIFT,7,movetoworkspace,7"
-          "$mainMod SHIFT,8,movetoworkspace,8"
-          "$mainMod SHIFT,9,movetoworkspace,9"
-          "$mainMod SHIFT,0,movetoworkspace,10"
-        ];
-
-        bindm = [
-          "$mainMod, mouse:272, movewindow" # LMB drag to move
-          "$mainMod, mouse:273, resizewindow" # RMB drag to resize
-        ];
-
-        bindel = [
-          # Volume / mic / brightness
-          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86AudioMute,        exec, wpctl set-mute   @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioMicMute,     exec, wpctl set-mute   @DEFAULT_AUDIO_SOURCE@ toggle"
-          ", XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
-          ", XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
-        ];
-
-        bindl = [
-          "$mainMod SHIFT, s, exec, ${lib.getExe pkgs.hyprshot} -m region"
-          ", XF86AudioNext,  exec, playerctl next"
-          ", XF86AudioPause, exec, playerctl play-pause"
-          ", XF86AudioPlay,  exec, playerctl play-pause"
-          ", XF86AudioPrev,  exec, playerctl previous"
+          (mkBind "${modifier} + RETURN" (exec "kitty")) # terminal
+          (mkBind "${modifier} + D" (exec "rofi -show run")) # launcher
+          (mkBind "${modifier} + SHIFT + Q" "hl.dsp.window.close()") # kill
+          (mkBind "${modifier} + SHIFT + C" (exec "hyprctl reload")) # reload config
+          (mkBind "${modifier} + SHIFT + R" (exec "hyprctl reload")) # i3 "restart"
+          (mkBind "${modifier} + SHIFT + E" (exec "wlogout")) # exit menu
+          (mkBind "${modifier} + SHIFT + ESCAPE" (exec "rofi -show p -modi p:rofi-power-menu")) # power menu
+          (mkBind "${modifier} + F" "hl.dsp.window.fullscreen()") # toggle fullscreen
+          (mkBind "${modifier} + SHIFT + SPACE" "hl.dsp.window.float()") # toggle float
+          (mkBind "${modifier} + CTRL + M" (exec "pavucontrol"))
+          (mkBind "${modifier} + F2" (exec "firefox"))
+          (mkBind "${modifier} + CTRL + L" (exec "loginctl lock-session"))
+          (mkBind "${modifier} + SHIFT + w" (exec "${lib.getExe randomWallpaper}"))
+        ]
+        # Workspaces 1-10 (key "0" -> workspace 10)
+        ++ (map (
+          k: mkBind "${modifier} + ${k}" (focusWs (if k == "0" then 10 else lib.toInt k))
+        ) (lib.genList (i: toString (lib.mod (i + 1) 10)) 10))
+        # Move focused window to workspace (i3: $mod+Shift+[1-0])
+        ++ (map (
+          k: mkBind "${modifier} + SHIFT + ${k}" (moveToWs (if k == "0" then 10 else lib.toInt k))
+        ) (lib.genList (i: toString (lib.mod (i + 1) 10)) 10))
+        # Mouse: drag to move / resize (was bindm)
+        ++ [
+          (mkBindF "${modifier} + mouse:272" "hl.dsp.window.drag()" { mouse = true; })
+          (mkBindF "${modifier} + mouse:273" "hl.dsp.window.resize()" { mouse = true; })
+        ]
+        # Volume / mic / brightness (was bindel: repeat + works while locked)
+        ++ (map (b: mkBindF b.keys (exec b.cmd) { repeating = true; locked = true; }) [
+          {
+            keys = "XF86AudioRaiseVolume";
+            cmd = "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+";
+          }
+          {
+            keys = "XF86AudioLowerVolume";
+            cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+          }
+          {
+            keys = "XF86AudioMute";
+            cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          }
+          {
+            keys = "XF86AudioMicMute";
+            cmd = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+          }
+          {
+            keys = "XF86MonBrightnessUp";
+            cmd = "brightnessctl -e4 -n2 set 5%+";
+          }
+          {
+            keys = "XF86MonBrightnessDown";
+            cmd = "brightnessctl -e4 -n2 set 5%-";
+          }
+        ])
+        # Screenshot + media (was bindl: works while locked)
+        ++ [
+          (mkBindF "${modifier} + SHIFT + s" (exec "${lib.getExe pkgs.hyprshot} -m region") {
+            locked = true;
+          })
+          (mkBindF "XF86AudioNext" (exec "playerctl next") { locked = true; })
+          (mkBindF "XF86AudioPause" (exec "playerctl play-pause") { locked = true; })
+          (mkBindF "XF86AudioPlay" (exec "playerctl play-pause") { locked = true; })
+          (mkBindF "XF86AudioPrev" (exec "playerctl previous") { locked = true; })
         ];
       }
+
       #####################
       ### LOOK AND FEEL ###
       #####################
+      #
+      # All the old `general {}` / `decoration {}` / etc. blocks collapse into a
+      # single hl.config({ ... }) table. Refer to
+      # https://wiki.hypr.land/Configuring/Basics/Variables/
       {
+        config = {
+          general = {
+            gaps_in = 5;
+            gaps_out = 10;
 
-        # Refer to https://wiki.hypr.land/Configuring/Variables/
+            border_size = 1;
 
-        # https://wiki.hypr.land/Configuring/Variables/#general
-        general = {
-          gaps_in = 5;
-          gaps_out = 10;
+            # gradient = a color string, or { colors = {...}, angle = N }
+            "col.active_border" = {
+              colors = [
+                "rgba(ca9ee6ff)" # catppuccin mauve
+                "rgba(f2d5cfff)" # -> rosewater
+              ];
+              angle = 45;
+            };
+            "col.inactive_border" = "rgba(595959aa)";
 
-          border_size = 1;
+            resize_on_border = false;
+            allow_tearing = false;
 
-          # https://wiki.hypr.land/Configuring/Variables/#variable-types for info about colors
-          "col.active_border" = "rgba(ca9ee6ff) rgba(f2d5cfff) 45deg"; # catppuccin mauve → rosewater gradient
-          "col.inactive_border" = "rgba(595959aa)";
-
-          # Set to true enable resizing windows by clicking and dragging on borders and gaps
-          resize_on_border = false;
-
-          # Please see https://wiki.hypr.land/Configuring/Tearing/ before you turn this on
-          allow_tearing = false;
-
-          layout = "dwindle";
-        };
-
-        # https://wiki.hypr.land/Configuring/Variables/#decoration
-        decoration = {
-          rounding = 10;
-          rounding_power = 4;
-
-          active_opacity = 1.0;
-          inactive_opacity = 1.0;
-
-          shadow = {
-            enabled = true;
-            range = 4;
-            render_power = 3;
-            color = "rgba(1a1a1aee)";
+            layout = "dwindle";
           };
 
-          blur = {
-            enabled = true;
-            size = 8;
-            passes = 3;
-            new_optimizations = true;
-            noise = 0.02;
-            contrast = 0.9;
-            brightness = 0.8;
-            vibrancy = 0.1696;
+          decoration = {
+            rounding = 10;
+            rounding_power = 4;
+
+            active_opacity = 1.0;
+            inactive_opacity = 1.0;
+
+            shadow = {
+              enabled = true;
+              range = 4;
+              render_power = 3;
+              color = "rgba(1a1a1aee)";
+            };
+
+            blur = {
+              enabled = true;
+              size = 8;
+              passes = 3;
+              new_optimizations = true;
+              noise = 0.02;
+              contrast = 0.9;
+              brightness = 0.8;
+              vibrancy = 0.1696;
+            };
+          };
+
+          group.groupbar = {
+            gradients = true;
+            # palette hex values include a leading '#' which Hyprland's rgb() rejects
+            "col.active" = "rgb(${lib.removePrefix "#" colors.base})";
+            "col.inactive" = "rgb(${lib.removePrefix "#" colors.crust})";
+          };
+
+          animations.enabled = true;
+
+          # was the `dwindle {}` / `master {}` / `input {}` / `misc {}` blocks in
+          # extraConfig
+          dwindle.preserve_split = true; # You probably want this
+          master.new_status = "master";
+
+          input = {
+            kb_layout = "us";
+            follow_mouse = 1;
+            sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+            touchpad.natural_scroll = false;
+          };
+
+          misc = {
+            force_default_wallpaper = 0; # disable the anime mascot wallpapers
+            disable_hyprland_logo = true;
           };
         };
 
-        group.groupbar = {
-          gradients = true;
-          # palette hex values include a leading '#' which hyprland's rgb() rejects
-          "col.active" = "rgb(${lib.removePrefix "#" colors.base})";
-          "col.inactive" = "rgb(${lib.removePrefix "#" colors.crust})";
-        };
+        # Beziers (was `bezier = name, x0,y0,x1,y1`) -> hl.curve(name, { points })
+        curve = [
+          {
+            _args = [
+              "easeOut" # smooth decel, no overshoot
+              {
+                type = "bezier";
+                points = [
+                  [
+                    0.25
+                    1
+                  ]
+                  [
+                    0.5
+                    1
+                  ]
+                ];
+              }
+            ];
+          }
+          {
+            _args = [
+              "liner"
+              {
+                type = "bezier";
+                points = [
+                  [
+                    1
+                    1
+                  ]
+                  [
+                    1
+                    1
+                  ]
+                ];
+              }
+            ];
+          }
+        ];
 
-        animations = {
-          enabled = true;
+        # Animations (was `animation = name, onoff, speed, curve[, style]`)
+        animation = [
+          {
+            leaf = "windows";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+          }
+          {
+            leaf = "windowsIn";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+            style = "popin 90%";
+          }
+          {
+            leaf = "windowsOut";
+            enabled = true;
+            speed = 2;
+            curve = "easeOut";
+            style = "popin 90%";
+          }
+          {
+            leaf = "windowsMove";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+          }
+          {
+            leaf = "border";
+            enabled = true;
+            speed = 1;
+            curve = "liner";
+          }
+          {
+            leaf = "borderangle";
+            enabled = true;
+            speed = 30;
+            curve = "liner";
+            style = "loop";
+          }
+          {
+            leaf = "fade";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+          }
+          {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+          }
+          {
+            leaf = "specialWorkspace";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+            style = "fade";
+          }
+          {
+            leaf = "zoomFactor";
+            enabled = true;
+            speed = 3;
+            curve = "easeOut";
+          }
+        ];
 
-          bezier = [
-            "easeOut, 0.25, 1, 0.5, 1" # smooth decel, no overshoot
-            "liner, 1, 1, 1, 1"
-          ];
+        # Environment variables (was `env = KEY,VALUE`)
+        env = [
+          {
+            _args = [
+              "XCURSOR_SIZE"
+              "24"
+            ];
+          }
+          {
+            _args = [
+              "HYPRCURSOR_SIZE"
+              "24"
+            ];
+          }
+        ];
 
-          animation = [
-            "windows, 1, 3, easeOut"
-            "windowsIn, 1, 3, easeOut, popin 90%"
-            "windowsOut, 1, 2, easeOut, popin 90%"
-            "windowsMove, 1, 3, easeOut"
-            "border, 1, 1, liner"
-            "borderangle, 1, 30, liner, loop"
-            "fade, 1, 3, easeOut"
-            "workspaces, 1, 3, easeOut"
-            "specialWorkspace, 1, 3, easeOut, fade"
-            "zoomFactor, 1, 3, easeOut"
-          ];
-        };
-
-        # windowrule = [
-        #   "floating:1 onworkspace:s[true]"
-        # ];
+        # Per-device input (was `device { name = ...; sensitivity = ...; }`)
+        device = [
+          {
+            name = "epic-mouse-v1";
+            sensitivity = -0.5;
+          }
+        ];
       }
+
       # https://wiki.hypr.land/Configuring/Workspace-Rules/#smart-gaps-ignoring-special-workspaces
       {
-        workspace = [
-          "w[tv1]s[false], gapsout:0, gapsin:0"
-          "f[1]s[false], gapsout:0, gapsin:0"
+        workspace_rule = [
+          {
+            workspace = "w[tv1]s[false]";
+            gaps_out = 0;
+            gaps_in = 0;
+          }
+          {
+            workspace = "f[1]s[false]";
+            gaps_out = 0;
+            gaps_in = 0;
+          }
         ];
-        windowrule = [
-          # Workspace w[tv1]s[false]
-          "border_size 0, match:float 0, match:workspace w[tv1]s[false]"
-          "rounding 0, match:float 0, match:workspace w[tv1]s[false]"
+        window_rule = [
+          {
+            match = {
+              float = false;
+              workspace = "w[tv1]s[false]";
+            };
+            border_size = 0;
+            rounding = 0;
+          }
+          {
+            match = {
+              float = false;
+              workspace = "f[1]s[false]";
+            };
+            border_size = 0;
+            rounding = 0;
+          }
 
-          # Workspace f[1]s[false]
-          "border_size 0, match:float 0, match:workspace f[1]s[false]"
-          "rounding 0, match:float 0, match:workspace f[1]s[false]"
+          # Ignore maximize requests from apps.
+          {
+            match.class = ".*";
+            suppress_event = "maximize";
+          }
+          # Fix some dragging issues with XWayland
+          {
+            match = {
+              class = "^$";
+              title = "^$";
+              xwayland = true;
+              float = true;
+              fullscreen = false;
+              pin = false;
+            };
+            no_focus = true;
+          }
         ];
-
       }
-
     ];
 
+    # Autostart: the Lua API runs things on the `hyprland.start` event rather than
+    # `exec-once`. extraConfig is appended verbatim to hyprland.lua, so this is
+    # raw Lua.
     wayland.windowManager.hyprland.extraConfig = ''
-      # This is an example Hyprland config file.
-      # Refer to the wiki for more information.
-      # https://wiki.hypr.land/Configuring/
-
-      # Please note not all available settings / options are set here.
-      # For a full list, see the wiki
-
-      # You can split this configuration into multiple files
-      # Create your files separately and then link them to this file like this:
-      # source = ~/.config/hypr/myColors.conf
-
-      ### MY PROGRAMS ###
-      ###################
-
-      # See https://wiki.hypr.land/Configuring/Keywords/
-
-      # Set programs that you use
-
-
-      #############################
-      ### ENVIRONMENT VARIABLES ###
-      #############################
-
-      # See https://wiki.hypr.land/Configuring/Environment-variables/
-
-      env = XCURSOR_SIZE,24
-      env = HYPRCURSOR_SIZE,24
-
-      ###################
-      ### PERMISSIONS ###
-      ###################
-
-      # See https://wiki.hypr.land/Configuring/Permissions/
-      # Please note permission changes here require a Hyprland restart and are not applied on-the-fly
-      # for security reasons
-
-      # ecosystem {
-      #   enforce_permissions = 1
-      # }
-
-      # permission = /usr/(bin|local/bin)/grim, screencopy, allow
-      # permission = /usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland, screencopy, allow
-      # permission = /usr/(bin|local/bin)/hyprpm, plugin, allow
-
-      # See https://wiki.hypr.land/Configuring/Dwindle-Layout/ for more
-      dwindle {
-          # pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-          preserve_split = true # You probably want this
-      }
-
-      # See https://wiki.hypr.land/Configuring/Master-Layout/ for more
-      master {
-          new_status = master
-      }
-
-      # https://wiki.hypr.land/Configuring/Variables/#misc
-      misc {
-          force_default_wallpaper = 0 # Set to 0 or 1 to disable the anime mascot wallpapers
-          disable_hyprland_logo = true # If true disables the random hyprland logo / anime girl background. :(
-      }
-
-
-      #############
-      ### INPUT ###
-      #############
-
-      # https://wiki.hypr.land/Configuring/Variables/#input
-      input {
-          kb_layout = us
-          kb_variant =
-          kb_model =
-          kb_options =
-          kb_rules =
-
-          follow_mouse = 1
-
-          sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-
-          touchpad {
-              natural_scroll = false
-          }
-      }
-
-      # https://wiki.hypr.land/Configuring/Variables/#gestures
-      # gestures {
-      #     workspace_swipe = false
-      # }
-
-      # Example per-device config
-      # See https://wiki.hypr.land/Configuring/Keywords/#per-device-input-configs for more
-      device {
-          name = epic-mouse-v1
-          sensitivity = -0.5
-      }
-
-      ##############################
-      ### WINDOWS AND WORKSPACES ###
-      ##############################
-
-      # See https://wiki.hypr.land/Configuring/Window-Rules/ for more
-      # See https://wiki.hypr.land/Configuring/Workspace-Rules/ for workspace rules
-
-      # Example windowrule
-      # windowrule = float,class:^(kitty)$,title:^(kitty)$
-
-      # Ignore maximize requests from apps.
-      windowrule = suppress_event maximize, match:class .*
-
-
-      # Fix some dragging issues with XWayland
-      windowrule = no_focus 1, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0
+      hl.on("hyprland.start", function()
+      ${lib.concatMapStringsSep "\n" (c: ''  hl.exec_cmd("${c}")'') startupExecs}
+      end)
     '';
   };
 }
