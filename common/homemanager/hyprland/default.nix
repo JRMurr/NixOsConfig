@@ -456,6 +456,7 @@ in
           misc = {
             force_default_wallpaper = 0; # disable the anime mascot wallpapers
             disable_hyprland_logo = true;
+            disable_splash_rendering = true; # hide the random quote/splash text
           };
         };
 
