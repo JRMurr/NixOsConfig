@@ -14,7 +14,6 @@ let
 
   gcfg = osConfig.myOptions.graphics;
   monitors = gcfg.monitors;
-  colors = osConfig.myOptions.theme.colors;
 
   # ==============================================================================
   # Lua dispatcher / bind helpers
@@ -184,13 +183,11 @@ in
   ];
   config = lib.mkIf gcfg.enable {
 
-    # Catppuccin's hyprland module emits `colors._var = mkLuaInline
-    # "require('themes.catppuccin')"`, which the Lua renderer CAN handle now that
-    # we're on configType = "lua". We keep it off here on purpose: this change is
-    # the bare hyprlang->lua port, validated on its own. Re-enabling catppuccin
-    # (and dropping the manual palette wiring below) is a deliberate follow-up
-    # once the core lua config is confirmed working in a live session.
-    catppuccin.hyprland.enable = false;
+    # Catppuccin's hyprland module installs ~/.config/hypr/themes/catppuccin.lua
+    # and injects `local colors = require('themes.catppuccin')` into our config.
+    # We reference that `colors` table for borders/groupbar below instead of
+    # hardcoding hex, so colours track the configured flavor/accent.
+    catppuccin.hyprland.enable = true;
 
     home.packages = with pkgs; [
       wlogout
@@ -398,15 +395,11 @@ in
 
             border_size = 1;
 
-            # gradient = a color string, or { colors = {...}, angle = N }
-            "col.active_border" = {
-              colors = [
-                "rgba(ca9ee6ff)" # catppuccin mauve
-                "rgba(f2d5cfff)" # -> rosewater
-              ];
-              angle = 45;
-            };
-            "col.inactive_border" = "rgba(595959aa)";
+            # Reference the catppuccin `colors` lua local (see
+            # ~/.config/hypr/themes/catppuccin.lua). gradient = a color, or
+            # { colors = {...}, angle = N }; accent tracks catppuccin.accent.
+            "col.active_border" = mkLuaInline "{ colors = { colors.accent, colors.rosewater }, angle = 45 }";
+            "col.inactive_border" = mkLuaInline "colors.surface0";
 
             resize_on_border = false;
             allow_tearing = false;
@@ -442,9 +435,8 @@ in
 
           group.groupbar = {
             gradients = true;
-            # palette hex values include a leading '#' which Hyprland's rgb() rejects
-            "col.active" = "rgb(${lib.removePrefix "#" colors.base})";
-            "col.inactive" = "rgb(${lib.removePrefix "#" colors.crust})";
+            "col.active" = mkLuaInline "colors.base";
+            "col.inactive" = mkLuaInline "colors.crust";
           };
 
           animations.enabled = true;

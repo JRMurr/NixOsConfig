@@ -3,15 +3,18 @@
 ## Hyprland hyprlang -> Lua migration (branch: hyprland-lua-config)
 
 Done and verified live: ported `common/homemanager/hyprland/default.nix` to
-`configType = "lua"` (Hyprland 0.55.4). `hyprctl configerrors` is clean and
-behaviour (incl. workspace switching) confirmed working after a rebuild.
+`configType = "lua"` (Hyprland 0.55.4). Workspace switching etc. confirmed.
 
-Gotcha hit during the port: `hl.animation` needs `bezier = "<name>"` (or
-`spring`), not the `curve` field the wiki documents — `curve` isn't accepted in
-0.55.4. Fixed in commit 4d93ef9.
+Catppuccin follow-up done (pending live check): enabled
+`catppuccin.hyprland.enable = true` and switched borders/groupbar to reference
+the `colors` lua local (`require('themes.catppuccin')`) instead of hardcoded hex.
+This also fixed a latent bug — the old active-border gradient was hardcoded
+*Frappé* mauve/rosewater while the configured flavor is *mocha*.
 
-### Follow-up (not done yet)
-- Re-enable `catppuccin.hyprland.enable = true` and drop the manual palette wiring
-  (the `col.active_border` gradient in `general` + the `group.groupbar` rgb()
-  values). Works now that we're on `configType = "lua"` (the module emits
-  `local colors = require('themes.catppuccin')`). Do as its own tested change.
+### Live check still needed for catppuccin
+- [ ] `hyprctl configerrors` clean after switch — specifically that
+      `require('themes.catppuccin')` resolves. The generated hyprland.lua has no
+      `package.path` setup, so it relies on Hyprland having ~/.config/hypr on the
+      Lua path by default. If it errors, add the path (e.g. a small autoLoad
+      `extraLuaFiles` entry makes the module emit the package.path prelude).
+- [ ] Active border is mocha mauve->rosewater; inactive is surface0.
