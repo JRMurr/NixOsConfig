@@ -513,65 +513,65 @@ in
             leaf = "windows";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
           }
           {
             leaf = "windowsIn";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
             style = "popin 90%";
           }
           {
             leaf = "windowsOut";
             enabled = true;
             speed = 2;
-            curve = "easeOut";
+            bezier = "easeOut";
             style = "popin 90%";
           }
           {
             leaf = "windowsMove";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
           }
           {
             leaf = "border";
             enabled = true;
             speed = 1;
-            curve = "liner";
+            bezier = "liner";
           }
           {
             leaf = "borderangle";
             enabled = true;
             speed = 30;
-            curve = "liner";
+            bezier = "liner";
             style = "loop";
           }
           {
             leaf = "fade";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
           }
           {
             leaf = "workspaces";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
           }
           {
             leaf = "specialWorkspace";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
             style = "fade";
           }
           {
             leaf = "zoomFactor";
             enabled = true;
             speed = 3;
-            curve = "easeOut";
+            bezier = "easeOut";
           }
         ];
 
