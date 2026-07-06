@@ -154,7 +154,14 @@ let
         if [[ "$line" = openwindow* ]]; then
           read -r window_address workspace window_class window_title <<<$(echo "$line" | awk -F "[>,]" '{print $3,$4,$5,$6}')
           if [[ "$workspace" == special:${kittyWorkspace} && "$window_class" != ${kittyWorkspace} ]]; then
-            hyprctl dispatch movetoworkspace e+0,address:0x''${window_address}
+            # Hyprland 0.55's Lua config makes `hyprctl dispatch` evaluate its
+            # argument as Lua (`hl.dispatch(...)`), so the legacy string form
+            # `movetoworkspace e+0,address:0x…` is a Lua syntax error and silently
+            # does nothing — which is why stray windows were staying in the
+            # scratchpad. Use the typed dispatcher: move the window (selected by
+            # address) to the current workspace. e+0 = active workspace; move
+            # follows the window, matching the old movetoworkspace behaviour.
+            hyprctl dispatch "hl.dsp.window.move({ workspace = \"e+0\", window = \"address:0x''${window_address}\" })"
           fi
         fi
       }
@@ -167,7 +174,9 @@ let
   # the `hyprland.start` event instead (see extraConfig below).
   startupExecs = [
     "hyprctl setcursor Adwaita 24"
-    "${lib.getExe limitWorkspace}" # TODO: this does not seem to trigger after a rebuild???
+    # Runs on the hyprland.start event (session start), not on `hyprctl reload`,
+    # so a rebuild+reload won't relaunch it — the original instance keeps running.
+    "${lib.getExe limitWorkspace}"
     # "noctalia-shell"
   ]
   ++ setDefaultWallpaperExec;
