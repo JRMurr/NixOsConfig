@@ -11,6 +11,15 @@ with lib;
   options.myOptions = {
     graphics.enable = mkEnableOption "Enable graphics";
 
+    terminal = mkOption {
+      type = types.enum [
+        "kitty"
+        "ghostty"
+      ];
+      default = "kitty";
+      description = "Which terminal emulator the window manager launches (mod+RETURN and the scratchpad workspace).";
+    };
+
     lock.enable = mkEnableOption "Enable auto lock";
 
     redShift.disable = mkEnableOption "disable redShift";

@@ -5,6 +5,7 @@
     ./direnv.nix
     ./fish
     ./git
+    ./ghostty.nix
     ./gitui.nix
     # ./helix.nix
     ./hyprland

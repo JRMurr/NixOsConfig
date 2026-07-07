@@ -117,7 +117,7 @@ in
             monitorSpecific = true;
             show_numbered = true;
             show_icons = false;
-            ignored = "-.*"; # hack to hide the special kitty workspace. It seems to get a negative number?
+            ignored = "-.*"; # hack to hide the special ghostty workspace. It seems to get a negative number?
           };
         };
 

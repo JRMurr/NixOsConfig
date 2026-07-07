@@ -133,7 +133,38 @@ let
     '';
   };
 
-  kittyWorkspace = "kitty-ws";
+  # ==============================================================================
+  # Terminal selection (myOptions.terminal: "kitty" | "ghostty")
+  # ==============================================================================
+  #
+  # The WM launches one terminal for the mod+RETURN bind and one for the
+  # scratchpad special workspace. Everything terminal-specific lives in this
+  # attrset so swapping the option is the only change needed.
+  #
+  # `scratchClass` is the window class we spawn the scratchpad with and then
+  # match on for the float/size/opacity rule. Note the two terminals differ:
+  #   - kitty takes `--class NAME` and accepts any string.
+  #   - ghostty takes `--class=NAME` and the value must be a valid GTK
+  #     application-ID (g_application_id_is_valid: needs a period, each element
+  #     starting with a letter, ...). A bare "ghostty-ws" is silently rejected
+  #     and ghostty falls back to "com.mitchellh.ghostty", so the rule wouldn't
+  #     match and the window would open full-size instead of the floating box.
+  terminals = {
+    kitty = {
+      launch = "kitty";
+      scratchClass = "kitty-ws";
+      scratchSpawn = "kitty --class kitty-ws";
+    };
+    ghostty = {
+      launch = "ghostty";
+      scratchClass = "com.ghostty.scratchpad";
+      scratchSpawn = "ghostty --class=com.ghostty.scratchpad";
+    };
+  };
+  term = terminals.${osConfig.myOptions.terminal};
+
+  # Neutral scratchpad workspace name (independent of which terminal fills it).
+  scratchWorkspace = "term-ws";
 
   # https://www.reddit.com/r/hyprland/comments/14pzqi6/is_it_possible_to_limit_only_one_window_client_on/lgh8b2u/
   limitWorkspace = pkgs.writeShellApplication {
@@ -153,7 +184,7 @@ let
         line=$1
         if [[ "$line" = openwindow* ]]; then
           read -r window_address workspace window_class window_title <<<$(echo "$line" | awk -F "[>,]" '{print $3,$4,$5,$6}')
-          if [[ "$workspace" == special:${kittyWorkspace} && "$window_class" != ${kittyWorkspace} ]]; then
+          if [[ "$workspace" == special:${scratchWorkspace} && "$window_class" != ${term.scratchClass} ]]; then
             # Hyprland 0.55's Lua config makes `hyprctl dispatch` evaluate its
             # argument as Lua (`hl.dispatch(...)`), so the legacy string form
             # `movetoworkspace e+0,address:0x…` is a Lua syntax error and silently
@@ -270,24 +301,25 @@ in
         ];
       }
 
-      # kitty special workspace
+      # terminal scratchpad workspace (kitty or ghostty, per myOptions.terminal)
       {
-        # Create the special workspace and spawn kitty in it
+        # Create the special workspace and spawn the terminal in it. The --class
+        # we pass is the Wayland app_id Hyprland matches on below.
         workspace_rule = [
           {
-            workspace = "special:${kittyWorkspace}";
-            on_created_empty = "kitty --class ${kittyWorkspace}";
+            workspace = "special:${scratchWorkspace}";
+            on_created_empty = term.scratchSpawn;
           }
         ];
 
-        # Make that kitty a floating 90% x 90% slightly transparent window *on
+        # Make that terminal a floating 90% x 90% slightly transparent window *on
         # that special workspace*. size/move take vec2 tables; opacity is a string
         # multiplier.
         window_rule = [
           {
             match = {
-              class = "^${kittyWorkspace}$";
-              workspace = "special:${kittyWorkspace}";
+              class = "^${term.scratchClass}$";
+              workspace = "special:${scratchWorkspace}";
             };
             float = true;
             center = true;
@@ -320,10 +352,10 @@ in
           (mkBind "${modifier} + SHIFT + up" (moveDir "u"))
           (mkBind "${modifier} + SHIFT + down" (moveDir "d"))
 
-          # kitty special workspace
-          (mkBind "${modifier} + n" ''hl.dsp.workspace.toggle_special("${kittyWorkspace}")'')
+          # terminal scratchpad workspace
+          (mkBind "${modifier} + n" ''hl.dsp.workspace.toggle_special("${scratchWorkspace}")'')
 
-          (mkBind "${modifier} + RETURN" (exec "kitty")) # terminal
+          (mkBind "${modifier} + RETURN" (exec term.launch)) # terminal
           (mkBind "${modifier} + D" (exec "rofi -show run")) # launcher
           (mkBind "${modifier} + SHIFT + Q" "hl.dsp.window.close()") # kill
           (mkBind "${modifier} + SHIFT + C" (exec "hyprctl reload")) # reload config
