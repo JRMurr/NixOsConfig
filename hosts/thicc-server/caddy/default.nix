@@ -113,10 +113,19 @@ in
   services.caddy = {
     enable = true;
     email = "johnreillymurray@gmail.com";
-    package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-      hash = "sha256-bL1cpMvDogD/pdVxGA8CAMEXazWpFDBiGBxG83SmXLA=";
-    };
+    package =
+      let
+        base = pkgs.caddy.withPlugins {
+          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
+          hash = "sha256-peY/XG37RC0e7FafJ3qNk53srtXZagxN/Hfexcc2TMM=";
+        };
+      in
+      base.overrideAttrs (prev: {
+        src = prev.src.overrideAttrs (_: {
+          GOSUMDB = "off";
+          GOPROXY = "https://proxy.golang.org,direct";
+        });
+      });
     logFormat = lib.mkForce "level info";
     virtualHosts =
       let

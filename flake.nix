@@ -93,7 +93,7 @@
         inputs.attic.overlays.default
         inputs.agenix.overlays.default
         inputs.nix-vscode-extensions.overlays.default
-        llm-agents.overlays.default
+        llm-agents.overlays.shared-nixpkgs
         (import ./pkgs/overlay.nix)
         # TODO: nil and nurl
       ];
