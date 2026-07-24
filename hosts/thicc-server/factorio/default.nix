@@ -87,12 +87,20 @@ let
         # shellcheck disable=SC2064
         trap "rm -f '$tmp'" EXIT
 
-        # The credentialed URL is fed to curl through a config file on stdin
-        # rather than as an argument, so the token never shows up in `ps` output.
-        # printf is a bash builtin, so it doesn't leak it either.
-        printf 'silent\nshow-error\nfail\nlocation\nurl = "%s"\n' \
+        # Only the credentialed URL goes through the config file on stdin, so the
+        # token never shows up in `ps` output; printf is a bash builtin, so it
+        # doesn't leak it either. Everything else stays on the command line where
+        # it's readable.
+        #
+        # --retry-all-errors is the load-bearing flag: the portal drops
+        # connections mid-handshake often enough to fail a run, and plain --retry
+        # doesn't cover TLS errors (curl only treats timeouts and 5xx as
+        # transient). A genuinely bad token still fails, just 5 attempts later.
+        printf 'url = "%s"\n' \
           "https://mods.factorio.com''${downloadPath}?username=''${FACTORIO_USER}&token=''${FACTORIO_TOKEN}" \
-          | curl --config - --output "$tmp"
+          | curl --config - --output "$tmp" \
+              --silent --show-error --fail --location \
+              --retry 5 --retry-delay 3 --retry-all-errors --retry-connrefused
 
         if ! sha1sum -c --status - <<<"$sha1  $tmp"; then
           echo "hash mismatch for $zip" >&2
