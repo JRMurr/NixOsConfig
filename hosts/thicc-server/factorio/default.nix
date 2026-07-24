@@ -21,22 +21,27 @@ let
   # Mods can't be fetched at build time: the mod portal only serves downloads to
   # an authenticated user, and any credential baked into a fixed-output
   # derivation's URL ends up world-readable in the nix store. So instead we pin
-  # the mods declaratively here (all public metadata) and let a systemd oneshot
-  # do the authenticated fetch at runtime, verifying against the pinned sha1.
+  # each mod's public metadata (version, download path, sha1) and let a systemd
+  # oneshot do the authenticated fetch at runtime, verifying against that sha1.
   #
-  # `downloadPath` and `sha1` both come from the portal API. Generate a line with
-  # the `factorio-mod-entry` helper installed below:
+  # The pins live in JSON rather than in this file because `factorio-mod` rewrites
+  # them — see mod-tool.py. Don't hand-edit unless you're removing something.
   #
-  #   factorio-mod-entry flib
+  #   factorio-mod add https://mods.factorio.com/mod/even-distribution
+  #   factorio-mod update
   #
-  # NOTE: dependency resolution is not automatic. The helper prints each mod's
-  # declared dependencies alongside the entry; any non-`base` dependency has to be
-  # added to this list by hand.
-  factorioMods = [
-    # { name = "flib"; version = "0.17.2"; downloadPath = "/download/flib/6a3d4af12b2a85ea00e307a6"; sha1 = "6c7cedeefbdce89348d1e979a24e5706fd5a4311"; }
-  ];
+  # Round-tripping through fromJSON turns a malformed manifest into an eval error
+  # instead of a service failure at runtime.
+  #
+  # NOTE: the manifest has to be tracked by git — flake eval only sees files in
+  # the git tree, so a fresh `git add` is required the first time.
+  factorioMods = builtins.fromJSON (builtins.readFile ./mods.json);
 
   manifest = pkgs.writeText "factorio-mods.json" (builtins.toJSON factorioMods);
+
+  # The game version the pins are resolved against: mods declare compatibility as
+  # major.minor, so 2.1.12 means we want mods built for 2.1 or older.
+  gameVersion = lib.versions.majorMinor version;
 
   # ==============================================================================
   # Mod sync
@@ -110,6 +115,26 @@ let
       done
     '';
   };
+
+  # ==============================================================================
+  # Manifest tooling
+  # ==============================================================================
+  #
+  # `factorio-mod` resolves mods (and their required dependencies) against the
+  # portal API and rewrites mods.json. The wrapper supplies the game
+  # version so it tracks the pinned server rather than being restated in the
+  # script; FACTORIO_MODS_FILE can be overridden to point at another checkout.
+  modTool =
+    let
+      unwrapped = pkgs.writers.writePython3Bin "factorio-mod" {
+        # The portal API and dependency-syntax comments run past 79 columns.
+        flakeIgnore = [ "E501" ];
+      } (builtins.readFile ./mod-tool.py);
+    in
+    pkgs.runCommandLocal "factorio-mod" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+      makeWrapper ${unwrapped}/bin/factorio-mod $out/bin/factorio-mod \
+        --set-default FACTORIO_GAME_VERSION ${gameVersion}
+    '';
 in
 {
   # Contents:
@@ -168,28 +193,5 @@ in
     };
   };
 
-  # Prints a ready-to-paste `factorioMods` entry for the newest release of a mod
-  # compatible with the given game version (default 2.1).
-  environment.systemPackages = [
-    (pkgs.writeShellApplication {
-      name = "factorio-mod-entry";
-      runtimeInputs = with pkgs; [
-        curl
-        jq
-      ];
-      text = ''
-        mod="$1"
-        gameVersion="''${2:-2.1}"
-
-        curl -sf "https://mods.factorio.com/api/mods/$mod/full" \
-          | jq -r --arg m "$mod" --arg gv "$gameVersion" '
-              def vnum: split(".") | map(tonumber);
-              [.releases[] | select((.info_json.factorio_version | vnum) <= ($gv | vnum))] | last
-              | if . == null then error("no release for factorio \($gv)") else . end
-              | "{ name = \"\($m)\"; version = \"\(.version)\"; downloadPath = \"\(.download_url)\"; sha1 = \"\(.sha1)\"; }",
-                "# dependencies: \(.info_json.dependencies // [] | join(", "))"
-            '
-      '';
-    })
-  ];
+  environment.systemPackages = [ modTool ];
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "DiscoScience",
+    "version": "2.1.0",
+    "downloadPath": "/download/DiscoScience/6a44c8291b5bfc01712e071f",
+    "sha1": "29b6cac39070e5e59c82e16b09c8b48ae23a30b6"
+  },
+  {
+    "name": "flib",
+    "version": "0.17.2",
+    "downloadPath": "/download/flib/6a3d4af12b2a85ea00e307a6",
+    "sha1": "6c7cedeefbdce89348d1e979a24e5706fd5a4311"
+  },
+  {
+    "name": "mining-patch-planner",
+    "version": "1.7.21",
+    "downloadPath": "/download/mining-patch-planner/6a593d681690b03acfe3a2c7",
+    "sha1": "2bb42aac8ee196cf415365bd6571c9a3e527623c"
+  },
+  {
+    "name": "RateCalculator",
+    "version": "3.4.1",
+    "downloadPath": "/download/RateCalculator/6a56aaeac9ab36fa968c898e",
+    "sha1": "82626507cb37300eca956e932a41db23ff6b213c"
+  }
+]
