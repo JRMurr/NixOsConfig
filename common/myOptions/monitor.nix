@@ -47,6 +47,16 @@ let
         default = false;
       };
 
+      mainBar = mkOption {
+        type = types.bool;
+        description = ''
+          Whether this output should get the full status bar (as opposed to the
+          reduced bar). Independent of `primary`: e.g. a docked external monitor
+          that is not the X11 primary can still host the main bar.
+        '';
+        default = false;
+      };
+
       position = mkOption {
         type = types.str;
         description = "Output position";

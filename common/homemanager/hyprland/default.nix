@@ -217,7 +217,7 @@ in
 {
   imports = lib.optionals (gcfg.enable) [
     # ./waybar.nix
-    ./hyprpanel
+    ./wayle.nix
     # ./hyprlock.nix
     ./swaylock.nix
   ];
@@ -250,19 +250,23 @@ in
 
     # TODO: upstream this, hyprpaper start after hyprland
     # make configurable like hypridle
-    systemd.user.services.hyprpaper.Unit = {
-      After = lib.mkForce [ "hyprland-session.target" ];
-      PartOf = lib.mkForce [ "hyprland-session.target" ];
+    #
+    # After/PartOf alone were insufficient: the unit's Install.WantedBy is still
+    # `graphical-session.target`, which is reached during login BEFORE Hyprland
+    # exports WAYLAND_DISPLAY, so hyprpaper was pulled early, failed its
+    # ConditionEnvironment=WAYLAND_DISPLAY check, and was skipped for good. Moving
+    # WantedBy to hyprland-session.target (reached after the env import) fixes it —
+    # same reasoning as wayle.nix.
+    systemd.user.services.hyprpaper = {
+      Unit.After = lib.mkForce [ "hyprland-session.target" ];
+      Unit.PartOf = lib.mkForce [ "hyprland-session.target" ];
+      Install.WantedBy = lib.mkForce [ "hyprland-session.target" ];
     };
 
-    # hyprpanel needs WAYLAND_DISPLAY which isn't set until hyprland-session.target
-    systemd.user.services.hyprpanel.Unit = {
-      After = lib.mkForce [ "hyprland-session.target" ];
-      PartOf = lib.mkForce [ "hyprland-session.target" ];
-    };
-    systemd.user.services.hyprpanel.Install = {
-      WantedBy = lib.mkForce [ "hyprland-session.target" ];
-    };
+    # wayle's home-manager module wires its own systemd unit, but bound to
+    # graphical-session.target (it's compositor-agnostic), which races the
+    # WAYLAND_DISPLAY export at login. Its start-ordering override — the wayle
+    # equivalent of the old hyprpanel one — lives in wayle.nix, next to the service.
 
     wayland.windowManager.hyprland.enable = true;
 
