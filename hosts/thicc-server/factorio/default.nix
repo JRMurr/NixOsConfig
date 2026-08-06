@@ -6,7 +6,7 @@
   ...
 }:
 let
-  version = "2.1.12";
+  version = "2.1.13";
 
   # Both the server and the sync service below are pointed at this one path, so
   # neither relies on factorio's implicit `<write-data>/mods` default. It has to
@@ -155,7 +155,7 @@ in
       src = pkgs.fetchurl {
         name = "factorio-headless_linux_${version}.tar.xz";
         url = "https://factorio.com/get-download/${version}/headless/linux64";
-        sha256 = "sha256-iF/wKaQLDt2BXP4fwThF8jJyPaHqj+moPq4RTR7M0/4"; #lib.fakeHash;
+        sha256 = "sha256-NfMfWNx5oDtlBtVuLifUBOc04HD2GscS0he2aMqPBvo="; #lib.fakeHash;
       };
     });
     enable = true;

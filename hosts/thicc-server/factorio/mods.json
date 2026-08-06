@@ -1,9 +1,27 @@
 [
   {
+    "name": "BeltRouter-lite",
+    "version": "3.0.0",
+    "downloadPath": "/download/BeltRouter-lite/6a554f6172630d7317f1f7cd",
+    "sha1": "837788489ecc58e1151ccc5ccc679996b564b16c"
+  },
+  {
+    "name": "blueprint-sandboxes",
+    "version": "3.3.0",
+    "downloadPath": "/download/blueprint-sandboxes/6a52c15e4f467bd67493b081",
+    "sha1": "aebd15b1f62725defb16eb14c4062af63a3be1dc"
+  },
+  {
     "name": "DiscoScience",
     "version": "2.1.0",
     "downloadPath": "/download/DiscoScience/6a44c8291b5bfc01712e071f",
     "sha1": "29b6cac39070e5e59c82e16b09c8b48ae23a30b6"
+  },
+  {
+    "name": "EditorExtensions",
+    "version": "2.6.1",
+    "downloadPath": "/download/EditorExtensions/6a3ef995a7bc04e5b26086ab",
+    "sha1": "4288c115799444d954717dabb3ccd8a1a01721e9"
   },
   {
     "name": "flib",
@@ -22,5 +40,11 @@
     "version": "3.4.1",
     "downloadPath": "/download/RateCalculator/6a56aaeac9ab36fa968c898e",
     "sha1": "82626507cb37300eca956e932a41db23ff6b213c"
+  },
+  {
+    "name": "squeak-through-2",
+    "version": "0.2.0",
+    "downloadPath": "/download/squeak-through-2/6a3a78fac23b446555185a9c",
+    "sha1": "d42bf7473824710189ae219c6ee660cd17e9d9af"
   }
 ]
