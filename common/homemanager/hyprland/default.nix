@@ -201,6 +201,64 @@ let
     '';
   };
 
+  # ==============================================================================
+  # Notifications follow the focused monitor
+  # ==============================================================================
+  #
+  # wayle's notification daemon can only aim popups at a *single* output
+  # (`modules.notifications.popup-monitor` = "primary" or one connector name); it
+  # has no built-in "follow focus". But `wayle config set` retargets the running
+  # shell live — without touching the read-only home-manager config.toml — so we
+  # bridge Hyprland's focus events to it: whenever the focused monitor changes,
+  # point popups at it. This handles docked (DP-7) / direct-HDMI (DP-3) /
+  # laptop-only transparently, with no connector hardcoded anywhere.
+  #
+  # Same socket2-listener shape as limitWorkspace above, and launched the same way
+  # (a startup exec, so it inherits Hyprland's HYPRLAND_INSTANCE_SIGNATURE env).
+  notifyFollowFocus = pkgs.writeShellApplication {
+    name = "wayle-notify-follow-focus";
+
+    runtimeInputs = [
+      pkgs.socat
+      pkgs.jq
+      pkgs.wayle
+      config.wayland.windowManager.hyprland.finalPackage
+    ];
+
+    # lints annoy me... (matches limitWorkspace)
+    checkPhase = "";
+
+    text = ''
+      socket="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+
+      # `set -e` is on (writeShellApplication): guard the set so a not-yet-ready
+      # wayle (we start alongside it at session login) can't kill the listener.
+      set_target() {
+        wayle config set modules.notifications.popup-monitor "$1" >/dev/null 2>&1 || true
+      }
+
+      # socket2 only emits *changes*, so seed from the currently-focused monitor
+      # once wayle's CLI is answering.
+      for _ in $(seq 1 20); do
+        wayle config get modules.notifications.popup-monitor >/dev/null 2>&1 && break
+        sleep 0.5
+      done
+      current=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+      [ -n "$current" ] && set_target "$current"
+
+      # focusedmon>>MONITORNAME,WORKSPACENAME on every monitor focus change.
+      socat -U - UNIX-CONNECT:"$socket" | while read -r line; do
+        case "$line" in
+          "focusedmon>>"*)
+            mon=''${line#focusedmon>>}
+            mon=''${mon%%,*}
+            set_target "$mon"
+            ;;
+        esac
+      done
+    '';
+  };
+
   # Things to run once on session start. Was `exec-once`; the Lua API listens on
   # the `hyprland.start` event instead (see extraConfig below).
   startupExecs = [
@@ -208,6 +266,8 @@ let
     # Runs on the hyprland.start event (session start), not on `hyprctl reload`,
     # so a rebuild+reload won't relaunch it — the original instance keeps running.
     "${lib.getExe limitWorkspace}"
+    # Notifications follow the focused monitor (see notifyFollowFocus above).
+    "${lib.getExe notifyFollowFocus}"
     # "noctalia-shell"
   ]
   ++ setDefaultWallpaperExec;

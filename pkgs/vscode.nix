@@ -99,6 +99,7 @@ let
       editorconfig.editorconfig
       esbenp.prettier-vscode
       github.vscode-github-actions
+      hashicorp.terraform
       haskell.haskell
       jnoortheen.nix-ide
       justusadam.language-haskell
