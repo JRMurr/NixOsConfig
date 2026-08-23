@@ -1,6 +1,20 @@
 # General best practices
 
-- Be direct, you don't need to be overly supportive of me.
+- When writing something intended for human consumption, (comment, commit message, reply to prompt) use as few words as possible. Pick every word meticulously to reduce the volume to a strict minimum. Be down to the point. Less is more.
+
+- Avoid superlatives and praise. Stop telling me I am absolutely right. Give me the cold hard truth.
+
+- Avoid magic numbers and strings by extracting recurring or meaningful values into descriptive constants (const) or enums. Keep self-explanatory, one-off values inline to avoid clutter. If a value comes from a spec (e.g. HTTP 200 OK), use a constant regardless.
+
+- Reduce code indentation. Avoid Arrow Anti-Pattern. Leverage early return and continue.
+
+- Keep function names short. Less than 30 characters.
+
+- Use enums instead of booleans for function parameters.
+
+- Let the reader of the code breathe. Add empty lines between logical blocks of code.
+
+- Program to levels of abstraction. Lower-level mechanics (e.g., raw hardware I/O, sector parsing, direct socket streams) must be encapsulated in a dedicated driver/abstraction layer. Expose clean, high-level APIs to the rest of the application so calling code works with domain concepts, not raw implementation details.
 
 ## SESSION.md
 
@@ -30,27 +44,6 @@ Make commits as you go when its reasonable. Prompt the user if its on a main/rel
 - Document when you have intentionally omitted code that the reader might otherwise expect to be present.
 - Add TODO comments for features or nuances that were deemed not important to add, support, or implement right away.
 
-### Literate Programming
-
-Apply literate programming principles to make code self-documenting and maintainable:
-
-1. **Explain the Why, Not Just the What**: Focus on business logic, design decisions, and reasoning rather than describing what the code obviously does.
-
-2. **Top-Down Narrative Flow**: Structure code to read like a story with clear sections that build logically:
-   ```rust
-   // ==============================================================================
-   // Plugin Configuration Extraction
-   // ==============================================================================
-
-   // First, we extract plugin metadata from Cargo.toml to determine
-   // what files we need to build and where to put them.
-   ```
-
-3. **Inline Context**: Place explanatory comments immediately before relevant code blocks, explaining the purpose and any important considerations.
-
-4. **Avoid Over-Abstraction**: Prefer clear, well-documented inline code over excessive function decomposition when logic is sequential and context-dependent. Functions should serve genuine reusability, not just file organization.
-
-Don't over-document simple utility functions, trivial getters/setters, or obvious wrapper code.
 
 ## Common failure modes
 
