@@ -6,8 +6,8 @@
   ...
 }:
 let
-  version = "2.1.13";
-
+  version = "2.1.16";
+  sha = "sha256-ltxj3jokplMhpZsXAxZgb/1W8WK+NrHKb52shKr4dik="; #lib.fakeHash;
   # Both the server and the sync service below are pointed at this one path, so
   # neither relies on factorio's implicit `<write-data>/mods` default. It has to
   # live inside the state dir: DynamicUser implies ProtectSystem=strict, and
@@ -155,7 +155,7 @@ in
       src = pkgs.fetchurl {
         name = "factorio-headless_linux_${version}.tar.xz";
         url = "https://factorio.com/get-download/${version}/headless/linux64";
-        sha256 = "sha256-NfMfWNx5oDtlBtVuLifUBOc04HD2GscS0he2aMqPBvo="; #lib.fakeHash;
+        sha256 = sha;
       };
     });
     enable = true;
