@@ -2,6 +2,7 @@
 with lib;
 {
   imports = [
+    ./llm.nix
     ./monitor.nix
     ./containers.nix
     ./tailscale.nix

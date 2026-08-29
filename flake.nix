@@ -67,6 +67,12 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
 
+    # Source-only: plain markdown skills, exposed as pkgs.hegel-skill by ./pkgs/overlay.nix
+    hegel-skill = {
+      url = "github:hegeldev/hegel-skill";
+      flake = false;
+    };
+
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,7 +100,7 @@
         inputs.agenix.overlays.default
         inputs.nix-vscode-extensions.overlays.default
         llm-agents.overlays.shared-nixpkgs
-        (import ./pkgs/overlay.nix)
+        (import ./pkgs/overlay.nix { inherit inputs; })
         # TODO: nil and nurl
       ];
       defaultModules = [

@@ -1,3 +1,5 @@
+{ inputs }:
+
 final: prev':
 
 let
@@ -11,6 +13,8 @@ in
     herdr
     polybar-spotify
     ;
+
+  inherit (inputs) hegel-skill;
 
   # TODO: pr to nix-pkgs
   mopidy-iris = prev.mopidy-iris.overrideAttrs (old: rec {

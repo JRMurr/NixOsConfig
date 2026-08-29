@@ -434,6 +434,22 @@
         "type": "github"
       }
     },
+    "hegel-skill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787741553,
+        "narHash": "sha256-6y2GdUvXLjlZfDdqb2xfwBETBeKo+GLyv4S3OTpcVt0=",
+        "owner": "hegeldev",
+        "repo": "hegel-skill",
+        "rev": "ef36dc6b26a6dc0fdfdab5476b1affff37552ef0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hegeldev",
+        "repo": "hegel-skill",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -1112,6 +1128,7 @@
         "catppuccin": "catppuccin",
         "flake-compat": "flake-compat_2",
         "ghostty": "ghostty",
+        "hegel-skill": "hegel-skill",
         "home-manager": "home-manager_3",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
