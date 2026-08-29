@@ -6,7 +6,7 @@ let
     cargo = rustVersion;
     rustc = rustVersion;
   };
-  linuxDeps = pkgs.lib.optionals pkgs.stdenv.isLinux (
+  linuxDeps = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux (
     with pkgs;
     [
       udev
@@ -21,7 +21,7 @@ let
     ]
   );
 
-  macDeps = pkgs.lib.optionals pkgs.stdenv.isDarwin [
+  macDeps = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
     pkgs.darwin.apple_sdk.frameworks.Cocoa
     rustPlatform.bindgenHook
   ];

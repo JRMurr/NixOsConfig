@@ -9,7 +9,7 @@ let
   gcfg = osConfig.myOptions.graphics;
 in
 {
-  config = lib.mkIf (pkgs.stdenv.isDarwin || gcfg.enable) {
+  config = lib.mkIf (pkgs.stdenv.hostPlatform.isDarwin || gcfg.enable) {
     programs.kitty = {
       enable = true;
       shellIntegration.enableFishIntegration = true;

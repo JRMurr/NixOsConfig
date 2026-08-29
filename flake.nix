@@ -19,7 +19,6 @@
     };
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     attic = {
       url = "github:zhaofengli/attic";

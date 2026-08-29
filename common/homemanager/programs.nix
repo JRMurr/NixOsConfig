@@ -23,7 +23,7 @@ let
 
   # nixd does not work on mac yet :(
   # https://github.com/nix-community/nixd/issues/107
-  linuxOnly = pkgs.lib.optionals pkgs.stdenv.isLinux [
+  linuxOnly = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
     nixd
     nil
   ];

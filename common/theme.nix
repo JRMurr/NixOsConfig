@@ -36,6 +36,8 @@ in
 
   config = lib.mkIf gcfg.enable {
     catppuccin.enable = true;
+    # `enable` is only a global toggle now; `autoEnable` enrolls the ports
+    catppuccin.autoEnable = true;
 
     myOptions.theme.colors = aliasedColors;
   };

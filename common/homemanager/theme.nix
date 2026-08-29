@@ -17,6 +17,7 @@ in
 
     # lock global options to nixos ones
     catppuccin.enable = osConfig.catppuccin.enable;
+    catppuccin.autoEnable = osConfig.catppuccin.autoEnable;
     catppuccin.accent = osConfig.catppuccin.accent;
     catppuccin.flavor = osConfig.catppuccin.flavor;
   };

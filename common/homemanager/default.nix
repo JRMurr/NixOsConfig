@@ -34,6 +34,8 @@
 
   xdg.userDirs.createDirectories = true;
   xdg.userDirs.enable = true;
+  # legacy default for home.stateVersion < 26.05; exports XDG_*_DIR
+  xdg.userDirs.setSessionVariables = true;
 
   programs.tmux = {
     enable = true;
