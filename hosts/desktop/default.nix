@@ -33,7 +33,7 @@
   };
 
   myOptions.musicPrograms.enable = true;
-  myOptions.terminal = "ghostty";
+  myOptions.terminal = "kitty";
 
   # Set your time zone.
   time.timeZone = "America/New_York";
