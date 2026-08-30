@@ -121,12 +121,10 @@ in
           "monitor-specific" = true;
           numbering = "absolute"; # was show_numbered = true
           "app-icons-show" = false; # was show_icons = false
-          # HyprPanel hid the special ghostty scratchpad via ignored = "-.*"
-          # (it surfaced as a negative id). wayle filters by glob on the id; the
-          # special-workspace handling differs, so leave this empty until we
-          # confirm the scratchpad's behaviour on the wayle bar.
-          # TODO: re-hide the term-ws scratchpad if it shows up here.
-          "workspace-ignore" = [ ];
+          # Special workspaces (the term-ws scratchpad) surface with negative
+          # ids (e.g. -98). Glob on the id hides them all, as HyprPanel's
+          # ignored = "-.*" did.
+          "workspace-ignore" = [ "-*" ];
         };
 
         # HyprPanel clock menu: military = false (12h), hideSeconds = true.
