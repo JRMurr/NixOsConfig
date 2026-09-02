@@ -18,6 +18,20 @@ let
         default = "";
       };
 
+      description = mkOption {
+        type = types.str;
+        description = ''
+          The output's EDID description (make + model + serial), as reported by
+          `hyprctl monitors`. Connector names are not stable for docked or
+          hot-plugged displays — the same panel re-enumerates as DP-3, DP-5,
+          DP-6, ... depending on the port and the boot — so compositors that can
+          match on the description (Hyprland's `desc:` prefix) should prefer it
+          over `name`. Leave empty to match by connector name only.
+        '';
+        example = "Dell Inc. AW3225QF 9Q22YZ3";
+        default = "";
+      };
+
       fingerprint = mkOption {
         type = types.str;
         description = ''

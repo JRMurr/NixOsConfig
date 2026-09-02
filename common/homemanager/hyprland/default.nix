@@ -57,6 +57,13 @@ let
     else
       0;
 
+  # Connector names are not stable for docked/hot-plugged outputs: the Dell
+  # re-enumerates as DP-3, DP-5, DP-6, ... depending on the port and the boot.
+  # Hyprland can match an output by its EDID description instead ("desc:" +
+  # what `hyprctl monitors` prints as `description`), which is stable, so prefer
+  # that whenever the host set one.
+  outputRef = m: if m.description != "" then "desc:${m.description}" else m.name;
+
   hyprMonitorSpec =
     m:
     let
@@ -71,12 +78,12 @@ let
     in
     if m.enable == false then
       {
-        output = m.name;
+        output = outputRef m;
         disabled = true;
       }
     else
       {
-        output = m.name;
+        output = outputRef m;
         mode = resolution;
         position = pos;
         scale = m.scale or 1;
@@ -91,7 +98,7 @@ let
     m:
     lib.optional (m ? workspace) {
       workspace = toString m.workspace;
-      monitor = m.name;
+      monitor = outputRef m;
     }
   ) monitors;
 

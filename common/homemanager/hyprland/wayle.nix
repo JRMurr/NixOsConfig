@@ -66,12 +66,29 @@ let
   # A monitor gets the full bar if it is the primary output or is explicitly
   # flagged `mainBar` (e.g. the docked external display). HyprPanel keyed this off
   # `primary` alone, leaving the host's `mainBar` flag dangling; wayle honours both.
-  monitorToBarLayout =
-    monitorConfig:
+  barFor =
+    monitorName: monitorConfig:
     if monitorConfig.primary || monitorConfig.mainBar then
-      mainBar monitorConfig.name
+      mainBar monitorName
     else
-      simpleBar monitorConfig.name;
+      simpleBar monitorName;
+
+  # wayle addresses monitors by connector name only — unlike Hyprland it has no
+  # EDID/description matcher. Outputs whose connector name is unstable (the Dell,
+  # which re-enumerates as DP-3/DP-5/DP-6/... depending on how it is docked) are
+  # identified by `description` instead, so they cannot be named here at all.
+  # They take wayle's "*" layout, which applies to every monitor without an
+  # explicit entry; the stably-named outputs each get their own entry and so win
+  # over the fallback.
+  #
+  # TODO: only one description-matched monitor is expressible, since they would
+  # all collapse onto the single "*" layout. Fine while the Dell is the only one;
+  # revisit if wayle grows description matching.
+  namedMonitors = lib.filter (m: m.description == "") monitors;
+  unnamedMonitors = lib.filter (m: m.description != "") monitors;
+
+  barLayouts =
+    map (m: barFor m.name m) namedMonitors ++ map (m: barFor "*" m) (lib.take 1 unnamedMonitors);
 
   # ==============================================================================
   # Theme (Catppuccin Mocha, mauve accent)
@@ -112,7 +129,7 @@ in
         # multiplier. `scalingPriority = "hyprland"` has no wayle analogue.
         scale = 0.75;
         location = "top";
-        layout = map monitorToBarLayout monitors;
+        layout = barLayouts;
       };
 
       modules = {
@@ -121,10 +138,10 @@ in
           "monitor-specific" = true;
           numbering = "absolute"; # was show_numbered = true
           "app-icons-show" = false; # was show_icons = false
-          # Special workspaces (the term-ws scratchpad) surface with negative
-          # ids (e.g. -98). Glob on the id hides them all, as HyprPanel's
-          # ignored = "-.*" did.
-          "workspace-ignore" = [ "-*" ];
+          # HyprPanel hid the special ghostty scratchpad via ignored = "-.*".
+          # wayle has a dedicated switch for it: special workspaces (negative
+          # ids, here special:term-ws = -98) are shown by default.
+          "show-special" = false;
         };
 
         # HyprPanel clock menu: military = false (12h), hideSeconds = true.

@@ -14,7 +14,7 @@
     ./nushell
     # ./noctalia.nix
     ./programs.nix
-    ./redshift.nix
+    # ./redshift.nix
     ./rofi.nix
     #./slumber
     ./spicetify.nix
