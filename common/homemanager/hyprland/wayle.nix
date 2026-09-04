@@ -87,8 +87,12 @@ let
   namedMonitors = lib.filter (m: m.description == "") monitors;
   unnamedMonitors = lib.filter (m: m.description != "") monitors;
 
+  # Order matters: wayle applies layouts in list order, so the "*" catch-all has
+  # to come first for the named entries to override it. With it last, a named
+  # monitor gets a bar surface that renders empty (verified: laptop bar blank
+  # with "*" second, populated with it first).
   barLayouts =
-    map (m: barFor m.name m) namedMonitors ++ map (m: barFor "*" m) (lib.take 1 unnamedMonitors);
+    map (m: barFor "*" m) (lib.take 1 unnamedMonitors) ++ map (m: barFor m.name m) namedMonitors;
 
   # ==============================================================================
   # Theme (Catppuccin Mocha, mauve accent)
