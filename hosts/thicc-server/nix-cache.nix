@@ -30,10 +30,9 @@ let
   # real input and `nix flake update` rejects it.
   updatableInputs = lib.subtractLists [ "self" "secrets" ] (builtins.attrNames inputs);
 
-  # Fetched over https so a missing or broken deploy key costs us only the
-  # push, never the nightly build. Pushes go over ssh using the agenix key.
-  repoUrlFetch = "https://github.com/JRMurr/NixOsConfig";
-  repoUrlPush = "git@github.com:JRMurr/NixOsConfig.git";
+  # Over ssh with the agenix deploy key, so a key problem fails the whole run
+  # loudly rather than leaving it quietly building but never pushing.
+  repoUrl = "git@github.com:JRMurr/NixOsConfig.git";
 
   stateDir = "/var/lib/nix-cache-build";
   checkoutDir = "${stateDir}/repo";
@@ -140,9 +139,8 @@ in
       set -eu
 
       rm -rf ${checkoutDir}
-      git clone ${repoUrlFetch} ${checkoutDir}
+      git clone ${repoUrl} ${checkoutDir}
       cd ${checkoutDir}
-      git remote set-url --push origin ${repoUrlPush}
       git config user.name "thicc-server"
       git config user.email "nix-cache-build@thicc-server"
 
