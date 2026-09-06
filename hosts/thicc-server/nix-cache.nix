@@ -32,9 +32,12 @@ let
   # Lower is preferred. cache.nixos.org is 40, so ours wins.
   cachePriority = 30;
 
+  # --keep-going: one broken derivation shouldn't cost us the whole host's worth
+  # of cacheable paths. Everything not depending on the failure still gets built,
+  # and nix still exits non-zero so the host is reported as failed.
   buildHost = host: ''
     echo "==> ${host}"
-    if ! nix build --out-link "${gcrootDir}/${host}" \
+    if ! nix build --keep-going --out-link "${gcrootDir}/${host}" \
       "${checkoutDir}#nixosConfigurations.${host}.config.system.build.toplevel"; then
       echo "FAILED: ${host}" >&2
       failed=1
