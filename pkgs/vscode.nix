@@ -116,7 +116,7 @@ let
     ]
   );
 
-  catppucin = inputs.catppuccin.packages.${pkgs.stdenv.hostPlatform.system}.vscode.override {
+  catppuccinBase = inputs.catppuccin.packages.${pkgs.stdenv.hostPlatform.system}.vscode.override {
     catppuccinOptions = {
       accent = "mauve";
       boldKeywords = true;
@@ -129,6 +129,27 @@ let
       customUIColors = { };
     };
   };
+
+  # This extension is built from source (the catppuccinOptions override means no
+  # cache can have it), so its 581 pnpm deps are fetched on every new version.
+  # pnpm defaults to 16 parallel fetches, and against registry.npmjs.org from
+  # thicc-server that reliably dies with ETIMEDOUT partway through -- TLS
+  # handshakes there take 3-4s and connections drop. Fewer parallel fetches plus
+  # a longer timeout gets it through.
+  #
+  # Safe to tune: a fixed-output derivation is addressed by name and hash, so
+  # changing the build script leaves both its path and the extension's unchanged.
+  catppucin = catppuccinBase.overrideAttrs (old: {
+    pnpmDeps = old.pnpmDeps.override (prev: {
+      prePnpmInstall = ''
+        pnpm config set network-concurrency 4
+        pnpm config set fetch-retries 6
+        pnpm config set fetch-retry-mintimeout 20000
+        pnpm config set fetch-retry-maxtimeout 120000
+        pnpm config set fetch-timeout 300000
+      '';
+    });
+  });
 
   pestExt = pkgs.vscode-marketplace.pest.pest-ide-tools;
 
