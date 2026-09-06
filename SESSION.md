@@ -2,6 +2,22 @@
 
 Incidental things noticed while working, not blocking anything.
 
+## `nix-cache-build` cannot build `framework` or `desktop`
+
+Both fail on `vscode-extension-catppuccin-vscode`, whose pnpm-deps FOD fetches from
+`registry.npmjs.org`. It gets ~444 of 581 packages then dies on `ETIMEDOUT`.
+
+Measured from thicc-server: tarball fetches to `registry.npmjs.org` succeed 3 times in 5,
+taking 1.3-5.4s, and hang past 15s the rest of the time. The npmjs *metadata* endpoint,
+`cache.nixos.org` and `github.com` are all fast and reliable, so this is specific to the
+npmjs tarball CDN, not general connectivity.
+
+Unrelated to the binary cache work - the same derivation fails when built by hand. Worth
+noting the old attic job wrapped each host in `|| true`, so this would have failed silently
+and the cache would simply never have contained these two hosts.
+
+Options if it keeps happening: retry each host build in the job, or pre-seed the FOD.
+
 ## `wsl` host does not evaluate
 
 `nix eval .#nixosConfigurations.wsl.config.system.build.toplevel.drvPath` fails:
