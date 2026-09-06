@@ -20,11 +20,6 @@
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";
     };
-    attic = {
-      url = "github:zhaofengli/attic";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     catppuccin.url = "github:catppuccin/nix";
@@ -95,7 +90,6 @@
     }@inputs:
     let
       overlays = [
-        inputs.attic.overlays.default
         inputs.agenix.overlays.default
         inputs.nix-vscode-extensions.overlays.default
         llm-agents.overlays.shared-nixpkgs
@@ -201,7 +195,6 @@
         thicc-server = mkSystem [
           ./hosts/thicc-server
           inputs.vscode-server.nixosModule
-          inputs.attic.nixosModules.atticd
           (
             { config, pkgs, ... }:
             {
@@ -220,6 +213,14 @@
         mine
         // {
 
+        };
+
+      checks."x86_64-linux" =
+        let
+          pkgs = mkPkgs "x86_64-linux";
+        in
+        {
+          harmonia = pkgs.testers.runNixOSTest ./tests/harmonia.nix;
         };
 
     };

@@ -12,10 +12,13 @@
       upstream = "thicc-server:81";
       extraConfig = "redir / /admin{uri}";
     };
+    # Nix binary cache (harmonia). Kept off the public internet: the store path
+    # names alone would expose every package and version on the server.
     cache = {
-      upstream = "thicc-server:8080";
-      proxyOptions = ''
-        header_up Host caddy
+      upstream = "127.0.0.1:5000";
+      extraConfig = ''
+        @blocked not remote_ip 100.64.0.0/10 192.168.50.0/24 127.0.0.1/32 ::1
+        respond @blocked "Forbidden" 403
       '';
     };
     deluge = {

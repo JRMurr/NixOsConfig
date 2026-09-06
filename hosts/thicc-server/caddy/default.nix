@@ -67,13 +67,6 @@ let
         header_up X-Frame-Options SAMEORIGIN
       '';
     }
-    {
-      external_path_prefix = "/attic";
-      redirect_path = "thicc-server:8080";
-      redirect_directives = ''
-        header_up Host caddy
-      '';
-    }
     # {
     #   external_path_prefix = "/rss";
     #   redirect_path = "thicc-server:8282";

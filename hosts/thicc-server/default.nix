@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     ../../common
 
-    #./attic.nix
+    ./nix-cache.nix
     ./blocky
     ./caddy
     ./dashy.nix

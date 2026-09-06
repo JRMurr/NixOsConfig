@@ -4,8 +4,6 @@
   inputs,
   ...
 }:
-# let attic = inputs.attic.packages.${pkgs.stdenv.hostPlatform.system}.default;
-# in
 let
   nix-inspect = inputs.nix-inspect.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -31,7 +29,6 @@ let
     # asciinema
     nixpkgs-review
     difftastic
-    # attic-client disable for now while the server is sad
     dig
     nix-prefetch
     nix-output-monitor
