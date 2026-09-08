@@ -49,3 +49,9 @@ one matters to the binary cache.
 `tailscale status` reports `Logged out.` while `tailscaled` is active. Nothing that depends
 on the tailnet (including internal `cache.jrnet.win` resolution via blocky) works until
 `tailscale up` is run.
+
+## ccstatusline settings version pin
+
+`version` in `common/homemanager/llms/claude/default.nix` must match the installed
+ccstatusline schema version. When the package bumps it, the tool tries to migrate and
+rewrite the file, hits EROFS on the store symlink, and shows `⚠ invalid config`.

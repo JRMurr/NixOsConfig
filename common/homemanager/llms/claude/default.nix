@@ -39,7 +39,7 @@ in
 
   home.file = skillFiles // {
     ".config/ccstatusline/settings.json".text = builtins.toJSON {
-      version = 3;
+      version = 4;
       lines = [
         [
           { id = "1"; type = "model"; color = "cyan"; }
