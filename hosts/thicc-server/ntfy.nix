@@ -27,13 +27,16 @@ let
   termUrl = "https://term.${config.myCaddy.domain}";
   commitsUrl = "https://github.com/JRMurr/NixOsConfig/commits/main";
 
-  # Bootstrap, once, after the first deploy:
-  #   ntfy user add --role=user phone       # what the Android app logs in as
-  #   ntfy access phone thicc-server rw
-  #   ntfy user add --role=user publisher
-  #   ntfy access publisher thicc-server wo
-  #   umask 077 && ntfy token add publisher \
-  #     | grep -oE 'tk_[-_A-Za-z0-9]{29}' > /var/lib/ntfy-publish-token
+  # Bootstrap, once, after the first deploy. All of it needs root: the module
+  # runs ntfy with DynamicUser, so the auth db is really under /var/lib/private,
+  # which is 0700 root. Running these unprivileged reports the db as missing
+  # rather than as unreadable.
+  #   sudo ntfy user add --role=user phone   # what the Android app logs in as
+  #   sudo ntfy access phone thicc-server rw
+  #   sudo ntfy user add --role=user publisher
+  #   sudo ntfy access publisher thicc-server wo
+  #   sudo sh -c 'umask 077; ntfy token add publisher \
+  #     | grep -oE "tk_[-_A-Za-z0-9]{29}" > /var/lib/ntfy-publish-token'
   tokenFile = "/var/lib/ntfy-publish-token";
 in
 {
