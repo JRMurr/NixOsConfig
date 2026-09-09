@@ -44,16 +44,12 @@ one matters to the binary cache.
 `common/default.nix` in `d607f6c`. `cachix` is still in
 `common/homemanager/programs.nix:66`. Harmless, just unused.
 
-## `*.jrnet.win` resolves to a dead tailnet node
+## ntfy failure notifications bury the actual error
 
-Public DNS has a wildcard `*.jrnet.win` -> `100.100.60.23`. That is an old `thicc-server`
-node registration, offline for 788 days; the live machine is `thicc-server-1` at
-`100.95.204.122`. Nothing has broken because every client in use sits behind blocky, whose
-`customDNS` override for `jrnet.win` points at the correct IP. Anything resolving via public
-DNS -- a phone on the tailnet but not using blocky -- gets the dead address.
-
-Fix is a one-record edit in Cloudflare. The stale `thicc-server` node is also worth removing
-from the tailnet so the name is unambiguous. Related to the hardcoded-IP item above.
+`notify-failure@` sends the last 40 journal lines. Because `nix-cache-build` runs with
+`--keep-going`, that tail is almost entirely `building '/nix/store/...drv'...` noise and the
+`FAILED: <host>` / `EVAL FAILED: <host>` markers scroll off. The body should lead with those
+markers and keep only a short tail after them.
 
 ## ccstatusline settings version pin
 
