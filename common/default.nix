@@ -41,7 +41,10 @@
         "https://nix-community.cachix.org?priority=25"
         # "https://jrmurr.cachix.org?priority=2"
         "https://cache.nixos.org/?priority=20"
-        "https://cache.numtide.com"
+        # numtide advertises no Priority in its nix-cache-info, so without an
+        # explicit one it lands at 0 and outranks cache.jrnet.win. Last resort:
+        # every other substituter here should be tried before it.
+        "https://cache.numtide.com?priority=50"
       ];
       trusted-public-keys = [
         "cache.jrnet.win-1:FVkbrXPDdxta7+tgKfTAZJCoT0ptqfl3TUSE1M9TrBU="
