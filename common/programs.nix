@@ -51,8 +51,8 @@ let
     rofi-power-menu
   ];
   video = [
-    streamlink-twitch-gui-bin
-    streamlink
+    # streamlink-twitch-gui-bin
+    # streamlink
     vlc
   ];
   audio = [ spotify ];
