@@ -68,6 +68,7 @@ let
   '';
 
   updatePhase = ''
+    updateFailed=0
     lockBefore=$(sha256sum flake.lock)
 
     echo "==> updating flake inputs"
@@ -88,6 +89,7 @@ let
       else
         echo "eval gate failed, keeping the previous lock" >&2
         git checkout -- flake.lock
+        updateFailed=1
       fi
     fi
   '';
@@ -123,6 +125,8 @@ in
 
   # sudo systemctl start nix-cache-build.service
   systemd.services.nix-cache-build = {
+    onFailure = [ "notify-failure@nix-cache-build.service" ];
+
     path = [
       pkgs.git
       pkgs.openssh # the `secrets` flake input is fetched over ssh
@@ -155,7 +159,11 @@ in
 
       # Build every host even if one breaks, but still report failure so a
       # silently rotting cache shows up in `systemctl status`.
-      exit $failed
+      #
+      # A rejected update counts as failure too. The lock is safely rolled back
+      # either way, but a bump that stops evaluating is exactly the thing worth
+      # being told about, and failing is what fires the onFailure notification.
+      exit $(( failed || updateFailed ))
     '';
 
     serviceConfig = {

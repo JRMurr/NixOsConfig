@@ -44,14 +44,26 @@ one matters to the binary cache.
 `common/default.nix` in `d607f6c`. `cachix` is still in
 `common/homemanager/programs.nix:66`. Harmless, just unused.
 
-## tailscale is logged out on thicc-server
+## `*.jrnet.win` resolves to a dead tailnet node
 
-`tailscale status` reports `Logged out.` while `tailscaled` is active. Nothing that depends
-on the tailnet (including internal `cache.jrnet.win` resolution via blocky) works until
-`tailscale up` is run.
+Public DNS has a wildcard `*.jrnet.win` -> `100.100.60.23`. That is an old `thicc-server`
+node registration, offline for 788 days; the live machine is `thicc-server-1` at
+`100.95.204.122`. Nothing has broken because every client in use sits behind blocky, whose
+`customDNS` override for `jrnet.win` points at the correct IP. Anything resolving via public
+DNS -- a phone on the tailnet but not using blocky -- gets the dead address.
+
+Fix is a one-record edit in Cloudflare. The stale `thicc-server` node is also worth removing
+from the tailnet so the name is unambiguous. Related to the hardcoded-IP item above.
 
 ## ccstatusline settings version pin
 
 `version` in `common/homemanager/llms/claude/default.nix` must match the installed
 ccstatusline schema version. When the package bumps it, the tool tries to migrate and
 rewrite the file, hits EROFS on the store symlink, and shows `⚠ invalid config`.
+
+## `services.ttyd.checkOrigin` has an inverted description
+
+The NixOS option says "Whether to allow a websocket connection from a different
+origin", but it passes ttyd's `--check-origin`, which *rejects* cross-origin
+upgrades. `hosts/thicc-server/ttyd.nix` sets it to `true` for the restrictive
+behaviour. Worth an upstream doc fix.

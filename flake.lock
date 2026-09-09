@@ -1097,11 +1097,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788732683,
-        "narHash": "sha256-mvz41gMb+nOQJPArICxbh2nRk8rZjHJzxouRAdRL3/g=",
+        "lastModified": 1788924602,
+        "narHash": "sha256-Af8rPWFHpssV6pTnM616MW6GlJLumcChvx6hcajkUwc=",
         "ref": "refs/heads/main",
-        "rev": "940513f821690f5e015277db4a0920f56e95b6d6",
-        "revCount": 31,
+        "rev": "81eda3e18b4325d506482ed97cc56864f9f26744",
+        "revCount": 32,
         "type": "git",
         "url": "ssh://git@github.com/JRMurr/nix-secrets"
       },

@@ -5,6 +5,8 @@
     ../../common
 
     ./nix-cache.nix
+    ./ntfy.nix
+    ./ttyd.nix
     ./blocky
     ./caddy
     ./dashy.nix
