@@ -38,6 +38,10 @@
     enable = true;
     settings.PermitRootLogin = "yes";
   };
+
+  # Survives the phone roaming between wifi and cell mid-rebuild. Opens
+  # UDP 60000-61000 (programs.mosh.openFirewall defaults true).
+  programs.mosh.enable = true;
   virtualisation.docker.enable = true;
 
   # This value determines the NixOS release from which the default

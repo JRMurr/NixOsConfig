@@ -39,5 +39,9 @@
 
   programs.tmux = {
     enable = true;
+    # Taps select panes and a finger scrolls the scrollback, which is the
+    # difference between usable and not on a phone. Costs shift-drag for
+    # terminal-native selection on the desktops.
+    mouse = true;
   };
 }
