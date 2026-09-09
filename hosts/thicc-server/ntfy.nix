@@ -22,7 +22,7 @@ let
   # ntfy drops messages over 4096 bytes, and a failing nix build produces far
   # more than that.
   maxBodyBytes = 3500;
-  journalLines = 40;
+  bodyLines = 10;
 
   termUrl = "https://term.${config.myCaddy.domain}";
   commitsUrl = "https://github.com/JRMurr/NixOsConfig/commits/main";
@@ -76,8 +76,17 @@ in
     script = ''
       unit="$1"
 
-      body=$(journalctl -u "$unit" -n ${toString journalLines} --no-pager -o cat | tail -c ${toString maxBodyBytes})
-      body="''${body:-(no journal output)}"
+      # Scoped to the run that just failed, not the tail of the journal, which
+      # would otherwise mix in the previous run.
+      log=$(journalctl -u "$unit" --invocation=-0 --no-pager -o cat)
+
+      # Lead with the lines naming what broke. nix-cache-build prints its own
+      # FAILED:/EVAL FAILED: markers, so the notification opens with the host
+      # that broke instead of a screenful of `building '/nix/store/...'`. Any
+      # other unit has no markers and falls back to the tail.
+      body=$(printf '%s\n' "$log" | grep -E '^(EVAL )?FAILED:|^error:' | head -n ${toString bodyLines})
+      body="''${body:-$(printf '%s\n' "$log" | tail -n ${toString bodyLines})}"
+      body=$(printf '%s' "''${body:-(no journal output)}" | tail -c ${toString maxBodyBytes})
 
       curl -sS --fail-with-body \
         -H "Authorization: Bearer $(cat "$CREDENTIALS_DIRECTORY/token")" \
