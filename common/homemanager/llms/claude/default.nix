@@ -8,6 +8,7 @@ let
   skillSources = {
     agent-browser = "${pkgs.llm-agents.agent-browser.src}/skills/agent-browser";
     hegel = "${pkgs.hegel-skill}/skills/hegel";
+    i-have-adhd = "${pkgs.i-have-adhd-skill}/skills/i-have-adhd";
   };
 
   skillFiles = lib.mapAttrs' (name: source: {

@@ -14,7 +14,7 @@ in
     polybar-spotify
     ;
 
-  inherit (inputs) hegel-skill;
+  inherit (inputs) hegel-skill i-have-adhd-skill;
 
   # TODO: pr to nix-pkgs
   mopidy-iris = prev.mopidy-iris.overrideAttrs (old: rec {

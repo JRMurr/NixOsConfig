@@ -5,6 +5,7 @@ let
   allSkills = [
     "agent-browser"
     "hegel"
+    "i-have-adhd"
   ];
 in
 {

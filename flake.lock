@@ -459,6 +459,22 @@
         "type": "github"
       }
     },
+    "i-have-adhd-skill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788887334,
+        "narHash": "sha256-xTVs8SFhJEil8yjx3ODB7Gn3h1rg4QSq4zHPncWvV3c=",
+        "owner": "ayghri",
+        "repo": "i-have-adhd",
+        "rev": "24d22f783e57cb73c957848b588c6f651b6f9cd8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ayghri",
+        "repo": "i-have-adhd",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -1002,6 +1018,7 @@
         "ghostty": "ghostty",
         "hegel-skill": "hegel-skill",
         "home-manager": "home-manager_3",
+        "i-have-adhd-skill": "i-have-adhd-skill",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
         "nil": "nil",

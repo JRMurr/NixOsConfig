@@ -67,6 +67,14 @@
       flake = false;
     };
 
+    # Same deal. Upstream ships a full plugin (hooks, marketplace manifest); we
+    # link only skills/i-have-adhd, so the SessionStart always-on hook is not
+    # installed and `/i-have-adhd` is the way in.
+    i-have-adhd-skill = {
+      url = "github:ayghri/i-have-adhd";
+      flake = false;
+    };
+
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
