@@ -44,13 +44,6 @@ one matters to the binary cache.
 `common/default.nix` in `d607f6c`. `cachix` is still in
 `common/homemanager/programs.nix:66`. Harmless, just unused.
 
-## ntfy failure notifications bury the actual error
-
-`notify-failure@` sends the last 40 journal lines. Because `nix-cache-build` runs with
-`--keep-going`, that tail is almost entirely `building '/nix/store/...drv'...` noise and the
-`FAILED: <host>` / `EVAL FAILED: <host>` markers scroll off. The body should lead with those
-markers and keep only a short tail after them.
-
 ## ccstatusline settings version pin
 
 `version` in `common/homemanager/llms/claude/default.nix` must match the installed
