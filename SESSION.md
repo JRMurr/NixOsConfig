@@ -56,3 +56,13 @@ The NixOS option says "Whether to allow a websocket connection from a different
 origin", but it passes ttyd's `--check-origin`, which *rejects* cross-origin
 upgrades. `hosts/thicc-server/ttyd.nix` sets it to `true` for the restrictive
 behaviour. Worth an upstream doc fix.
+
+
+## blocky's `customDNS` mapping is a wildcard
+
+`hosts/thicc-server/blocky/default.nix` maps `${myDomain}` -> 100.95.204.122, which
+answers *any* `*.jrnet.win`. The tailnet pushes `jrnet.win` as a search domain, so
+failed public lookups get the suffix appended and land on Caddy instead of returning
+NXDOMAIN -- the query log shows `mtalk.google.com.jrnet.win`,
+`metadata.google.internal.jrnet.win`, and even `cache.jrnet.win.jrnet.win`.
+Cosmetic, but it masks real NXDOMAINs.

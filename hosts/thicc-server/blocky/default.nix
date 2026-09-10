@@ -18,6 +18,16 @@ in
       ];
       allowedUDPPorts = [ dns ];
     };
+
+  # This host resolves through its own blocky rather than a public resolver, so the
+  # server's DNS stays behind the same adblocking as every other client. While
+  # tailscaled is up it registers resolv.conf exclusively and 100.100.100.100 wins;
+  # this record only surfaces when tailscaled is down, which is exactly the fallback
+  # we want. Do NOT list 100.100.100.100 here -- that put quad100 in tailscaled's own
+  # upstream set and made it forward queries to itself (see common/tailscale.nix).
+  # dhcpcd still supplies 192.168.50.1 as a backstop if blocky itself is down.
+  networking.nameservers = [ "127.0.0.1" ];
+
   services.blocky = {
     enable = true;
     #
