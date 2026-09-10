@@ -34,11 +34,15 @@ in
     };
   };
 
-  config = lib.mkIf gcfg.enable {
+  config = {
+    # `enable` is only a global toggle now; `autoEnable` enrolls the ports. Both
+    # must be defined unconditionally: catppuccin warns whenever `autoEnable` is
+    # left at its default priority, and gating these behind `gcfg.enable` meant
+    # headless hosts never defined it. Ports stay dormant on those hosts because
+    # they key off `autoEnable`, not `enable`.
     catppuccin.enable = true;
-    # `enable` is only a global toggle now; `autoEnable` enrolls the ports
-    catppuccin.autoEnable = true;
+    catppuccin.autoEnable = gcfg.enable;
 
-    myOptions.theme.colors = aliasedColors;
+    myOptions.theme.colors = lib.mkIf gcfg.enable aliasedColors;
   };
 }
