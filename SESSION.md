@@ -66,3 +66,46 @@ failed public lookups get the suffix appended and land on Caddy instead of retur
 NXDOMAIN -- the query log shows `mtalk.google.com.jrnet.win`,
 `metadata.google.internal.jrnet.win`, and even `cache.jrnet.win.jrnet.win`.
 Cosmetic, but it masks real NXDOMAINs.
+
+## clightd SIGSEGVs once at every boot
+
+`coredumpctl` shows `clightd` (5.9) dumping core ~5s after start on every boot today
+(17:50:28, 20:21:41, ...), then restarting. Moot while clight is disabled, but the
+system service still runs.
+
+## X11-only user units fail under the Hyprland session
+
+`setxkbmap.service`, `xplugd.service` (hits start-limit), and `nm-applet.service`
+(`cannot open display`) fail at every Hyprland login. They belong to the X11 session
+and should be gated on it.
+
+## hypridle aborts on session exit
+
+`hypridle` 0.1.8 dies with SIGABRT (`terminate called without an active exception`)
+when the compositor socket closes (boot at 18:04 today). Cosmetic, upstream.
+
+## wayle can't parse Hyprland `activespecialv2` events
+
+`wayle-hyprland` 0.2.3 logs `cannot parse workspace_id ... expected integer, got ""`
+on every special-workspace toggle with Hyprland 0.56. Upstream version skew.
+
+## swaylock.nix comment says "hyprlock"
+
+`common/homemanager/hyprland/swaylock.nix:19` — comment refers to hyprlock instances.
+
+
+## clight can be D-Bus-activated without its config
+
+`org.clight.clight.service` (from the clight package) has `Exec=.../bin/clight` with no
+`--conf-file`. If `clight.service` is not running (e.g. after `nh os switch`, which stops
+it and does not restart it) any client touching `org.clight.clight` — `busctl`, a bar
+widget — spawns an unconfigured clight with dimmer/DPMS defaults, reintroducing the
+black-screen bug. Fix: override the D-Bus service file to point at the unit, or
+`systemctl --user restart clight` after a switch.
+
+## clightd SIGSEGVs once at every boot
+
+`coredumpctl` shows clightd (pid ~1000, uid 0) crashing with SIGSEGV a few seconds
+after start on each boot; it is restarted and works. Backtrace ends in
+`_dbus_connection_do_iteration_unlocked` (libdbus). Likely the "crashing bug" noted in
+`hosts/framework/brightness/default.nix`.
