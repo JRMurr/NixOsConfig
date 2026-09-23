@@ -85,6 +85,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    jj-stamp = {
+      url = "github:ethanal/jj-stamp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     {

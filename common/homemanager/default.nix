@@ -7,6 +7,7 @@
     ./git
     ./ghostty.nix
     ./gitui.nix
+    ./jj.nix
     # ./helix.nix
     ./hyprland
     ./kitty.nix

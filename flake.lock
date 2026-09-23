@@ -475,6 +475,27 @@
         "type": "github"
       }
     },
+    "jj-stamp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-intel-darwin": "nixpkgs-intel-darwin"
+      },
+      "locked": {
+        "lastModified": 1790127838,
+        "narHash": "sha256-XVpOjm31jbKEVJk1ilNa32X31eSxPIPBWvZSUKUDEtg=",
+        "owner": "ethanal",
+        "repo": "jj-stamp",
+        "rev": "aaf6f3c3992dd82ac87b3b7cb798a37dfd3d4f41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ethanal",
+        "repo": "jj-stamp",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -670,6 +691,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-intel-darwin": {
+      "locked": {
+        "lastModified": 1789485310,
+        "narHash": "sha256-VsDMTLSkAAJmbNha6sGNzlF33X7RESWLl3SnjDQu+4U=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0c32f40fe3e2a9adfc427fd5abc061a31043ea44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-26.05-darwin",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1019,6 +1056,7 @@
         "hegel-skill": "hegel-skill",
         "home-manager": "home-manager_3",
         "i-have-adhd-skill": "i-have-adhd-skill",
+        "jj-stamp": "jj-stamp",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
         "nil": "nil",
