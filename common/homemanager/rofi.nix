@@ -74,10 +74,10 @@ in
       package = pkgs.rofi;
       enable = true;
       theme = myTheme;
-      terminal = "${pkgs.kitty}/bin/kitty";
       plugins = [ pkgs.rofi-calc ];
-      extraConfig = {
+      settings = {
         # https://github.com/davatorium/rofi/blob/next/doc/rofi.1.markdown
+        terminal = "${pkgs.kitty}/bin/kitty";
         modi = "run,window,calc,ssh,power:rofi-power-menu";
         cache-dir = "${config.xdg.cacheHome}/rofi";
         matching = "fuzzy";

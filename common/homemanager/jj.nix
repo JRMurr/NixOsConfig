@@ -24,4 +24,8 @@ in
       email = "5672686+JRMurr@users.noreply.github.com";
     };
   };
+
+  programs.jjui = {
+    enable = true;
+  };
 }
