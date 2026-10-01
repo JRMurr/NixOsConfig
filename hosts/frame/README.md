@@ -7,11 +7,21 @@ the Frame gets a standalone home-manager generation built from
 ## One-time setup on the Frame
 
 SteamOS replaces `/` on every update, so the store has to live under `/home`.
-The Determinate installer's `steam-deck` planner does exactly that (store at
-`/home/nix`, bind-mounted onto `/nix` by a systemd unit):
+The installer's `steam-deck` planner does that (store at `/home/nix`, bind-mounted
+onto `/nix` by a systemd unit), but it still writes to `/etc`, so the root has to
+be writable while it runs:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install steam-deck
+passwd                                # if you haven't set one
+sudo steamos-readonly disable
+
+sudo mkdir -p /etc/tmpfiles.d         # SteamOS ships without it; the installer expects it
+
+curl -fsSL -o nix-installer.sh https://artifacts.nixos.org/nix-installer
+less nix-installer.sh                 # small wrapper that fetches the binary for your arch
+sh nix-installer.sh install steam-deck --enable-flakes
+
+sudo steamos-readonly enable
 ```
 
 Then activate:
