@@ -1,48 +1,22 @@
 { ... }:
 {
   imports = [
-    ./cargo.nix
-    ./direnv.nix
-    ./fish
-    ./git
+    # CLI-only modules, shared with the standalone hosts/frame config.
+    ./cli.nix
+    ./fromOs.nix
+
     ./ghostty.nix
-    ./gitui.nix
-    ./jj.nix
     # ./helix.nix
     ./hyprland
     ./kitty.nix
-    ./llms
-    ./nushell
     # ./noctalia.nix
-    ./programs.nix
     # ./redshift.nix
     ./rofi.nix
     #./slumber
     ./spicetify.nix
-    ./starship.nix
-    ./theme.nix
     ./xsession.nix
     ./zed.nix
   ];
 
-  programs.bash.enable = true;
-
-  systemd.user.startServices = true;
-
-  services.ssh-agent.enable = true;
-
   services.gnome-keyring.enable = true;
-
-  xdg.userDirs.createDirectories = true;
-  xdg.userDirs.enable = true;
-  # legacy default for home.stateVersion < 26.05; exports XDG_*_DIR
-  xdg.userDirs.setSessionVariables = true;
-
-  programs.tmux = {
-    enable = true;
-    # Taps select panes and a finger scrolls the scrollback, which is the
-    # difference between usable and not on a phone. Costs shift-drag for
-    # terminal-native selection on the desktops.
-    mouse = true;
-  };
 }

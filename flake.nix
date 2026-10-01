@@ -167,11 +167,22 @@
           modules = defaultModules ++ extraModules;
         };
 
+      # Standalone home-manager, for hosts that are not NixOS (hosts/frame).
+      # Nothing from defaultModules applies, so the modules must not reach for
+      # `osConfig`.
+      mkHome =
+        system: modules:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = mkPkgs system;
+          extraSpecialArgs = { inherit inputs; };
+          inherit modules;
+        };
+
     in
     {
       inherit overlays;
       lib = {
-        inherit mkSystem;
+        inherit mkSystem mkHome;
       };
       nixosModules.default =
         { ... }:
@@ -217,6 +228,11 @@
         ];
       };
 
+      # home-manager switch --flake /etc/nixos#steamos@frame
+      homeConfigurations = {
+        "steamos@frame" = mkHome "aarch64-linux" [ ./hosts/frame/home.nix ];
+      };
+
       packages."x86_64-linux" =
         let
           pkgs = mkPkgs "x86_64-linux";
@@ -234,6 +250,16 @@
         in
         {
           harmonia = pkgs.testers.runNixOSTest ./tests/harmonia.nix;
+
+          # Guards the standalone path: common/homemanager/cli.nix has to evaluate
+          # with `osConfig = null`. The string context is discarded so this only
+          # instantiates the aarch64 derivation, never builds it.
+          frame-home = pkgs.runCommand "frame-home-eval" { } ''
+            echo ${
+              builtins.unsafeDiscardStringContext
+                self.homeConfigurations."steamos@frame".activationPackage.drvPath
+            } > $out
+          '';
         };
 
     };

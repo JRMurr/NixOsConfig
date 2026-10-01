@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  osConfig,
+  config,
   ...
 }:
 let
@@ -17,7 +17,7 @@ let
       inherit source;
       recursive = true;
     };
-  }) (lib.getAttrs osConfig.myOptions.llm.skills skillSources);
+  }) (lib.getAttrs config.myOptions.llm.skills skillSources);
 in
 {
   programs.claude-code = {

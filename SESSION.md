@@ -109,3 +109,26 @@ black-screen bug. Fix: override the D-Bus service file to point at the unit, or
 after start on each boot; it is restarted and works. Backtrace ends in
 `_dbus_connection_do_iteration_unlocked` (libdbus). Likely the "crashing bug" noted in
 `hosts/framework/brightness/default.nix`.
+
+## Graphical home-manager modules cannot be used standalone
+
+`common/homemanager/cli.nix` is the only part of the HM tree that evaluates with
+`osConfig = null` (what standalone home-manager passes, see
+home-manager `modules/misc/submodule-support.nix`). hyprland, rofi, kitty,
+ghostty, spicetify, xsession, and the unimported polybar/i3/dunst/redshift/slumber
+still read `osConfig` directly. Giving `hosts/frame` any GUI app means mirroring
+the options they need -- `myOptions.graphics.monitors`, `myOptions.theme.colors`,
+`services.xserver.dpi` -- into `common/homemanager/myOptions.nix` the same way
+`graphics.enable` and `llm.skills` already are.
+
+## `nix flake check` fails on the `overlays` output
+
+`flake.nix` exposes `overlays` as a list, but the flake schema wants an attrset
+(`overlays.default`). `nix flake check` errors out before reaching the checks:
+`error: expected a set but found a list`. Pre-existing on `main`; individual
+checks still build via `nix build .#checks.x86_64-linux.<name>`.
+
+## `nix.nixPath` is deprecated
+
+`flake.nix` sets `nix.nixPath`, which every host evaluation now warns has been
+renamed to `nix.settings.nix-path`.

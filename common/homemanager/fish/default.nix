@@ -1,11 +1,11 @@
 {
   pkgs,
   lib,
-  osConfig,
+  config,
   ...
 }:
 let
-  isGraphical = osConfig.myOptions.graphics.enable;
+  isGraphical = config.myOptions.graphics.enable;
 
   customPlugins = [
     {

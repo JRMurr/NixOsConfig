@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  osConfig,
+  config,
   ...
 }:
 
@@ -18,7 +18,7 @@
       # backlog-md
     ]
     # the agent-browser skill drives this CLI
-    ++ lib.optional (builtins.elem "agent-browser" osConfig.myOptions.llm.skills)
+    ++ lib.optional (builtins.elem "agent-browser" config.myOptions.llm.skills)
       pkgs.llm-agents.agent-browser;
   };
 }

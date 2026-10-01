@@ -2,11 +2,11 @@
   pkgs,
   lib,
   inputs,
-  osConfig,
+  config,
   ...
 }:
 let
-  gcfg = osConfig.myOptions.graphics;
+  gcfg = config.myOptions.graphics;
 
   # sysVersion = osConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";

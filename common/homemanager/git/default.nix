@@ -1,6 +1,6 @@
-{ pkgs, osConfig, ... }:
+{ pkgs, config, ... }:
 let
-  gcfg = osConfig.myOptions.graphics;
+  gcfg = config.myOptions.graphics;
   gitpkg = if gcfg.enable then pkgs.gitFull else pkgs.git;
 in
 {

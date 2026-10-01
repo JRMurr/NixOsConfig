@@ -2,11 +2,11 @@
   pkgs,
   lib,
   inputs,
-  osConfig,
+  config,
   ...
 }:
 let
-  gcfg = osConfig.myOptions.graphics;
+  gcfg = config.myOptions.graphics;
 
   # Browser-based review UI, so it is useless on headless hosts.
   jj-stamp = inputs.jj-stamp.packages.${pkgs.stdenv.hostPlatform.system}.default;
