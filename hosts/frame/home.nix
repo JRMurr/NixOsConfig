@@ -34,18 +34,26 @@
   '';
 
   # common/default.nix sets these system-wide on the NixOS hosts; a standalone
-  # install has to write its own ~/.config/nix/nix.conf. Only honoured if the
-  # user is a trusted-user in /etc/nix/nix.conf.
+  # install has to write its own ~/.config/nix/nix.conf. Only honoured if this
+  # user is a trusted-user in /etc/nix/nix.conf -- see ./README.md.
   nix = {
     package = pkgs.nix;
+
     settings = {
+      # Builds are offloaded to thicc-server with a `--builders` flag rather than
+      # a buildMachines entry for now, see ./README.md. This setting only matters
+      # together with that flag: it lets the builder fetch build inputs itself
+      # instead of having them uploaded from here.
+      builders-use-substitutes = true;
+
+      # cache.jrnet.win is deliberately absent: blocky maps jrnet.win to
+      # thicc-server's tailscale address, which is unreachable from here. The
+      # builder's own store covers the same paths.
       substituters = [
-        "https://cache.jrnet.win?priority=1"
-        "https://nix-community.cachix.org?priority=25"
         "https://cache.nixos.org/?priority=20"
+        "https://nix-community.cachix.org?priority=25"
       ];
       trusted-public-keys = [
-        "cache.jrnet.win-1:FVkbrXPDdxta7+tgKfTAZJCoT0ptqfl3TUSE1M9TrBU="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
       fallback = true;

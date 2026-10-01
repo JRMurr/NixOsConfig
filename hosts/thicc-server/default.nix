@@ -18,6 +18,7 @@
     #./mopidy.nix
     # ./happy-server.nix
     ./postgres.nix
+    ./remote-builder.nix
   ];
 
   time.timeZone = "America/New_York";
