@@ -6,6 +6,15 @@
   options.myOptions = with lib; {
     graphics.enable = mkEnableOption "Enable graphics";
 
+    rebuildCmd = mkOption {
+      type = types.str;
+      default = "nh os switch";
+      description = ''
+        What the `nixRe` alias runs. NixOS hosts rebuild the system; a standalone
+        home-manager host switches its own generation instead.
+      '';
+    };
+
     nixTooling = mkOption {
       type = types.enum [
         "flakeInputs"

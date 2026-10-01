@@ -1,4 +1,11 @@
 { pkgs, ... }:
+let
+  repo = "$HOME/NixOsConfig";
+
+  # Same spec as the --builders flag in ./README.md: thicc-server by LAN address,
+  # its host key pinned, aarch64 under qemu.
+  builder = "ssh-ng://jr@192.168.50.42 aarch64-linux /home/steamos/.ssh/id_builder 8 1 big-parallel - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUZwamJtYStiMkg1SUFBMWNjZ0NEditlVWRkS3Bhc0Y2NkdJYURsZ1dFZTEK";
+in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
   # rather than a nixosConfiguration. Nix itself is installed out of band, see
@@ -19,6 +26,11 @@
     # Nothing caches the flake-input builds for aarch64, and compiling nixd under
     # qemu takes hours. These come from cache.nixos.org instead.
     nixTooling = "nixpkgs";
+
+    # `nh os switch` is meaningless here. -b backup because a SteamOS update puts
+    # its own dotfiles back in the way. --max-jobs 0 is what forces the offload:
+    # this host is aarch64 itself, so otherwise nix just builds locally.
+    rebuildCmd = "home-manager switch --flake ${repo}#steamos@frame -b backup --max-jobs 0 --builders '${builder}'";
   };
 
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
