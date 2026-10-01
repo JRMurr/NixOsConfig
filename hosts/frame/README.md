@@ -86,10 +86,20 @@ Setup, once:
    nix config show trusted-users
    ```
 
-   If it lists neither `steamos` nor `@wheel`, add it to `/etc/nix/nix.conf`
-   (`sudo steamos-readonly disable` first) and `sudo systemctl restart nix-daemon`.
-   SteamOS updates replace `/`, so that edit has to be redone afterwards; the
-   store under `/home/nix` survives.
+   If it lists neither `steamos` nor `@wheel`, add it, then restart the daemon:
+
+   ```bash
+   sudo steamos-readonly disable
+   # /etc/nix/nix.custom.conf if the installer made one, it is meant for edits
+   echo 'extra-trusted-users = steamos' | sudo tee -a /etc/nix/nix.conf
+   sudo systemctl restart nix-daemon
+   sudo steamos-readonly enable
+   ```
+
+   `extra-` appends instead of replacing whatever the installer set. Without this,
+   builds warn `ignoring the client-specified setting 'builders', because it is a
+   restricted setting` and run locally. SteamOS updates replace `/`, so the edit
+   has to be redone afterwards; the store under `/home/nix` survives.
 
 Then, on every build:
 
