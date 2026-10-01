@@ -53,6 +53,12 @@ After that `programs.home-manager.enable` has put the CLI on `$PATH`:
 home-manager switch --flake ~/nixos#steamos@frame
 ```
 
+Two things activation prints that are expected here. `reloadSystemd` skips with
+"User systemd daemon not running" unless a session is up, so the HM user services
+stay inert -- `sudo loginctl enable-linger steamos` makes them run regardless. And
+`checkExistingGpuDrivers` always suggests `non-nixos-gpu-setup`; nothing in
+`cli.nix` needs OpenGL, so that only becomes relevant once GUI apps land here.
+
 Nix resolves every flake input, including the private `nix-secrets` one, even
 though nothing in this configuration reads it. The Frame needs an ssh key with
 read access to that repo.
