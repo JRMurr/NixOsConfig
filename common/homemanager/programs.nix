@@ -10,16 +10,16 @@ let
 
   # sysVersion = osConfig.system.nixos.release;
   # onUnStable = lib.versionAtLeast sysVersion "23.11";
-  # getFromInput = name: inputs.${name}.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  nurl = inputs.nurl.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  nixd = inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  nil = inputs.nil.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  fromInput = name: inputs.${name}.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-  ghostty = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  pickNixTool =
+    name: if config.myOptions.nixTooling == "flakeInputs" then fromInput name else pkgs.${name};
 
-  # nurl = getFromInput "nurl";
-  # nixd = getFromInput "nurl";
-  # nil = getFromInput "nurl";
+  nurl = pickNixTool "nurl";
+  nixd = pickNixTool "nixd";
+  nil = pickNixTool "nil";
+
+  ghostty = fromInput "ghostty";
 
   # nixd does not work on mac yet :(
   # https://github.com/nix-community/nixd/issues/107

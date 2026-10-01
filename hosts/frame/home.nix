@@ -16,6 +16,9 @@
   myOptions = {
     graphics.enable = false;
     llm.skills = [ "hegel" ];
+    # Nothing caches the flake-input builds for aarch64, and compiling nixd under
+    # qemu takes hours. These come from cache.nixos.org instead.
+    nixTooling = "nixpkgs";
   };
 
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
