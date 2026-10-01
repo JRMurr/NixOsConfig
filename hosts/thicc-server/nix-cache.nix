@@ -59,13 +59,25 @@ let
   # --keep-going: one broken derivation shouldn't cost us the whole host's worth
   # of cacheable paths. Everything not depending on the failure still gets built,
   # and nix still exits non-zero so the host is reported as failed.
-  buildHost = host: ''
-    echo "==> ${host}"
-    if ! nix build --keep-going --out-link "${gcrootDir}/${host}" "${flakeRef host}"; then
-      echo "FAILED: ${host}" >&2
+  buildRef = name: ref: ''
+    echo "==> ${name}"
+    if ! nix build --keep-going --out-link "${gcrootDir}/${name}" '${ref}'; then
+      echo "FAILED: ${name}" >&2
       failed=1
     fi
   '';
+
+  buildHost = host: buildRef host (flakeRef host);
+
+  # The Frame is standalone home-manager and aarch64, so it needs its own ref.
+  # Building it here is what keeps `nixRe` on the Frame cheap: the generation is
+  # already in this store by the time the Frame offloads to it, so the build
+  # turns into a copy instead of an emulated compile (hosts/frame/README.md).
+  # Harmonia does not help there -- cache.jrnet.win only resolves on the tailnet.
+  #
+  # Deliberately absent from the eval gate above: an aarch64-only eval break
+  # should not hold back lock updates for the hosts people actually use.
+  frameRef = "${checkoutDir}#homeConfigurations.\"steamos@frame\".activationPackage";
 
   updatePhase = ''
     updateFailed=0
@@ -154,6 +166,7 @@ in
 
       failed=0
       ${lib.concatMapStringsSep "\n" buildHost cachedHosts}
+      ${buildRef "frame" frameRef}
 
       rm -rf ${checkoutDir}
 
