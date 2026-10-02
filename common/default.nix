@@ -29,7 +29,12 @@ in
     # ./plymouth.nix
   ];
   security.pam.services.swaylock = { };
-  environment.enableAllTerminfo = true;
+  # Only terminals we ssh from. enableAllTerminfo builds every terminal in
+  # nixpkgs, and some obscure one breaks on most updates.
+  environment.systemPackages = map (p: p.terminfo) [
+    pkgs.kitty
+    pkgs.ghostty
+  ];
   # nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
