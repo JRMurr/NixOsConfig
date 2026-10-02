@@ -20,6 +20,9 @@
 
   programs.bash.enable = true;
 
+  # `home-manager news` still lists them.
+  news.display = "silent";
+
   systemd.user.startServices = true;
 
   services.ssh-agent.enable = true;
