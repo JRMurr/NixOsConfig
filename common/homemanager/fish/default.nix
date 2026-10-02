@@ -57,7 +57,7 @@ in
       lzd = "lazydocker";
       ls = "exa --icons";
       nbf = "nix build -L --file";
-      nixRe = config.myOptions.rebuildCmd;
+      nixRe = "jr switch";
       gdiff = "kitty +kitten diff";
       claudeDanger = "claude --dangerously-skip-permissions";
     };

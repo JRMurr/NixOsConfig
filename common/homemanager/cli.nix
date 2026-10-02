@@ -10,6 +10,7 @@
     ./fish
     ./git
     ./gitui.nix
+    ./jr.nix
     ./jj.nix
     ./llms
     ./nushell

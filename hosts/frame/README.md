@@ -47,33 +47,24 @@ HOME_MANAGER_BACKUP_EXT=backup ./result/activate
 `HOME_MANAGER_BACKUP_EXT` is what `home-manager switch -b backup` sets; without it
 activation aborts on the `~/.bashrc` and `~/.config/fish` SteamOS already ships.
 
-After that `programs.home-manager.enable` has put the CLI on `$PATH`:
-
-```bash
-home-manager switch --flake ~/nixos#steamos@frame
-```
+After that `jr` is on `$PATH`; `jr switch` (alias `nixRe`) switches from then on
+and asks for sudo whenever the `/etc` files below need installing.
 
 `reloadSystemd` skips with "User systemd daemon not running" unless a session is
 up, so the HM user services stay inert -- `sudo loginctl enable-linger steamos`
 makes them run regardless.
 
-SteamOS starts the user session about 0.1s before `nix.mount`, so at boot every
-home-manager symlink dangles and `xdg-user-dirs-update` replaces
-`~/.config/user-dirs.dirs` with a regular file; the next switch then trips over
-it. Order the user manager after the mount, once:
+SteamOS starts the user session and runs tmpfiles before `nix.mount`, so anything
+read then that links into the store dangles: home-manager's `environment.d`
+(Plasma's `PATH`), `~/.config/user-dirs.dirs` (which `xdg-user-dirs-update` then
+replaces with a regular file), and `non-nixos-gpu-setup`'s tmpfiles entry for
+`/run/opengl-driver`. `myOptions.jr.etc` in `./home.nix` declares the fix: a
+`user@` drop-in that waits for the mount, and the GPU tmpfiles entry as a real
+file. `jr etc` installs them; `jr etc --check` reports drift. `/etc` is an overlay
+kept under `/var`, so neither needs `steamos-readonly disable`.
 
-```bash
-sudo steamos-readonly disable
-sudo mkdir -p /etc/systemd/system/user@.service.d
-printf '[Unit]\nWants=nix.mount\nAfter=nix.mount\n' | sudo tee /etc/systemd/system/user@.service.d/nix.conf
-sudo steamos-readonly enable
-```
-
-Like the trusted-users edit below, a SteamOS update may undo it.
-
-GUI apps from nix need nix's own GPU drivers. Activation prints a
-`sudo .../non-nixos-gpu-setup` command until they are installed, and again when
-they need updating; run it.
+`non-nixos-gpu-setup` is not needed. If it ran before, its gcroot
+`/nix/var/nix/gcroots/non-nixos-gpu.conf` now points at `jr`'s copy and can go.
 
 Nix resolves every flake input, including the private `nix-secrets` one, even
 though nothing in this configuration reads it. The Frame needs an ssh key with

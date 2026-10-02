@@ -244,11 +244,15 @@
 
         };
 
+      checks."aarch64-linux".jr = import ./pkgs/jr/test.nix { pkgs = mkPkgs "aarch64-linux"; };
+
       checks."x86_64-linux" =
         let
           pkgs = mkPkgs "x86_64-linux";
         in
         {
+          jr = import ./pkgs/jr/test.nix { inherit pkgs; };
+
           harmonia = pkgs.testers.runNixOSTest ./tests/harmonia.nix;
 
           # Guards the standalone path: common/homemanager/cli.nix has to evaluate

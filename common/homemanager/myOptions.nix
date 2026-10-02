@@ -6,13 +6,33 @@
   options.myOptions = with lib; {
     graphics.enable = mkEnableOption "Enable graphics";
 
-    rebuildCmd = mkOption {
-      type = types.str;
-      default = "nh os switch";
-      description = ''
-        What the `nixRe` alias runs. NixOS hosts rebuild the system; a standalone
-        home-manager host switches its own generation instead.
-      '';
+    jr = {
+      switchCmd = mkOption {
+        type = types.str;
+        default = "nh os switch";
+        description = ''
+          What `jr switch` runs. NixOS hosts rebuild the system; a standalone
+          home-manager host switches its own generation instead.
+        '';
+      };
+
+      buildCmd = mkOption {
+        type = types.str;
+        default = "nh os build";
+        description = "What `jr build` runs.";
+      };
+
+      etc = mkOption {
+        type = types.attrsOf types.lines;
+        default = { };
+        example = {
+          "tmpfiles.d/example.conf" = "d /run/example 0755 root root -";
+        };
+        description = ''
+          Files `jr etc` keeps under /etc, for hosts whose /etc nothing else
+          manages. Paths are relative to /etc.
+        '';
+      };
     };
 
     nixTooling = mkOption {

@@ -1,6 +1,12 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   repo = "$HOME/NixOsConfig";
+  flakeRef = "${repo}#steamos@frame";
 in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
@@ -24,19 +30,44 @@ in
     # qemu takes hours. These come from cache.nixos.org instead.
     nixTooling = "nixpkgs";
 
-    # `nh os switch` is meaningless here. -b backup because a SteamOS update puts
-    # its own dotfiles back in the way. Builds run locally: thicc-server's nightly
-    # job fills cache-lan, and offloading everything through qemu was slower than
-    # building the leftovers natively. ./README.md has the --builders flag for
-    # one-off offloads. Desktop Mode's nested Plasma points XDG_RUNTIME_DIR at
-    # .../nested_plasma, where activation can't find the user bus and skips
-    # reloading systemd; the real one is /run/user/<uid>.
-    rebuildCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake ${repo}#steamos@frame -b backup";
+    jr = {
+      # `nh os switch` is meaningless here. -b backup because a SteamOS update
+      # puts its own dotfiles back in the way. Builds run locally: thicc-server's
+      # nightly job fills cache-lan, and offloading everything through qemu was
+      # slower than building the leftovers natively. ./README.md has the
+      # --builders flag for one-off offloads. Desktop Mode's nested Plasma points
+      # XDG_RUNTIME_DIR at .../nested_plasma, where activation can't find the
+      # user bus and skips reloading systemd; the real one is /run/user/<uid>.
+      switchCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake \"${flakeRef}\" -b backup";
+      buildCmd = "home-manager build --flake \"${flakeRef}\" --no-out-link";
+
+      # SteamOS starts the user session and runs tmpfiles before nix.mount, so
+      # anything there that links into the store dangles at boot. `jr etc`
+      # writes these as real files.
+      etc = {
+        # Holds the session until /nix is up: home-manager's environment.d
+        # (PATH for Plasma) and user-dirs.dirs are store links.
+        "systemd/system/user@.service.d/nix.conf" = ''
+          [Unit]
+          Wants=nix.mount
+          After=nix.mount
+        '';
+
+        # What non-nixos-gpu-setup installs, minus its link into the store.
+        # tmpfiles creates the link even while the target isn't mounted yet.
+        "tmpfiles.d/non-nixos-gpu.conf" =
+          "L+ /run/opengl-driver - - - - ${config.targets.genericLinux.gpu.drivers}";
+      };
+    };
   };
 
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
   # which NixOS would otherwise provide.
   targets.genericLinux.enable = true;
+
+  # Its hint points at non-nixos-gpu-setup; `jr switch` installs the drivers
+  # through myOptions.jr.etc instead.
+  home.activation.checkExistingGpuDrivers = lib.mkForce (lib.hm.dag.entryAnywhere "");
 
   # Plasma takes its environment from the systemd user manager, not a login shell,
   # so without this its PATH lacks the profile and launcher entries like kitty's
