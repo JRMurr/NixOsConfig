@@ -141,3 +141,12 @@ which maps all of `jrnet.win` to the tailscale IP, and there is no mDNS/avahi on
 the server. That is a third hardcoded address for this host, and blocky's
 `cache-lan` mapping repeats it. A LAN-only `customDNS` name for the host itself
 would fix the README, and an option for the LAN address would dedupe the rest.
+
+## Frame: wheel notches arrive 80x too large in the nested desktop
+
+`wev` in Desktop Mode shows one notch as `axis_value120: 120` (correct) but
+`axis: 1200` (normal is ~15). Firefox scrolls by `axis`, so a notch acts like
+page down; terminals and Vesktop use value120 and are fine. Inflated somewhere
+between gamescope and the nested KWin (not narrowed down). Worked around in
+Firefox with `mousewheel.default.delta_multiplier_y`; if SteamOS fixes the
+relay, that pref will make Firefox scroll ~50x too slowly.
