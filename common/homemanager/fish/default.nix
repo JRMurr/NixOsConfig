@@ -47,6 +47,8 @@ in
 
     interactiveShellInit = ''
       set -g fish_greeting
+      # fish-systemd abbreviates jr to journalctl, which shadows the jr CLI.
+      abbr --erase jr
     '';
 
     shellAliases = {
