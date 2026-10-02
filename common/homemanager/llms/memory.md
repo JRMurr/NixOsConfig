@@ -38,6 +38,8 @@ Prefer fixes that address the root cause, even if it means a larger change. Avoi
 
 Make commits as you go when its reasonable. Prompt the user if its on a main/release branch about whether to branch first.
 
+Never push without asking first, every time. Approval for one push doesn't carry to the next.
+
 ## Code style preferences
 
 - Use realistic names for types and variables in examples and documentation.
