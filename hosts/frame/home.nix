@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   repo = "$HOME/NixOsConfig";
 in
@@ -35,6 +35,11 @@ in
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
   # which NixOS would otherwise provide.
   targets.genericLinux.enable = true;
+
+  # Plasma takes its environment from the systemd user manager, not a login shell,
+  # so without this its PATH lacks the profile and launcher entries like kitty's
+  # `Exec=kitty` fail.
+  systemd.user.sessionVariables.PATH = "${config.home.profileDirectory}/bin:/nix/var/nix/profiles/default/bin\${PATH:+:$PATH}";
 
   fonts.fontconfig.enable = true;
 
