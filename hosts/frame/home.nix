@@ -16,6 +16,7 @@ in
   imports = [
     ../../common/homemanager/cli.nix
     ../../common/homemanager/kitty.nix
+    ./launchers.nix
   ];
 
   home = {
