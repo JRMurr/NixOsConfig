@@ -28,8 +28,10 @@ in
     # its own dotfiles back in the way. Builds run locally: thicc-server's nightly
     # job fills cache-lan, and offloading everything through qemu was slower than
     # building the leftovers natively. ./README.md has the --builders flag for
-    # one-off offloads.
-    rebuildCmd = "home-manager switch --flake ${repo}#steamos@frame -b backup";
+    # one-off offloads. Desktop Mode's nested Plasma points XDG_RUNTIME_DIR at
+    # .../nested_plasma, where activation can't find the user bus and skips
+    # reloading systemd; the real one is /run/user/<uid>.
+    rebuildCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake ${repo}#steamos@frame -b backup";
   };
 
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
