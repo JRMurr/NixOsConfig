@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }:
 let
@@ -77,6 +78,9 @@ in
   systemd.user.sessionVariables.PATH = "${config.home.profileDirectory}/bin:/nix/var/nix/profiles/default/bin\${PATH:+:$PATH}";
 
   fonts.fontconfig.enable = true;
+
+  # The NixOS hosts install it system-wide from common/programs.nix.
+  home.packages = [ (pkgs.callPackage ../../pkgs/vscode.nix { inherit pkgs inputs; }).myVscode ];
 
   # Standalone installs have to carry the CLI themselves.
   programs.home-manager.enable = true;
