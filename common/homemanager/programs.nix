@@ -31,10 +31,11 @@ let
   graphical = pkgs.lib.optionals gcfg.enable [
     pkgs.pear-desktop # youtube music
     pkgs.obs-studio
-    pkgs.losslesscut-bin
     pkgs.mpv
     # ghostty
-  ];
+  ]
+  # Prebuilt x86_64 binary; the Frame is aarch64.
+  ++ lib.optional (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.losslesscut-bin) pkgs.losslesscut-bin;
 
   # https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/bat-extras/default.nix#L142
   batExtras =

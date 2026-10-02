@@ -10,7 +10,10 @@ in
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
   # rather than a nixosConfiguration. Nix itself is installed out of band, see
   # ./README.md.
-  imports = [ ../../common/homemanager/cli.nix ];
+  imports = [
+    ../../common/homemanager/cli.nix
+    ../../common/homemanager/kitty.nix
+  ];
 
   home = {
     username = "steamos";
@@ -18,10 +21,8 @@ in
     stateVersion = "26.11";
   };
 
-  # No display server reachable from here yet; graphical modules stay out of
-  # ../../common/homemanager/cli.nix entirely.
   myOptions = {
-    graphics.enable = false;
+    graphics.enable = true;
     llm.skills = [ "hegel" ];
     # Nothing caches the flake-input builds for aarch64, and compiling nixd under
     # qemu takes hours. These come from cache.nixos.org instead.

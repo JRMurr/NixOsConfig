@@ -2,11 +2,10 @@
   pkgs,
   config,
   lib,
-  osConfig,
   ...
 }:
 let
-  gcfg = osConfig.myOptions.graphics;
+  gcfg = config.myOptions.graphics;
 in
 {
   config = lib.mkIf (pkgs.stdenv.hostPlatform.isDarwin || gcfg.enable) {

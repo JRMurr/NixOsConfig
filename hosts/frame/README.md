@@ -53,11 +53,27 @@ After that `programs.home-manager.enable` has put the CLI on `$PATH`:
 home-manager switch --flake ~/nixos#steamos@frame
 ```
 
-Two things activation prints that are expected here. `reloadSystemd` skips with
-"User systemd daemon not running" unless a session is up, so the HM user services
-stay inert -- `sudo loginctl enable-linger steamos` makes them run regardless. And
-`checkExistingGpuDrivers` always suggests `non-nixos-gpu-setup`; nothing in
-`cli.nix` needs OpenGL, so that only becomes relevant once GUI apps land here.
+`reloadSystemd` skips with "User systemd daemon not running" unless a session is
+up, so the HM user services stay inert -- `sudo loginctl enable-linger steamos`
+makes them run regardless.
+
+SteamOS starts the user session about 0.1s before `nix.mount`, so at boot every
+home-manager symlink dangles and `xdg-user-dirs-update` replaces
+`~/.config/user-dirs.dirs` with a regular file; the next switch then trips over
+it. Order the user manager after the mount, once:
+
+```bash
+sudo steamos-readonly disable
+sudo mkdir -p /etc/systemd/system/user@.service.d
+printf '[Unit]\nWants=nix.mount\nAfter=nix.mount\n' | sudo tee /etc/systemd/system/user@.service.d/nix.conf
+sudo steamos-readonly enable
+```
+
+Like the trusted-users edit below, a SteamOS update may undo it.
+
+GUI apps from nix need nix's own GPU drivers. Activation prints a
+`sudo .../non-nixos-gpu-setup` command until they are installed, and again when
+they need updating; run it.
 
 Nix resolves every flake input, including the private `nix-secrets` one, even
 though nothing in this configuration reads it. The Frame needs an ssh key with
@@ -130,6 +146,6 @@ it on the router or expect to fix up the command.
 
 ## Not supported here
 
-Graphical modules (hyprland, rofi, kitty/ghostty, spicetify) still read the NixOS
-`osConfig`, so they cannot be imported standalone yet -- see SESSION.md. Secrets
-(agenix) are deliberately left out.
+Graphical modules other than kitty (hyprland, rofi, ghostty, spicetify) still read
+the NixOS `osConfig`, so they cannot be imported standalone yet -- see SESSION.md.
+Secrets (agenix) are deliberately left out.
