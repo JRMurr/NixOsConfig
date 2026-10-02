@@ -65,6 +65,7 @@ in
         bacon # rust background checker
         bottom
         cachix
+        dnsutils # dig
         dive
         nix-init
         nurl
@@ -91,6 +92,7 @@ in
       enable = true;
     };
 
+    gh.enable = true;
     htop.enable = true;
     btop.enable = true;
     jq.enable = true;
