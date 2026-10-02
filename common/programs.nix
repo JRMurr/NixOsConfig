@@ -42,9 +42,6 @@ let
     feh
     gimp
   ];
-  messaging = [
-    discord
-  ];
   desktopEnviorment = [
     lxappearance
     arandr
@@ -94,7 +91,6 @@ let
       miscGraphicalPrograms
       ++ video
       ++ desktopEnviorment
-      ++ messaging
       ++ imageStuff
       ++ audio
       ++ musicPrograms

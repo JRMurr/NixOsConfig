@@ -75,6 +75,9 @@ in
       ]);
 
   programs = {
+    # Discord ships no aarch64 build; Vesktop runs on every host, the Frame too.
+    vesktop.enable = gcfg.enable;
+
     zoxide = {
       enable = true;
       enableFishIntegration = true;
