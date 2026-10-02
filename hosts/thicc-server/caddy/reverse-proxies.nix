@@ -16,6 +16,8 @@
     # names alone would expose every package and version on the server.
     cache = {
       upstream = "127.0.0.1:5000";
+      # Resolves to the LAN address, see blocky's customDNS.
+      serverAliases = [ "cache-lan" ];
       # private_ranges covers RFC1918 and fd00::/8, which is what tailscale
       # (fd7a:115c:a1e0::/48) and the LAN use for v6. Listing only v4 subnets
       # here 403s any client that happens to prefer AAAA. 100.64.0.0/10 is

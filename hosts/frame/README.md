@@ -81,7 +81,9 @@ read access to that repo.
 
 ## Build host
 
-aarch64 builds go to thicc-server. The client half is a flag for now rather than a
+Builds run locally and substitute from `cache-lan.jrnet.win`, thicc-server's
+harmonia at its LAN address; its nightly job builds this generation. Offloading
+to thicc-server is opt-in, for one-off big builds, with a flag rather than a
 `nix.buildMachines` entry in `./home.nix`.
 
 The server half is not optional: thicc-server can only build aarch64 at all
@@ -123,7 +125,7 @@ Setup, once:
    restricted setting` and run locally. SteamOS updates replace `/`, so the edit
    has to be redone afterwards; the store under `/home/nix` survives.
 
-Then, on every build:
+Then, to offload a build:
 
 ```bash
 nix build '.#homeConfigurations."steamos@frame".activationPackage' --max-jobs 0 \

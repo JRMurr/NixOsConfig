@@ -133,20 +133,11 @@ checks still build via `nix build .#checks.x86_64-linux.<name>`.
 `flake.nix` sets `nix.nixPath`, which every host evaluation now warns has been
 renamed to `nix.settings.nix-path`.
 
-## `cache.jrnet.win` is unusable off the tailnet
-
-`common/blocky` maps all of `jrnet.win` to thicc-server's tailscale address
-(`100.95.204.122`), so a LAN-only client resolves the cache to an unreachable IP.
-`hosts/frame` therefore drops that substituter and leans on the remote builder's
-store instead. Caddy already allows `private_ranges` for the cache vhost, so a
-split-horizon mapping (LAN address for LAN clients) would make it work; blocky's
-`customDNS` carries a TODO about exactly this.
-
 ## No LAN-reachable name for thicc-server
 
-`hosts/frame/home.nix` addresses the build host as `192.168.50.42` because nothing
+`hosts/frame/README.md` addresses the build host as `192.168.50.42` because nothing
 on the LAN resolves the server to a LAN address: the router forwards to blocky,
 which maps all of `jrnet.win` to the tailscale IP, and there is no mDNS/avahi on
-the server. That is a third hardcoded address for this host. A `customDNS` entry
-for a LAN-only name (or split-horizon `jrnet.win`) would fix this one and the
-`cache.jrnet.win` item above together.
+the server. That is a third hardcoded address for this host, and blocky's
+`cache-lan` mapping repeats it. A LAN-only `customDNS` name for the host itself
+would fix the README, and an option for the LAN address would dedupe the rest.

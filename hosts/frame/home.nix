@@ -1,10 +1,6 @@
 { pkgs, ... }:
 let
   repo = "$HOME/NixOsConfig";
-
-  # Same spec as the --builders flag in ./README.md: thicc-server by LAN address,
-  # its host key pinned, aarch64 under qemu.
-  builder = "ssh-ng://jr@192.168.50.42 aarch64-linux /home/steamos/.ssh/id_builder 8 1 big-parallel - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUZwamJtYStiMkg1SUFBMWNjZ0NEditlVWRkS3Bhc0Y2NkdJYURsZ1dFZTEK";
 in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
@@ -29,9 +25,11 @@ in
     nixTooling = "nixpkgs";
 
     # `nh os switch` is meaningless here. -b backup because a SteamOS update puts
-    # its own dotfiles back in the way. --max-jobs 0 is what forces the offload:
-    # this host is aarch64 itself, so otherwise nix just builds locally.
-    rebuildCmd = "home-manager switch --flake ${repo}#steamos@frame -b backup --max-jobs 0 --builders '${builder}'";
+    # its own dotfiles back in the way. Builds run locally: thicc-server's nightly
+    # job fills cache-lan, and offloading everything through qemu was slower than
+    # building the leftovers natively. ./README.md has the --builders flag for
+    # one-off offloads.
+    rebuildCmd = "home-manager switch --flake ${repo}#steamos@frame -b backup";
   };
 
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
@@ -62,10 +60,11 @@ in
       # instead of having them uploaded from here.
       builders-use-substitutes = true;
 
-      # cache.jrnet.win is deliberately absent: blocky maps jrnet.win to
-      # thicc-server's tailscale address, which is unreachable from here. The
-      # builder's own store covers the same paths.
+      # cache.jrnet.win resolves to thicc-server's tailscale address, unreachable
+      # from here; cache-lan is the same harmonia at its LAN address. Its nightly
+      # job builds this generation too.
       substituters = [
+        "https://cache-lan.jrnet.win?priority=1"
         "https://cache.nixos.org/?priority=20"
         "https://nix-community.cachix.org?priority=25"
       ];
@@ -73,6 +72,7 @@ in
       # has to be listed too; without it every substitute from there is rejected.
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cache.jrnet.win-1:FVkbrXPDdxta7+tgKfTAZJCoT0ptqfl3TUSE1M9TrBU="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
       fallback = true;

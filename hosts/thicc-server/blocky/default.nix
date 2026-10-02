@@ -86,6 +86,10 @@ in
           {
             # TODO: figure out how to use local ip and tailscale
             "${myDomain}" = "100.95.204.122";
+            # LAN-only name for hosts off the tailnet (hosts/frame). customDNS is
+            # global, so this can't be split-horizon on cache.jrnet.win itself; the
+            # more specific mapping wins over the one above.
+            "cache-lan.${myDomain}" = "192.168.50.42";
           };
       };
 
