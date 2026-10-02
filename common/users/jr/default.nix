@@ -3,14 +3,15 @@ let
   catppuccin = inputs.catppuccin.homeModules.catppuccin;
   spicetify = inputs.spicetify-nix.homeManagerModules.default;
   agenix = inputs.agenix.homeManagerModules.default;
-  noctalia = inputs.noctalia.homeModules.default;
 in
 {
   imports = [
     catppuccin
     spicetify
     agenix
-    noctalia
+    # TODO: noctalia-shell's home module collides with home-manager's built-in
+    # programs.noctalia. Switch ../../homemanager/noctalia.nix to that before
+    # re-enabling it.
     ../../homemanager
   ];
 
