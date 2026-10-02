@@ -18,7 +18,17 @@ in
     ../../common/homemanager/cli.nix
     ../../common/homemanager/kitty.nix
     ./launchers.nix
+    inputs.catppuccin.homeModules.catppuccin
   ];
+
+  # The NixOS hosts get these from the system through
+  # ../../common/homemanager/fromOs.nix.
+  catppuccin = {
+    enable = true;
+    autoEnable = true;
+    flavor = "mocha";
+    accent = "mauve";
+  };
 
   home = {
     username = "steamos";
