@@ -1,4 +1,7 @@
 { pkgs, lib, ... }:
+let
+  caches = import ./nix-caches.nix;
+in
 {
   imports = [
     # where all my custom options are defined (system wide)
@@ -35,23 +38,9 @@
         "jr"
       ];
       auto-optimise-store = true;
-      substituters = lib.mkBefore [
-        # harmonia on thicc-server, serves at the root (attic used a /main path)
-        "https://cache.jrnet.win?priority=1"
-        "https://nix-community.cachix.org?priority=25"
-        # "https://jrmurr.cachix.org?priority=2"
-        "https://cache.nixos.org/?priority=20"
-        # numtide advertises no Priority in its nix-cache-info, so without an
-        # explicit one it lands at 0 and outranks cache.jrnet.win. Last resort:
-        # every other substituter here should be tried before it.
-        "https://cache.numtide.com?priority=50"
-      ];
-      trusted-public-keys = [
-        "cache.jrnet.win-1:FVkbrXPDdxta7+tgKfTAZJCoT0ptqfl3TUSE1M9TrBU="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        # "jrmurr.cachix.org-1:nE2/Ms3YbTPe8SrFOWsHfcNAuJtJtz9UCoohiSn6Elg="
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-      ];
+      # harmonia on thicc-server, serves at the root (attic used a /main path)
+      substituters = lib.mkBefore ([ caches.harmonia.tailnet ] ++ caches.public);
+      trusted-public-keys = caches.keys;
       # Off the tailnet cache.jrnet.win is unreachable; without these a rebuild
       # stalls 15s per path before giving up on it.
       fallback = true;

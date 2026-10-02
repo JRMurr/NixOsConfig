@@ -7,6 +7,7 @@
 let
   repo = "$HOME/NixOsConfig";
   flakeRef = "${repo}#steamos@frame";
+  caches = import ../../common/nix-caches.nix;
 in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
@@ -101,18 +102,8 @@ in
       # cache.jrnet.win resolves to thicc-server's tailscale address, unreachable
       # from here; cache-lan is the same harmonia at its LAN address. Its nightly
       # job builds this generation too.
-      substituters = [
-        "https://cache-lan.jrnet.win?priority=1"
-        "https://cache.nixos.org/?priority=20"
-        "https://nix-community.cachix.org?priority=25"
-      ];
-      # Replaces nix's default rather than extending it, so cache.nixos.org's key
-      # has to be listed too; without it every substitute from there is rejected.
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "cache.jrnet.win-1:FVkbrXPDdxta7+tgKfTAZJCoT0ptqfl3TUSE1M9TrBU="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
+      substituters = [ caches.harmonia.lan ] ++ caches.public;
+      trusted-public-keys = [ caches.nixosKey ] ++ caches.keys;
       fallback = true;
       connect-timeout = 5;
     };
