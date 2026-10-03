@@ -319,16 +319,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790985289,
-        "narHash": "sha256-9BIcy978p7MdKlMteSGzn10LTGdz5E7qufGJt7hu0n8=",
+        "lastModified": 1790989443,
+        "narHash": "sha256-19m7V5FiiTVehpbjM40Kcpsx2pakaITYRI477L1wGiU=",
         "owner": "JRMurr",
         "repo": "frametop",
-        "rev": "7aa9738e034bc8017696ef857fca74117a7e769b",
+        "rev": "c7e62e2a990e898203715cd91c47ac700c43d064",
         "type": "github"
       },
       "original": {
         "owner": "JRMurr",
-        "ref": "claude/trusting-cerf-f87kmu",
+        "ref": "nix-support",
         "repo": "frametop",
         "type": "github"
       }
