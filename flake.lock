@@ -312,6 +312,27 @@
         "type": "github"
       }
     },
+    "frametop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790985289,
+        "narHash": "sha256-9BIcy978p7MdKlMteSGzn10LTGdz5E7qufGJt7hu0n8=",
+        "owner": "JRMurr",
+        "repo": "frametop",
+        "rev": "7aa9738e034bc8017696ef857fca74117a7e769b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JRMurr",
+        "ref": "claude/trusting-cerf-f87kmu",
+        "repo": "frametop",
+        "type": "github"
+      }
+    },
     "ghostty": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -1006,6 +1027,7 @@
         "agenix": "agenix",
         "catppuccin": "catppuccin",
         "flake-compat": "flake-compat",
+        "frametop": "frametop",
         "ghostty": "ghostty",
         "hegel-skill": "hegel-skill",
         "home-manager": "home-manager_2",

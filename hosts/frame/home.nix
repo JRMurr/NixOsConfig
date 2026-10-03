@@ -19,6 +19,7 @@ in
     ../../common/homemanager/kitty.nix
     ./launchers.nix
     inputs.catppuccin.homeModules.catppuccin
+    inputs.frametop.homeManagerModules.default
   ];
 
   # The NixOS hosts get these from the system through
@@ -77,6 +78,8 @@ in
   # Wraps the session in the host's locales, ld.so cache and XDG data dirs,
   # which NixOS would otherwise provide.
   targets.genericLinux.enable = true;
+
+  programs.frametop.enable = true;
 
   # Its hint points at non-nixos-gpu-setup; `jr switch` installs the drivers
   # through myOptions.jr.etc instead.

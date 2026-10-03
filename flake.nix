@@ -90,6 +90,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Steam Frame desktop (hosts/frame). follows: one Mesa for ft-screens and /run/opengl-driver.
+    frametop = {
+      url = "github:JRMurr/frametop?ref=claude/trusting-cerf-f87kmu";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     {
