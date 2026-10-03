@@ -9,6 +9,24 @@ let
   repo = "$HOME/NixOsConfig";
   flakeRef = "${repo}#steamos@frame";
   caches = import ../../common/nix-caches.nix;
+
+  # SteamOS starts the user session and runs tmpfiles before nix.mount, so
+  # anything there that links into the store dangles at boot. `jr etc`
+  # writes these as real files.
+  etcFiles = {
+    # Holds the session until /nix is up: home-manager's environment.d
+    # (PATH for Plasma) and user-dirs.dirs are store links.
+    "systemd/system/user@.service.d/nix.conf" = ''
+      [Unit]
+      Wants=nix.mount
+      After=nix.mount
+    '';
+
+    # What non-nixos-gpu-setup installs, minus its link into the store.
+    # tmpfiles creates the link even while the target isn't mounted yet.
+    "tmpfiles.d/non-nixos-gpu.conf" =
+      "L+ /run/opengl-driver - - - - ${config.targets.genericLinux.gpu.drivers}";
+  };
 in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
@@ -55,22 +73,11 @@ in
       switchCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake \"${flakeRef}\" -b backup";
       buildCmd = "home-manager build --flake \"${flakeRef}\" --no-out-link";
 
-      # SteamOS starts the user session and runs tmpfiles before nix.mount, so
-      # anything there that links into the store dangles at boot. `jr etc`
-      # writes these as real files.
-      etc = {
-        # Holds the session until /nix is up: home-manager's environment.d
-        # (PATH for Plasma) and user-dirs.dirs are store links.
-        "systemd/system/user@.service.d/nix.conf" = ''
-          [Unit]
-          Wants=nix.mount
-          After=nix.mount
-        '';
-
-        # What non-nixos-gpu-setup installs, minus its link into the store.
-        # tmpfiles creates the link even while the target isn't mounted yet.
-        "tmpfiles.d/non-nixos-gpu.conf" =
-          "L+ /run/opengl-driver - - - - ${config.targets.genericLinux.gpu.drivers}";
+      etc = etcFiles // {
+        # SteamOS updates drop /etc files missing from their keep list.
+        "atomic-update.conf.d/jr.conf" = lib.concatMapStrings (path: "/etc/${path}\n") (
+          builtins.attrNames etcFiles ++ [ "jr/manifest" ]
+        );
       };
     };
   };
