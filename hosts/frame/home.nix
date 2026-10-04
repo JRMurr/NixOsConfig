@@ -46,14 +46,10 @@ in
     nixTooling = "nixpkgs";
 
     jr = {
-      # `nh os switch` is meaningless here. -b backup because a SteamOS update
-      # puts its own dotfiles back in the way. Builds run locally: thicc-server's
-      # nightly job fills cache-lan, and offloading everything through qemu was
-      # slower than building the leftovers natively. ./README.md has the
-      # --builders flag for one-off offloads. Desktop Mode's nested Plasma points
-      # XDG_RUNTIME_DIR at .../nested_plasma, where activation can't find the
-      # user bus and skips reloading systemd; the real one is /run/user/<uid>.
-      switchCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake \"${flakeRef}\" -b backup";
+      # The nested desktops (Desktop app, Frametop) point XDG_RUNTIME_DIR at a
+      # subfolder and run their own D-Bus, where activation can't find the user
+      # manager and skips reloading systemd; the real ones are under /run/user/<uid>.
+      switchCmd = "env XDG_RUNTIME_DIR=/run/user/1000 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus home-manager switch --flake \"${flakeRef}\" -b backup";
       buildCmd = "home-manager build --flake \"${flakeRef}\" --no-out-link";
 
       postSwitchCmd = "steamos-etc";
