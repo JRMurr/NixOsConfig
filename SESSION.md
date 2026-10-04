@@ -150,4 +150,5 @@ page down; terminals and Vesktop use value120 and are fine. Inflated somewhere
 between gamescope and the nested KWin (not narrowed down). Worked around in
 Firefox with `mousewheel.default.delta_multiplier_y`; if SteamOS fixes the
 relay, that pref will make Firefox scroll ~50x too slowly.
-- SteamOS beta update dropped `/etc/tmpfiles.d/non-nixos-gpu.conf` and `/etc/jr/manifest` (overlay upper reset), breaking GL for Nix apps. Nothing detects this; consider a user-session check that warns when `jr etc --check` fails.
+- SteamOS beta update dropped `/etc/tmpfiles.d/non-nixos-gpu.conf` and `/etc/jr/manifest` (overlay upper reset), breaking GL for Nix apps. Nothing detects this; consider a user-session check that warns when `steamos-etc --check` fails.
+- steam-frame-nix (docs/session.md:107) says `~/.config/environment.d` is not read on the Frame; hosts/frame/README.md says the `user@` drop-in exists so Plasma can read it. Verify which is true.

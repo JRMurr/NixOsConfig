@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   config,
   inputs,
   ...
@@ -10,23 +9,6 @@ let
   flakeRef = "${repo}#steamos@frame";
   caches = import ../../common/nix-caches.nix;
 
-  # SteamOS starts the user session and runs tmpfiles before nix.mount, so
-  # anything there that links into the store dangles at boot. `jr etc`
-  # writes these as real files.
-  etcFiles = {
-    # Holds the session until /nix is up: home-manager's environment.d
-    # (PATH for Plasma) and user-dirs.dirs are store links.
-    "systemd/system/user@.service.d/nix.conf" = ''
-      [Unit]
-      Wants=nix.mount
-      After=nix.mount
-    '';
-
-    # What non-nixos-gpu-setup installs, minus its link into the store.
-    # tmpfiles creates the link even while the target isn't mounted yet.
-    "tmpfiles.d/non-nixos-gpu.conf" =
-      "L+ /run/opengl-driver - - - - ${config.targets.genericLinux.gpu.drivers}";
-  };
 in
 {
   # Steam Frame: aarch64 SteamOS, immutable root, so standalone home-manager
@@ -38,6 +20,7 @@ in
     ./launchers.nix
     inputs.catppuccin.homeModules.catppuccin
     inputs.frametop.homeManagerModules.default
+    inputs.steamos-etc.homeManagerModules.default
   ];
 
   # The NixOS hosts get these from the system through
@@ -73,12 +56,7 @@ in
       switchCmd = "env XDG_RUNTIME_DIR=/run/user/1000 home-manager switch --flake \"${flakeRef}\" -b backup";
       buildCmd = "home-manager build --flake \"${flakeRef}\" --no-out-link";
 
-      etc = etcFiles // {
-        # SteamOS updates drop /etc files missing from their keep list.
-        "atomic-update.conf.d/jr.conf" = lib.concatMapStrings (path: "/etc/${path}\n") (
-          builtins.attrNames etcFiles ++ [ "jr/manifest" ]
-        );
-      };
+      postSwitchCmd = "steamos-etc";
     };
   };
 
@@ -88,9 +66,15 @@ in
 
   programs.frametop.enable = true;
 
-  # Its hint points at non-nixos-gpu-setup; `jr switch` installs the drivers
-  # through myOptions.jr.etc instead.
-  home.activation.checkExistingGpuDrivers = lib.mkForce (lib.hm.dag.entryAnywhere "");
+  # SteamOS starts the user session and runs tmpfiles before nix.mount, so
+  # anything there that links into the store dangles at boot. `jr switch`
+  # installs these as real files.
+  programs.steamos-etc = {
+    enable = true;
+    # Plasma's PATH (environment.d) and user-dirs.dirs are store links.
+    waitForNix = true;
+    gpuDrivers = true;
+  };
 
   # Plasma takes its environment from the systemd user manager, not a login shell,
   # so without this its PATH lacks the profile and launcher entries like kitty's

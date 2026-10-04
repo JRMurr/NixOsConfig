@@ -58,13 +58,15 @@ SteamOS starts the user session and runs tmpfiles before `nix.mount`, so anythin
 read then that links into the store dangles: home-manager's `environment.d`
 (Plasma's `PATH`), `~/.config/user-dirs.dirs` (which `xdg-user-dirs-update` then
 replaces with a regular file), and `non-nixos-gpu-setup`'s tmpfiles entry for
-`/run/opengl-driver`. `myOptions.jr.etc` in `./home.nix` declares the fix: a
-`user@` drop-in that waits for the mount, and the GPU tmpfiles entry as a real
-file. `jr etc` installs them; `jr etc --check` reports drift. `/etc` is an overlay
-kept under `/var`, so neither needs `steamos-readonly disable`.
+`/run/opengl-driver`. [steamos-etc-nix](https://github.com/JRMurr/steamos-etc-nix)
+installs the fix as real files in `/etc`: a `user@` drop-in that waits for the
+mount, and the GPU tmpfiles entry. `jr switch` runs it after each switch;
+`steamos-etc --check` reports drift. `/etc` is an overlay kept under `/var`, so
+neither needs `steamos-readonly disable`.
 
 `non-nixos-gpu-setup` is not needed. If it ran before, its gcroot
-`/nix/var/nix/gcroots/non-nixos-gpu.conf` now points at `jr`'s copy and can go.
+`/nix/var/nix/gcroots/non-nixos-gpu.conf` now points at `steamos-etc`'s copy and
+can go.
 
 Nix resolves every flake input, including the private `nix-secrets` one, even
 though nothing in this configuration reads it. The Frame needs an ssh key with

@@ -22,16 +22,10 @@
         description = "What `jr build` runs.";
       };
 
-      etc = mkOption {
-        type = types.attrsOf types.lines;
-        default = { };
-        example = {
-          "tmpfiles.d/example.conf" = "d /run/example 0755 root root -";
-        };
-        description = ''
-          Files `jr etc` keeps under /etc, for hosts whose /etc nothing else
-          manages. Paths are relative to /etc.
-        '';
+      postSwitchCmd = mkOption {
+        type = types.str;
+        default = "";
+        description = "What `jr switch` runs after a successful switch.";
       };
     };
 

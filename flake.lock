@@ -1061,6 +1061,7 @@
         "nurl": "nurl",
         "secrets": "secrets",
         "spicetify-nix": "spicetify-nix",
+        "steamos-etc": "steamos-etc",
         "tix": "tix",
         "utils": "utils",
         "vscode-server": "vscode-server",
@@ -1197,6 +1198,26 @@
       "original": {
         "owner": "Gerg-L",
         "repo": "spicetify-nix",
+        "type": "github"
+      }
+    },
+    "steamos-etc": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791136303,
+        "narHash": "sha256-R/1Upx95Uh/jQ0R1dZEwxTx/DgLaBfh6o61Aiufe8Gk=",
+        "owner": "JRMurr",
+        "repo": "steamos-etc-nix",
+        "rev": "695b4be7d956ee10c1f084881b0e00dc7b9ea879",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JRMurr",
+        "repo": "steamos-etc-nix",
         "type": "github"
       }
     },

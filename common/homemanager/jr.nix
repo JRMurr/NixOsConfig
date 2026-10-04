@@ -5,7 +5,7 @@ in
 {
   home.packages = [
     (import ../../pkgs/jr { inherit pkgs; } {
-      inherit (cfg) switchCmd buildCmd etc;
+      inherit (cfg) switchCmd buildCmd postSwitchCmd;
     })
   ];
 }

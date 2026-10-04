@@ -96,6 +96,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    steamos-etc = {
+      url = "github:JRMurr/steamos-etc-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     {
@@ -250,15 +255,11 @@
 
         };
 
-      checks."aarch64-linux".jr = import ./pkgs/jr/test.nix { pkgs = mkPkgs "aarch64-linux"; };
-
       checks."x86_64-linux" =
         let
           pkgs = mkPkgs "x86_64-linux";
         in
         {
-          jr = import ./pkgs/jr/test.nix { inherit pkgs; };
-
           harmonia = pkgs.testers.runNixOSTest ./tests/harmonia.nix;
 
           # Guards the standalone path: common/homemanager/cli.nix has to evaluate
