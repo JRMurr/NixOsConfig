@@ -92,7 +92,7 @@
 
     # Steam Frame desktop (hosts/frame). follows: one Mesa for ft-screens and /run/opengl-driver.
     frametop = {
-      url = "github:JRMurr/frametop?ref=nix-support";
+      url = "github:JRMurr/frametop-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
