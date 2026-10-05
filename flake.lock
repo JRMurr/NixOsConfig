@@ -1230,11 +1230,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791138298,
-        "narHash": "sha256-+mZD0q3XELOpusuAfrtGH2RlCnUSNh4fQEphg2ZEw7g=",
+        "lastModified": 1791160411,
+        "narHash": "sha256-AM8/i9gGcgDjz9UHJ8wE/6Vo/FMH+DAxIMvWmHG1HJs=",
         "owner": "JRMurr",
         "repo": "steamos-etc-nix",
-        "rev": "1e26be9b42c0cffa7efbd4b5bf25f6a513f52fb3",
+        "rev": "c5df222e3b13f20889d4f91cb44bc55b2a732a99",
         "type": "github"
       },
       "original": {

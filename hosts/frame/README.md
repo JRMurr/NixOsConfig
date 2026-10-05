@@ -68,6 +68,19 @@ neither needs `steamos-readonly disable`.
 `/nix/var/nix/gcroots/non-nixos-gpu.conf` now points at `steamos-etc`'s copy and
 can go.
 
+### Tailscale
+
+`./tailscale.nix` has `steamos-etc` install `tailscaled.service` and a
+`multi-user.target` drop-in that starts it at boot. Once, after the first
+`jr switch`:
+
+```bash
+sudo systemctl start tailscaled
+sudo tailscale up --operator=steamos   # --operator: later `tailscale` calls need no sudo
+```
+
+State lives in `/var/lib/tailscale`, which survives SteamOS updates.
+
 Nix resolves every flake input, including the private `nix-secrets` one, even
 though nothing in this configuration reads it. The Frame needs an ssh key with
 read access to that repo.

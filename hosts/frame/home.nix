@@ -18,6 +18,7 @@ in
     ../../common/homemanager/cli.nix
     ../../common/homemanager/kitty.nix
     ./launchers.nix
+    ./tailscale.nix
     inputs.catppuccin.homeModules.catppuccin
     inputs.frametop.homeManagerModules.default
     inputs.steamos-etc.homeManagerModules.default
