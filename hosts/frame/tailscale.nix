@@ -21,6 +21,8 @@ in
     };
 
     Service = {
+      # 41641: NixOS's services.tailscale.port default, as on the other hosts.
+      # tailscaled's own default is 0, a random port.
       ExecStart = "${tailscale}/bin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=41641";
       ExecStopPost = "${tailscale}/bin/tailscaled --cleanup";
       Restart = "on-failure";
