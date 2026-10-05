@@ -71,11 +71,11 @@ can go.
 ### Tailscale
 
 `./tailscale.nix` has `steamos-etc` install `tailscaled.service` and a
-`multi-user.target` drop-in that starts it at boot. Once, after the first
+`multi-user.target` drop-in. `steamos-etc` starts it on install, the drop-in
+starts it at boot, and a changed unit restarts it. Once, after the first
 `jr switch`:
 
 ```bash
-sudo systemctl start tailscaled
 sudo tailscale up --operator=steamos   # --operator: later `tailscale` calls need no sudo
 ```
 
