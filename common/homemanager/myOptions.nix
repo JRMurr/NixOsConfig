@@ -6,6 +6,9 @@
   options.myOptions = with lib; {
     graphics.enable = mkEnableOption "Enable graphics";
 
+    # NixOS hosts install it system-wide (common/waypipe.nix), so not copied by fromOs.nix.
+    waypipe.enable = mkEnableOption "waypipe, to forward Wayland windows over ssh";
+
     jr = {
       switchCmd = mkOption {
         type = types.str;

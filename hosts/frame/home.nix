@@ -41,6 +41,7 @@ in
 
   myOptions = {
     graphics.enable = true;
+    waypipe.enable = true;
     llm.skills = [ "hegel" ];
     # Nothing caches the flake-input builds for aarch64, and compiling nixd under
     # qemu takes hours. These come from cache.nixos.org instead.

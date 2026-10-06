@@ -25,6 +25,7 @@ in
     ./theme.nix
     ./thunar.nix
     ./users
+    ./waypipe.nix
     ./xserver.nix
     # ./plymouth.nix
   ];

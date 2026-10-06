@@ -33,6 +33,8 @@ with lib;
 
     musicPrograms.enable = mkEnableOption "enable network shares";
 
+    waypipe.enable = mkEnableOption "waypipe, to forward Wayland windows over ssh (e.g. to the Steam Frame)";
+
     laptop = mkEnableOption "this host is a laptop (enables battery widget, etc.)";
   };
 }

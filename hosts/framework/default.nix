@@ -27,6 +27,7 @@
   myOptions.laptop = true;
   myOptions.gestures.enable = true;
   myOptions.musicPrograms.enable = false;
+  myOptions.waypipe.enable = true;
 
   # fonts.optimizeForVeryHighDPI = true;
   fonts.fontconfig.antialias = true;

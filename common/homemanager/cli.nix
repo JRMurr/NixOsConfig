@@ -16,6 +16,7 @@
     ./nushell
     ./programs.nix
     ./starship.nix
+    ./waypipe.nix
   ];
 
   programs.bash.enable = true;
