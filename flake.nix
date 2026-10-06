@@ -92,12 +92,14 @@
 
     # Steam Frame desktop (hosts/frame). follows: one Mesa for ft-screens and /run/opengl-driver.
     frametop = {
-      url = "github:JRMurr/frametop-nix";
+      # TODO: back to main once gaze-mode merges.
+      url = "github:JRMurr/frametop-nix/gaze-mode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     steamos-etc = {
-      url = "github:JRMurr/steamos-etc-nix";
+      # TODO: back to main once files-from-store merges.
+      url = "github:JRMurr/steamos-etc-nix/files-from-store";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

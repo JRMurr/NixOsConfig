@@ -62,7 +62,16 @@ in
   # which NixOS would otherwise provide.
   targets.genericLinux.enable = true;
 
-  programs.frametop.enable = true;
+  programs.frametop = {
+    enable = true;
+    # TODO: gaze back on once Frametop's own tracker handles SteamVR 2.18's 15 Hz eye
+    # tracking (eyeTrackingRateMin); its calibration needs 90 Hz.
+    # gaze.enable = true;
+    # gaze.ownTracker.enable = true;
+    # TODO: hands back on once the upper-right tracking camera delivers frames (SteamVR keeps
+    # restarting it: "upper_right: 0" in the XRService log).
+    # hands.enable = true;
+  };
 
   # SteamOS starts the user session and runs tmpfiles before nix.mount, so
   # anything there that links into the store dangles at boot. `jr switch`

@@ -320,15 +320,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791250920,
-        "narHash": "sha256-zttpkcR+xwU1S65lHUADsakCAW/OLIq+wk6aCiN1nW4=",
+        "lastModified": 1791260841,
+        "narHash": "sha256-sM+sLubMjDNZmsksWucT8dNXOK2PVMz4P+rEWQ2JusE=",
         "owner": "JRMurr",
         "repo": "frametop-nix",
-        "rev": "9d787c41a10fb80e078e0f0a47133ec3bd17e54c",
+        "rev": "1fcc9112c3a7796077a1c8d4bd99bb63ca4cdda8",
         "type": "github"
       },
       "original": {
         "owner": "JRMurr",
+        "ref": "gaze-mode",
         "repo": "frametop-nix",
         "type": "github"
       }
@@ -336,11 +337,11 @@
     "frametop_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1791165012,
-        "narHash": "sha256-XHb97TadTwivg9j8XKbhSrCDpla3WrvHefLDSMSwvZc=",
+        "lastModified": 1791240843,
+        "narHash": "sha256-8yzIjoZG0uF6weM2hBn2c8sN4m2UNzbCzFbfdwbf9YU=",
         "owner": "DeeJanuz",
         "repo": "frametop",
-        "rev": "ca9492be000a24f8e539607a02ee5d12f41801a6",
+        "rev": "0821b1013eb5b790ddaeaffd46cd86ffb6c49ea1",
         "type": "github"
       },
       "original": {
@@ -1230,15 +1231,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791166253,
-        "narHash": "sha256-ndnMtef/cuyWpnmdrbucjoL+N6L1N2wHH3Z+2H6QHJE=",
+        "lastModified": 1791260721,
+        "narHash": "sha256-UZCvnyANILTXxiK8OggxM4nk6jUgi0hLWLgZ4pv7Xr8=",
         "owner": "JRMurr",
         "repo": "steamos-etc-nix",
-        "rev": "6e43b1b1325bf3d8ac61cce76ae253a94f53bc62",
+        "rev": "bd29dc9504a49e3edb21f43ded0b6861d228ec5c",
         "type": "github"
       },
       "original": {
         "owner": "JRMurr",
+        "ref": "files-from-store",
         "repo": "steamos-etc-nix",
         "type": "github"
       }
