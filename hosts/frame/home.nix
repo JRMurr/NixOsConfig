@@ -18,6 +18,7 @@ in
     ../../common/homemanager/cli.nix
     ../../common/homemanager/kitty.nix
     ./launchers.nix
+    ./occ2video.nix
     ./tailscale.nix
     inputs.catppuccin.homeModules.catppuccin
     inputs.frametop.homeManagerModules.default
