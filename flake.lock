@@ -320,16 +320,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1791260841,
-        "narHash": "sha256-sM+sLubMjDNZmsksWucT8dNXOK2PVMz4P+rEWQ2JusE=",
+        "lastModified": 1791853180,
+        "narHash": "sha256-2Pz5FRjKGLlgXdraStWDoa2DPOOqZe9zVwIuMNmhlsQ=",
         "owner": "JRMurr",
         "repo": "frametop-nix",
-        "rev": "1fcc9112c3a7796077a1c8d4bd99bb63ca4cdda8",
+        "rev": "38f2b06d3ff97a396a12668b01457c129197019b",
         "type": "github"
       },
       "original": {
         "owner": "JRMurr",
-        "ref": "gaze-mode",
         "repo": "frametop-nix",
         "type": "github"
       }
@@ -337,15 +336,16 @@
     "frametop_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1791240843,
-        "narHash": "sha256-8yzIjoZG0uF6weM2hBn2c8sN4m2UNzbCzFbfdwbf9YU=",
-        "owner": "DeeJanuz",
+        "lastModified": 1791584260,
+        "narHash": "sha256-ZHJRL4R3Ej6g6Ywvji7nof8ZM+fgpX+dyC+6x1y9kuQ=",
+        "owner": "Frametop",
         "repo": "frametop",
-        "rev": "0821b1013eb5b790ddaeaffd46cd86ffb6c49ea1",
+        "rev": "716018090647a181ad2316fade79c51b9d8fd7f0",
         "type": "github"
       },
       "original": {
-        "owner": "DeeJanuz",
+        "owner": "Frametop",
+        "ref": "experimental",
         "repo": "frametop",
         "type": "github"
       }
