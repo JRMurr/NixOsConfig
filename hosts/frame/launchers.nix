@@ -23,13 +23,45 @@ let
       ' "$src" > "$out/$(basename "$src")"
     done
   '';
+
+  # Chrome with WebXR: https://github.com/phit/chromium-webxr-steam-frame
+  # Repeated XDG_DATA_DIRS entries make the OpenXR loader stack Valve's
+  # fdm_injection layer once per copy, which hangs WebXR. Drop repeats.
+  chrome-xr = pkgs.writeShellApplication {
+    name = "chrome-xr";
+    runtimeInputs = [ pkgs.gawk pkgs.gnused ];
+    text = ''
+      XDG_DATA_DIRS=$(printf '%s' "''${XDG_DATA_DIRS:-}" | awk -v RS=: -v ORS=: 'NF && !seen[$0]++' | sed 's/:$//')
+      export XDG_DATA_DIRS
+      exec "$HOME/.local/bin/chrome-xr" "$@"
+    '';
+  };
 in
 {
+  home.packages = [ chrome-xr ];
+
   # The VR "+" menu reads only ~/.local/share/applications, not XDG_DATA_DIRS.
   # Linked file by file, so Steam's own shortcuts there stay. Same desktop IDs
   # as the profile's, so Plasma shows each app once.
   xdg.dataFile."applications" = {
     source = entries;
     recursive = true;
+  };
+
+  # Replaces the entry chrome-xr's install.sh writes, to start the wrapper.
+  # TODO: the icon path assumes the canary channel.
+  xdg.dataFile."applications/chrome-xr.desktop" = {
+    force = true;
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Chrome XR
+      Comment=Web browser with WebXR (immersive VR) through SteamVR
+      Exec=${profileBin}/chrome-xr %U
+      Icon=${config.home.homeDirectory}/chrome-xr/product_logo_256_canary.png
+      Terminal=false
+      Categories=Network;WebBrowser;
+      MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;
+    '';
   };
 }

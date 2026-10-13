@@ -68,8 +68,9 @@ in
     # tracking (eyeTrackingRateMin); its calibration needs 90 Hz.
     # gaze.enable = true;
     # gaze.ownTracker.enable = true;
-    # TODO: hands back on once the upper-right tracking camera delivers frames (SteamVR keeps
-    # restarting it: "upper_right: 0" in the XRService log).
+    # TODO: hands back on once Valve fixes the upper-right tracking camera (it stops
+    # delivering frames minutes into each SteamVR session; reported with
+    # ~/steam-frame-camera-report.txt).
     # hands.enable = true;
   };
 
