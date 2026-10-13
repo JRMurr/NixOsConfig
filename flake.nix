@@ -97,8 +97,7 @@
     };
 
     steamos-etc = {
-      # TODO: back to main once files-from-store merges.
-      url = "github:JRMurr/steamos-etc-nix/files-from-store";
+      url = "github:JRMurr/steamos-etc-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

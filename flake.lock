@@ -1231,16 +1231,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1791260721,
-        "narHash": "sha256-UZCvnyANILTXxiK8OggxM4nk6jUgi0hLWLgZ4pv7Xr8=",
+        "lastModified": 1791332674,
+        "narHash": "sha256-Qr356WNNCA96wAqfsuR/Aw+b/yAmwCfaOaMsSxnfPYg=",
         "owner": "JRMurr",
         "repo": "steamos-etc-nix",
-        "rev": "bd29dc9504a49e3edb21f43ded0b6861d228ec5c",
+        "rev": "e33b7fa2606971294c0e7ac44b8c54920920363c",
         "type": "github"
       },
       "original": {
         "owner": "JRMurr",
-        "ref": "files-from-store",
         "repo": "steamos-etc-nix",
         "type": "github"
       }
