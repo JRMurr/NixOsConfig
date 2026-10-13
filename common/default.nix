@@ -17,6 +17,7 @@ in
     ./kernel.nix
     ./lock.nix
     ./network-shares.nix
+    ./nix-ld.nix
     ./portals.nix
     ./programs.nix
     ./ssh.nix

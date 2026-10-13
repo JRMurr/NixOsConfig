@@ -35,6 +35,8 @@ with lib;
 
     waypipe.enable = mkEnableOption "waypipe, to forward Wayland windows over ssh (e.g. to the Steam Frame)";
 
+    nixLd.enable = mkEnableOption "nix-ld, to run prebuilt dynamically linked binaries (e.g. Claude Desktop remote CLI)";
+
     laptop = mkEnableOption "this host is a laptop (enables battery widget, etc.)";
   };
 }

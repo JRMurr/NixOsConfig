@@ -28,6 +28,7 @@
     graphics.enable = false;
     networkShares.enable = true;
     containers.enable = true;
+    nixLd.enable = true;
   };
 
   boot.loader = {
