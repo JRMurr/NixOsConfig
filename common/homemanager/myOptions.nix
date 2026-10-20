@@ -9,6 +9,12 @@
     # NixOS hosts install it system-wide (common/waypipe.nix), so not copied by fromOs.nix.
     waypipe.enable = mkEnableOption "waypipe, to forward Wayland windows over ssh";
 
+    git.signing.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Sign git commits and tags by default.";
+    };
+
     jr = {
       switchCmd = mkOption {
         type = types.str;

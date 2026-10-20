@@ -9,7 +9,7 @@ in
     package = gitpkg;
     signing = {
       key = "~/.ssh/id_ed25519";
-      signByDefault = true;
+      signByDefault = config.myOptions.git.signing.enable;
     };
     settings = {
       user = {

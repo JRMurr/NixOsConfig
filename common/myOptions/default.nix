@@ -38,5 +38,11 @@ with lib;
     nixLd.enable = mkEnableOption "nix-ld, to run prebuilt dynamically linked binaries (e.g. Claude Desktop remote CLI)";
 
     laptop = mkEnableOption "this host is a laptop (enables battery widget, etc.)";
+
+    git.signing.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Sign git commits and tags by default.";
+    };
   };
 }

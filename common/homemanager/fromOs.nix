@@ -6,6 +6,7 @@
   myOptions = {
     graphics.enable = osConfig.myOptions.graphics.enable;
     llm.skills = osConfig.myOptions.llm.skills;
+    git.signing.enable = osConfig.myOptions.git.signing.enable;
   };
 
   # Locked to the system values. Deliberately not gated on graphics.enable -- the
