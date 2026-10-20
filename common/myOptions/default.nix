@@ -41,7 +41,7 @@ with lib;
 
     git.signing.enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Sign git commits and tags by default.";
     };
   };
