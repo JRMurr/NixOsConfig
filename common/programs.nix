@@ -23,6 +23,7 @@ let
   cliPrograms = [
     gitpkg
     gh
+    gh-here
     wget
     lsof
     unzip

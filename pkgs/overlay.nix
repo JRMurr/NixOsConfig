@@ -8,6 +8,7 @@ let
 in
 {
   inherit (extras)
+    gh-here
     glance
     happy-server
     herdr
