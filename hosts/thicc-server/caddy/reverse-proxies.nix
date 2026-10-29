@@ -36,5 +36,9 @@
     nas = {
       upstream = "fatnas:5000";
     };
+    # Vite dev server for ~/code/santa.
+    santa = {
+      upstream = "127.0.0.1:5173";
+    };
   };
 }
