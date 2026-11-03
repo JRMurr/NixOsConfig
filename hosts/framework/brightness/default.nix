@@ -14,6 +14,9 @@
       # nothing wakes it (2026-09-21). hypridle owns idle handling instead.
       dimmer.disabled = true;
       dpms.disabled = true;
+      # Each ambient capture stepped the backlight ~30 times, and wayle's OSD
+      # pops a brightness overlay on every step (2026-11-02).
+      backlight.disabled = true;
     };
   };
   location = {
