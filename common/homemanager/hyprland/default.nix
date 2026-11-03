@@ -115,6 +115,36 @@ let
   wallpaperDir = "$HOME/Wallpapers/";
 
   # https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/#using-this-keyword-to-randomize-your-wallpaper
+  # Pastes a monospaced pleading emoji into the focused window. Unicode emoji,
+  # not Zulip `:shortcodes:`, since a code block doesn't render shortcodes.
+  # Pasted rather than typed: wtype keystrokes truncate codepoints above
+  # U+FFFF (🥺 arrives as 梁).
+  # The sleep gives the user time to let go of the bind's modifiers: keys
+  # sent while Super is held trigger other Hyprland binds.
+  # TODO: restore the previous clipboard contents.
+  pleadingMacro = pkgs.writeShellApplication {
+    name = "pleading-macro";
+
+    runtimeInputs = [
+      pkgs.wtype
+      pkgs.wl-clipboard
+    ];
+
+    text = ''
+      MODIFIER_RELEASE_SECONDS=0.4
+
+      wl-copy <<'EOF'
+      ```
+       🥺
+      👉👈
+      ```
+      EOF
+
+      sleep "$MODIFIER_RELEASE_SECONDS"
+      wtype -M ctrl -k v -m ctrl
+    '';
+  };
+
   randomWallpaper = pkgs.writeShellApplication {
     name = "random-wallpaper";
 
@@ -439,6 +469,8 @@ in
           (mkBind "${modifier} + F2" (exec "firefox"))
           (mkBind "${modifier} + CTRL + L" (exec "loginctl lock-session"))
           (mkBind "${modifier} + SHIFT + w" (exec "${lib.getExe randomWallpaper}"))
+          # On release, so held mod keys don't mix with the typed text.
+          (mkBindF "${modifier} + SHIFT + P" (exec "${lib.getExe pleadingMacro}") { release = true; })
         ]
         # Workspaces 1-10 (key "0" -> workspace 10)
         ++ (map (
