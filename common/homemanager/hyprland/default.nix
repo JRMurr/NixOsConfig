@@ -268,18 +268,32 @@ let
     text = ''
       socket="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
 
-      # `set -e` is on (writeShellApplication): guard the set so a not-yet-ready
-      # wayle (we start alongside it at session login) can't kill the listener.
+      readonly MAX_READY_POLLS=20
+      readonly READY_POLL_SECONDS=0.5
+
+      # wayle resolves a connector name only once GDK reports it, which lags
+      # behind Hyprland at boot/hotplug. Before that, wayle logs "configured
+      # monitor not found, falling back to primary" and pins popups there. Its
+      # per-monitor bar layer appearing is the signal that the name resolves.
+      wait_known() {
+        for _ in $(seq 1 "$MAX_READY_POLLS"); do
+          hyprctl layers -j | jq -e --arg ns "wayle-bar-$1" \
+            '[.[].levels[][] | select(.namespace == $ns)] | length > 0' >/dev/null && return
+          sleep "$READY_POLL_SECONDS"
+        done
+      }
+
+      # wayle only re-resolves on a value *change*, so setting the stored value
+      # again (e.g. runtime.toml kept DP-6 across reboot) leaves a stale fallback
+      # in place. Reset first to force a change. `set -e` is on
+      # (writeShellApplication): guard so a not-yet-ready wayle can't kill us.
       set_target() {
+        wait_known "$1"
+        wayle config reset modules.notifications.popup-monitor >/dev/null 2>&1 || true
         wayle config set modules.notifications.popup-monitor "$1" >/dev/null 2>&1 || true
       }
 
-      # socket2 only emits *changes*, so seed from the currently-focused monitor
-      # once wayle's CLI is answering.
-      for _ in $(seq 1 20); do
-        wayle config get modules.notifications.popup-monitor >/dev/null 2>&1 && break
-        sleep 0.5
-      done
+      # socket2 only emits *changes*, so seed from the currently-focused monitor.
       current=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
       [ -n "$current" ] && set_target "$current"
 
