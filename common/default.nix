@@ -53,11 +53,7 @@ in
       fallback = true;
       connect-timeout = 5;
     };
-    # gc = {
-    #   automatic = true;
-    #   dates = "weekly";
-    #   options = "--delete-older-than 30d";
-    # };
+    gc.automatic = false;
   };
 
   programs.nh = {

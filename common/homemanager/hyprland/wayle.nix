@@ -11,6 +11,24 @@ let
 
   monitors = gcfg.monitors;
 
+  # TODO: drop once nixpkgs ships wayle >= 0.7.1. 0.7.0 can't parse Hyprland
+  # 0.57 JSON (special workspaces lost `id`), so the bar's workspaces go stale.
+  waylePinnedVersion = "0.7.1";
+  wayle =
+    if lib.versionAtLeast pkgs.wayle.version waylePinnedVersion then
+      throw "nixpkgs wayle is ${pkgs.wayle.version}; remove the override in wayle.nix"
+    else
+      pkgs.wayle.overrideAttrs (finalAttrs: _: {
+        version = waylePinnedVersion;
+        src = pkgs.fetchFromGitHub {
+          owner = "wayle-rs";
+          repo = "wayle";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-XToa3/hr8T1bZ/tnhZzOJhyjg1QIUSlSdZjHptIlM24=";
+        };
+        cargoHash = "sha256-LypA6UCeG1afofYxqomMiY9uYOPFmA4A/EaJY1m/Bf4=";
+      });
+
   # ==============================================================================
   # Bar layouts
   # ==============================================================================
@@ -118,7 +136,7 @@ let
 in
 {
   services.wayle = {
-    package = pkgs.wayle;
+    package = wayle;
     enable = true;
     # Full field reference: https://wayle.app/config
     # Live-reloads on save; start from empty and only override what you want.
@@ -143,8 +161,8 @@ in
           numbering = "absolute"; # was show_numbered = true
           "app-icons-show" = false; # was show_icons = false
           # HyprPanel hid the special ghostty scratchpad via ignored = "-.*".
-          # wayle has a dedicated switch for it: special workspaces (negative
-          # ids, here special:term-ws = -98) are shown by default.
+          # wayle has a dedicated switch for it: special workspaces (here
+          # special:term-ws) are shown by default.
           "show-special" = false;
         };
 

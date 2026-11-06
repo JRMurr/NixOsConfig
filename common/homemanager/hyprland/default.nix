@@ -258,7 +258,7 @@ let
     runtimeInputs = [
       pkgs.socat
       pkgs.jq
-      pkgs.wayle
+      config.services.wayle.package
       config.wayland.windowManager.hyprland.finalPackage
     ];
 
@@ -416,17 +416,9 @@ in
         ];
       }
 
-      # terminal scratchpad workspace (kitty or ghostty, per myOptions.terminal)
+      # terminal scratchpad workspace (kitty or ghostty, per myOptions.terminal).
+      # The terminal is spawned by a `workspace.created` handler in extraConfig.
       {
-        # Create the special workspace and spawn the terminal in it. The --class
-        # we pass is the Wayland app_id Hyprland matches on below.
-        workspace_rule = [
-          {
-            workspace = "special:${scratchWorkspace}";
-            on_created_empty = term.scratchSpawn;
-          }
-        ];
-
         # Make that terminal a floating 90% x 90% slightly transparent window *on
         # that special workspace*. size/move take vec2 tables; opacity is a string
         # multiplier.
@@ -619,6 +611,11 @@ in
             key_press_enables_dpms = true;
             mouse_move_enables_dpms = true;
           };
+
+          # Chromium/Electron tag their color space, so auto HDR switched the
+          # monitor mode on every fullscreen toggle: a full modeset that
+          # blanked the screen for ~1s (NVIDIA + 4K).
+          render.cm_auto_hdr = 0;
         };
 
         # Beziers (was `bezier = name, x0,y0,x1,y1`) -> hl.curve(name, { points })
@@ -813,6 +810,16 @@ in
     wayland.windowManager.hyprland.extraConfig = ''
       hl.on("hyprland.start", function()
       ${lib.concatMapStringsSep "\n" (c: ''  hl.exec_cmd("${c}")'') startupExecs}
+      end)
+
+      -- Spawn the scratchpad terminal when its special workspace is first
+      -- created. The --class is the Wayland app_id the window rule matches on.
+      hl.on("workspace.created", function(ws)
+        if ws.name ~= "special:${scratchWorkspace}" or not ws.is_empty then
+          return
+        end
+
+        hl.exec_cmd("${term.scratchSpawn}", { workspace = ws.name })
       end)
     '';
   };
