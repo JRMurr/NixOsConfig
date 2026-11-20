@@ -13,7 +13,6 @@
 
   config = {
     home.packages = with pkgs.llm-agents; [
-      ccusage
       # agent-deck
       # backlog-md
     ]

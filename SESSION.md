@@ -151,3 +151,5 @@ between gamescope and the nested KWin (not narrowed down). Worked around in
 Firefox with `mousewheel.default.delta_multiplier_y`; if SteamOS fixes the
 relay, that pref will make Firefox scroll ~50x too slowly.
 - SteamOS beta update dropped `/etc/tmpfiles.d/non-nixos-gpu.conf` and `/etc/jr/manifest` (overlay upper reset), breaking GL for Nix apps. Activation now warns, but only on the next switch; consider a login-time check (user service running `steamos-etc --check`) to catch it after an update.
+- frametop-nix hm-module: `gaze.enable` doesn't run `gaze/eye-rate.py on` (Frametop's installer does), so eye cameras stay at 15 fps and the own tracker can't calibrate. Ran it by hand on frame 2026-11-19.
+- Frametop `hands/camcheck.py` reports "only 1 of 4 tracking cameras running" after XRService restarts a single camera (camerasToUse: 1000); all four are actually running.

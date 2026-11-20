@@ -65,14 +65,13 @@ in
 
   programs.frametop = {
     enable = true;
-    # TODO: gaze back on once Frametop's own tracker handles SteamVR 2.18's 15 Hz eye
-    # tracking (eyeTrackingRateMin); its calibration needs 90 Hz.
-    # gaze.enable = true;
-    # gaze.ownTracker.enable = true;
-    # TODO: hands back on once Valve fixes the upper-right tracking camera (it stops
-    # delivering frames minutes into each SteamVR session; reported with
-    # ~/steam-frame-camera-report.txt).
-    # hands.enable = true;
+    # Frametop's own tracker's calibration needs 90 Hz eye tracking; SteamVR 2.18 may run
+    # it at 15 Hz (eyeTrackingRateMin).
+    gaze.enable = true;
+    gaze.ownTracker.enable = true;
+    # Valve's upper-right tracking camera has stopped delivering frames minutes into a
+    # SteamVR session (reported with ~/steam-frame-camera-report.txt).
+    hands.enable = true;
   };
 
   # SteamOS starts the user session and runs tmpfiles before nix.mount, so
