@@ -11,22 +11,15 @@ let
 
   monitors = gcfg.monitors;
 
-  # TODO: drop once nixpkgs ships wayle >= 0.7.1. 0.7.0 can't parse Hyprland
-  # 0.57 JSON (special workspaces lost `id`), so the bar's workspaces go stale.
-  waylePinnedVersion = "0.7.1";
+  # TODO: drop once nixpkgs' wayle lists sqlite in buildInputs (already on
+  # master). cargo-setup-hook exports LIBSQLITE3_SYS_USE_PKG_CONFIG=1, so
+  # rusqlite's `bundled` feature is ignored and the link needs system sqlite.
   wayle =
-    if lib.versionAtLeast pkgs.wayle.version waylePinnedVersion then
-      throw "nixpkgs wayle is ${pkgs.wayle.version}; remove the override in wayle.nix"
+    if lib.any (d: lib.getName d == "sqlite") pkgs.wayle.buildInputs then
+      throw "nixpkgs wayle now links sqlite itself; remove the override in wayle.nix"
     else
-      pkgs.wayle.overrideAttrs (finalAttrs: _: {
-        version = waylePinnedVersion;
-        src = pkgs.fetchFromGitHub {
-          owner = "wayle-rs";
-          repo = "wayle";
-          tag = "v${finalAttrs.version}";
-          hash = "sha256-XToa3/hr8T1bZ/tnhZzOJhyjg1QIUSlSdZjHptIlM24=";
-        };
-        cargoHash = "sha256-LypA6UCeG1afofYxqomMiY9uYOPFmA4A/EaJY1m/Bf4=";
+      pkgs.wayle.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ pkgs.sqlite ];
       });
 
   # ==============================================================================
