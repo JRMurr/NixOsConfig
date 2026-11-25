@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   inputs,
   ...
@@ -9,12 +8,6 @@ let
   cfg = config.myCaddy;
   reverseProxies = lib.attrValues cfg.reverseProxies;
   myDomain = cfg.domain;
-  tlsConf = ''
-    tls {
-      dns cloudflare {env.CF_API_TOKEN}
-      resolvers 1.1.1.1
-    }
-  '';
   # builtins.listToAttrs
   mkReverseProxyConf =
     proxyConf:
@@ -25,8 +18,8 @@ let
       name = mkHost proxyConf.prefix;
       value = {
         serverAliases = builtins.map mkHost proxyConf.serverAliases;
+        useACMEHost = myDomain;
         extraConfig = ''
-          ${tlsConf}
           ${proxyConf.extraConfig}
           reverse_proxy ${proxyConf.upstream} {
             ${proxyConf.proxyOptions}
@@ -106,27 +99,14 @@ in
   services.caddy = {
     enable = true;
     email = "johnreillymurray@gmail.com";
-    package =
-      let
-        base = pkgs.caddy.withPlugins {
-          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-          hash = "sha256-8KwWkxhCyz7cxRFjm47tUS/veVH7cVzv/+FQ16ri3jE=";
-        };
-      in
-      base.overrideAttrs (prev: {
-        src = prev.src.overrideAttrs (_: {
-          GOSUMDB = "off";
-          GOPROXY = "https://proxy.golang.org,direct";
-        });
-      });
     logFormat = lib.mkForce "level info";
     virtualHosts =
       let
       in
       {
         "${myDomain}" = {
+          useACMEHost = myDomain;
           extraConfig = ''
-            ${tlsConf}
             ${proxyConfigStr}
             reverse_proxy :4000 # default to dashy
           '';
@@ -135,14 +115,29 @@ in
       // reverseProxyVhosts;
   };
   systemd.services.caddy.serviceConfig = {
-    EnvironmentFile = config.age.secrets.caddy-cloudflare.path;
     AmbientCapabilities = "CAP_NET_BIND_SERVICE";
   };
-  age.secrets.caddy-cloudflare = {
-    file = "${inputs.secrets}/secrets/caddy-cloudflare.age";
-    owner = config.services.caddy.user;
-    group = config.services.caddy.group;
+
+  # One wildcard cert issued by lego (in the binary cache), instead of caddy's
+  # cloudflare DNS plugin, whose source hash broke on every caddy bump.
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = config.services.caddy.email;
+    certs.${myDomain} = {
+      extraDomainNames = [ "*.${myDomain}" ];
+      dnsProvider = "cloudflare";
+      dnsResolver = "1.1.1.1:53";
+      environmentFile = config.age.secrets.caddy-cloudflare.path;
+    };
   };
+
+  # The secret holds CF_API_TOKEN, which lego does not read.
+  systemd.services."acme-order-renew-${myDomain}".script = lib.mkBefore ''
+    export CF_DNS_API_TOKEN="$CF_API_TOKEN"
+  '';
+
+  # Read by systemd as root via EnvironmentFile, so the default root owner works.
+  age.secrets.caddy-cloudflare.file = "${inputs.secrets}/secrets/caddy-cloudflare.age";
   networking.firewall.allowedTCPPorts = [
     80
     443
