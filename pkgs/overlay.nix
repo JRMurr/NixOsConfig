@@ -13,6 +13,7 @@ in
     happy-server
     herdr
     polybar-spotify
+    rex-show
     ;
 
   inherit (inputs) hegel-skill i-have-adhd-skill;

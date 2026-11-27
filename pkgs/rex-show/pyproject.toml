@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rex-show"
+version = "0.1.0"
+description = "Show PNG, SVG and Markdown in a Rex split pane via the kitty graphics protocol"
+requires-python = ">=3.11"
+
+[project.scripts]
+rex-show = "rex_show.cli:main"
+
+[tool.setuptools.package-data]
+rex_show = ["*.typ", "*.lua"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

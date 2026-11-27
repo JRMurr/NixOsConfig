@@ -16,4 +16,6 @@
   herdr = pkgs.callPackage ./herdr.nix { };
 
   polybar-spotify = pkgs.callPackage ./polybar-spotify { player = "YoutubeMusic"; };
+
+  rex-show = pkgs.callPackage ./rex-show/package.nix { };
 }
