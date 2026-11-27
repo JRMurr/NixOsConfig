@@ -17,6 +17,9 @@ in
 
   inherit (inputs) hegel-skill i-have-adhd-skill;
 
+  # Prebuilt, unfree; the rex flake allows it in its own nixpkgs instance.
+  inherit (inputs.rex.packages.${final.stdenv.hostPlatform.system}) rex;
+
   # TODO: pr to nix-pkgs
   mopidy-iris = prev.mopidy-iris.overrideAttrs (old: rec {
     pname = "Mopidy-Iris";

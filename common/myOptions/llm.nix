@@ -6,6 +6,7 @@ let
     "agent-browser"
     "hegel"
     "i-have-adhd"
+    "rex"
   ];
 in
 {

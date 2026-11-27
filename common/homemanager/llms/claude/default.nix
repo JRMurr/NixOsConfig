@@ -5,10 +5,43 @@
   ...
 }:
 let
+  skills = config.myOptions.llm.skills;
+  rexEnabled = builtins.elem "rex" skills;
+
+  # What `rex skill setup` writes: a stub that defers to the installed CLI,
+  # so the guide tracks the Rex version.
+  rexSkill = pkgs.writeTextDir "SKILL.md" ''
+    ---
+    name: rex
+    description: Use the rex CLI to manage Rex sessions, open tabs, arrange panes, run commands, inspect terminal output, and control connected Rex apps.
+    metadata:
+      rex-stub: "2"
+    ---
+    <!-- Managed by home-manager (common/homemanager/llms/claude). -->
+
+    Run `rex __internal skill --feature-session-naming=false` and follow the guide it prints. The guide comes from
+    the installed Rex CLI, so it describes the commands available in that version.
+
+    If the command fails, the installed Rex version predates the guide. Start with
+    `rex whoami --json`, then use `rex --help` and `rex COMMAND --help`.
+  '';
+
+  # Tells the agent which Rex session/terminal it is in. Silent outside Rex.
+  rexHook = {
+    hooks = [
+      {
+        type = "command";
+        command = "${pkgs.rex}/bin/rex __internal session-start --agent claude --feature-session-naming=false 2>/dev/null || true";
+        timeout = 5;
+      }
+    ];
+  };
+
   skillSources = {
     agent-browser = "${pkgs.llm-agents.agent-browser.src}/skills/agent-browser";
     hegel = "${pkgs.hegel-skill}/skills/hegel";
     i-have-adhd = "${pkgs.i-have-adhd-skill}/skills/i-have-adhd";
+    rex = "${rexSkill}";
   };
 
   skillFiles = lib.mapAttrs' (name: source: {
@@ -17,13 +50,20 @@ let
       inherit source;
       recursive = true;
     };
-  }) (lib.getAttrs config.myOptions.llm.skills skillSources);
+  }) (lib.getAttrs skills skillSources);
 in
 {
   programs.claude-code = {
     enable = true;
     package = pkgs.llm-agents.claude-code;
     skills = { };
+
+    # settings.json stays writable; declared keys are merged in on each switch
+    # and win over in-app edits. Arrays are replaced, so SessionStart hooks
+    # belong here, not in the file. Everything else is Claude's to manage.
+    mutableSettings = true;
+    settings.hooks.SessionStart = lib.optional rexEnabled rexHook;
+
     mcpServers = {
       # nixos = {
       #   command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
