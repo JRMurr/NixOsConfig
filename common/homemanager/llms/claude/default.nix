@@ -75,8 +75,8 @@ let
       redraws as the image changes (~0.4s per frame), so prose, diagrams and
       live charts can share one pane.
 
-    The user can zoom and pan: +/-/0 (ctrl+wheel) zoom in/out/reset,
-    hjkl/arrows (wheel, shift+wheel) pan, space/b page, g/G top/bottom. SVG
+    The user can zoom and pan: +/-/0 (alt+wheel) zoom in/out/reset,
+    hjkl/arrows (click-drag, wheel, shift+wheel) pan, space/b page, g/G top/bottom. SVG
     and Markdown re-render per zoom level, so big plots (e.g.
     `systemd-analyze plot`) are explorable. To drive it yourself:
     `rex send-key -b ID KEY` (`plus`, `l`, `shift+g`; `rex send -b ID -- -`
