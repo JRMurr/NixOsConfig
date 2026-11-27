@@ -75,9 +75,13 @@ let
       redraws as the image changes (~0.4s per frame), so prose, diagrams and
       live charts can share one pane.
 
-    Tall content scrolls. Keys go to the pane: `rex send-key -b ID KEY` with
-    j/k, down/up, space/pagedown, b/pageup, g (top), shift+g (bottom). The
-    caption line shows the scroll %, readable with `rex capture -b ID`.
+    The user can zoom and pan: +/-/0 (ctrl+wheel) zoom in/out/reset,
+    hjkl/arrows (wheel, shift+wheel) pan, space/b page, g/G top/bottom. SVG
+    and Markdown re-render per zoom level, so big plots (e.g.
+    `systemd-analyze plot`) are explorable. To drive it yourself:
+    `rex send-key -b ID KEY` (`plus`, `l`, `shift+g`; `rex send -b ID -- -`
+    for minus). The caption shows zoom and x/y %, readable with
+    `rex capture -b ID`.
 
     Producing content (tools not installed globally; pull per call):
     - Plots: `nix shell --impure --expr 'with import (builtins.getFlake "nixpkgs") {}; python3.withPackages (p: [p.matplotlib p.numpy])' -c python3 script.py`

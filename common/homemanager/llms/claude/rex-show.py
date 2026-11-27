@@ -6,8 +6,10 @@ rex-show FILE [-- CMD...]
     CMD, if given, starts in the background with the caller's env and is
     killed (with its process group) when the pane closes.
 
-Images taller than the pane scroll: j/k, arrows, space/PgDn, b/PgUp, g/G,
-mouse wheel. Drawn with the kitty graphics protocol.
+Keys: +/-/0 zoom in/out/reset (ctrl+wheel), hjkl/arrows pan (wheel,
+shift+wheel), space/b page, g/G top/bottom. SVG and Markdown re-render at
+the zoom level so they stay sharp. Drawn with the kitty graphics protocol.
+TODO: render only the visible region so zoom past MAX_RASTER_PIXELS stays sharp.
 """
 import base64
 import fcntl
@@ -52,16 +54,56 @@ ESC_CLEAR = "\x1b[2J\x1b[H"
 ESC_HIDE_CURSOR = "\x1b[?25l"
 ESC_MOUSE_ON = "\x1b[?1000h\x1b[?1006h"  # Button events, SGR encoding.
 
-STEP_LINE = 0.1  # Fraction of the visible height per line scroll.
+STEP_LINE = 0.1  # Fraction of the visible size per line pan.
 STEP_PAGE = 0.9
+ZOOM_STEP = 1.25
+ZOOM_MAX = 16.0
+MAX_RASTER_PIXELS = 40_000_000  # Cap on re-rasterized SVG/Markdown size.
+
+# Actions: ("pan", dx, dy) in fractions of the view, ("zoom", factor),
+# ("zoom_reset",), ("top",), ("bottom",).
 KEYS = {
-    b"j": STEP_LINE, b"\x1b[B": STEP_LINE, b"\x1b[<65;": STEP_LINE,
-    b"k": -STEP_LINE, b"\x1b[A": -STEP_LINE, b"\x1b[<64;": -STEP_LINE,
-    b" ": STEP_PAGE, b"f": STEP_PAGE, b"\x1b[6~": STEP_PAGE,
-    b"b": -STEP_PAGE, b"\x1b[5~": -STEP_PAGE,
+    b"j": ("pan", 0, STEP_LINE), b"\x1b[B": ("pan", 0, STEP_LINE),
+    b"k": ("pan", 0, -STEP_LINE), b"\x1b[A": ("pan", 0, -STEP_LINE),
+    b"l": ("pan", STEP_LINE, 0), b"\x1b[C": ("pan", STEP_LINE, 0),
+    b"h": ("pan", -STEP_LINE, 0), b"\x1b[D": ("pan", -STEP_LINE, 0),
+    b" ": ("pan", 0, STEP_PAGE), b"f": ("pan", 0, STEP_PAGE), b"\x1b[6~": ("pan", 0, STEP_PAGE),
+    b"b": ("pan", 0, -STEP_PAGE), b"\x1b[5~": ("pan", 0, -STEP_PAGE),
+    b"+": ("zoom", ZOOM_STEP), b"=": ("zoom", ZOOM_STEP),
+    b"-": ("zoom", 1 / ZOOM_STEP), b"0": ("zoom_reset",),
+    b"g": ("top",), b"G": ("bottom",),
 }
-KEY_TOP = b"g"
-KEY_BOTTOM = b"G"
+
+# SGR mouse: ESC [ < button ; col ; row M. Wheel buttons plus modifier bits.
+INPUT_TOKEN = re.compile(rb"\x1b\[<(\d+);\d+;\d+[Mm]|\x1b\[[0-9;]*[~A-Za-z]|.", re.DOTALL)
+WHEEL_UP, WHEEL_DOWN, WHEEL_LEFT, WHEEL_RIGHT = 64, 65, 66, 67
+MOD_SHIFT, MOD_ALT, MOD_CTRL = 4, 8, 16
+
+
+def mouse_action(button):
+    base = button & ~(MOD_SHIFT | MOD_ALT | MOD_CTRL)
+    sign = {WHEEL_UP: -1, WHEEL_DOWN: 1, WHEEL_LEFT: -1, WHEEL_RIGHT: 1}.get(base)
+    if sign is None:
+        return None
+
+    if base in (WHEEL_LEFT, WHEEL_RIGHT) or button & MOD_SHIFT:
+        return ("pan", sign * STEP_LINE, 0)
+    if button & MOD_CTRL:
+        return ("zoom", ZOOM_STEP if sign < 0 else 1 / ZOOM_STEP)
+    return ("pan", 0, sign * STEP_LINE)
+
+
+def parse_input(data):
+    """Raw terminal input -> list of actions; one read may hold many events."""
+    actions = []
+    for match in INPUT_TOKEN.finditer(data):
+        if match.group(1) is not None:
+            action = mouse_action(int(match.group(1)))
+        else:
+            action = KEYS.get(match.group(0))
+        if action:
+            actions.append(action)
+    return actions
 
 THEME_TYP = """\
 #let fg = rgb("#c0caf5")
@@ -269,7 +311,11 @@ class Viewer:
         os.makedirs(self.build_dir, exist_ok=True)
         self.png = None
         self.caption = ""
-        self.scroll = 0  # Source-image px from the top.
+        self.x = 0  # Viewport origin, in raster px.
+        self.y = 0
+        self.zoom = 1.0  # 1 = fit the pane.
+        self.raster_zoom = 1.0  # Zoom baked into the raster (vectors only).
+        self.anchor = None  # (cx, cy) view centre to keep after a zoom.
         self.last_key = None
         self.resized = True
         self.md_stat = None  # Markdown file stat at last full render.
@@ -284,18 +330,25 @@ class Viewer:
         return cols, max(1, rows - CAPTION_ROWS), cell_w, cell_h
 
     def layout(self):
-        """(cols, rows, crop_h, max_scroll) for the current image and pane."""
+        """Crop of the raster to show and the cells it fills.
+
+        At zoom 1 the image fits the pane, or fits its width and scrolls if
+        tall. Zoom scales from there. Returns (w_src, h_src, cols, rows)."""
         img_w, img_h = struct.unpack(">II", self.png[PNG_DIMS])
         cols, rows, cell_w, cell_h = self.pane()
-        fit_width = cols * cell_w / img_w
+        pane_w, pane_h = cols * cell_w, rows * cell_h
 
-        if img_h * fit_width > rows * cell_h:
-            crop_h = int(rows * cell_h / fit_width)  # Tall: fit width, crop height.
-            return cols, rows, crop_h, img_h - crop_h
+        logical_w, logical_h = img_w / self.raster_zoom, img_h / self.raster_zoom
+        fit = pane_w / logical_w
+        if logical_h * fit <= pane_h:
+            fit = min(fit, pane_h / logical_h)
+        scale = fit * self.zoom / self.raster_zoom  # Screen px per raster px.
 
-        scale = min(fit_width, rows * cell_h / img_h)
-        c, r = int(img_w * scale / cell_w), int(img_h * scale / cell_h)
-        return max(1, c), max(1, r), img_h, 0
+        w_src = min(img_w, pane_w / scale)
+        h_src = min(img_h, pane_h / scale)
+        c = max(1, round(w_src * scale / cell_w))
+        r = max(1, round(h_src * scale / cell_h))
+        return int(w_src), int(h_src), min(c, cols), min(r, rows)
 
     def transmit(self):
         data = base64.standard_b64encode(self.png).decode()
@@ -309,16 +362,28 @@ class Viewer:
     def place(self):
         """Same placement ID replaces the previous frame in place: no flicker."""
         img_w, img_h = struct.unpack(">II", self.png[PNG_DIMS])
-        c, r, crop_h, max_scroll = self.layout()
-        self.scroll = max(0, min(self.scroll, max_scroll))
+        w_src, h_src, c, r = self.layout()
+        max_x, max_y = img_w - w_src, img_h - h_src
+
+        if self.anchor:  # Keep the pre-zoom centre in view.
+            self.x = int(self.anchor[0] * img_w - w_src / 2)
+            self.y = int(self.anchor[1] * img_h - h_src / 2)
+            self.anchor = None
+        self.x = max(0, min(self.x, max_x))
+        self.y = max(0, min(self.y, max_y))
 
         status = f"{self.caption}  {img_w}x{img_h}"
-        if max_scroll:
-            status += f"  {100 * self.scroll // max_scroll}%  j/k space/b g/G"
+        if self.zoom != 1:
+            status += f"  {self.zoom:.3g}x"
+        if max_x:
+            status += f"  x{100 * self.x // max_x}%"
+        if max_y:
+            status += f"  y{100 * self.y // max_y}%"
+        status += "  hjkl +/-/0"
 
         rows = self.pane()[1]
         return (f"\x1b[H\x1b_Ga=p,q=2,C=1,i={IMAGE_ID},p={PLACEMENT_ID},"
-                f"x=0,y={self.scroll},w={img_w},h={crop_h},c={c},r={r}\x1b\\"
+                f"x={self.x},y={self.y},w={w_src},h={h_src},c={c},r={r}\x1b\\"
                 f"\x1b[{rows + 1};1H\x1b[2K\x1b[2m{status}\x1b[0m")
 
     def status(self, text):
@@ -336,12 +401,20 @@ class Viewer:
 
         return path, (stat, tuple(file_stat(d) for d in self.deps))
 
-    def width_px(self):
+    def pane_width(self):
         cols, _, cell_w, _ = self.pane()
         return int(cols * cell_w)
 
+    def width_px(self):
+        """Raster width for vector sources: pane width times zoom, capped."""
+        width = self.pane_width() * self.zoom
+        if self.png is not None:
+            img_w, img_h = struct.unpack(">II", self.png[PNG_DIMS])
+            width = min(width, (MAX_RASTER_PIXELS * img_w / img_h) ** 0.5)
+        return int(width)
+
     def stale_width(self, path):
-        """Vector sources render at pane width; re-render after a resize."""
+        """Vector sources render at pane width x zoom; re-render on change."""
         if not self.resized or self.png is None or not path:
             return False
         if not (is_markdown(path) or path.lower().endswith(".svg")):
@@ -351,6 +424,8 @@ class Viewer:
     def load(self, path, key):
         width_px = self.width_px()
         self.render_width = width_px
+        vector = is_markdown(path) or path.lower().endswith(".svg")
+        self.raster_zoom = width_px / self.pane_width() if vector else 1.0
         if not is_markdown(path):
             self.deps = []
             return load_png(path, width_px)
@@ -376,6 +451,9 @@ class Viewer:
         if new_source:
             self.md_stat = None
             self.deps = []
+            self.x = self.y = 0
+            self.zoom = 1.0
+            self.anchor = None
         if changed:
             png = self.load(path, key)
             key = self.source()[1]  # Deps may have changed while loading.
@@ -389,9 +467,6 @@ class Viewer:
         if self.png is None:
             return
 
-        if new_source:
-            self.scroll = 0
-
         clear = self.resized or new_source
         out = ESC_DELETE_ALL + ESC_CLEAR if clear else ""
         out += self.transmit() if changed or clear else ""
@@ -404,19 +479,40 @@ class Viewer:
         if self.png is None:
             return
 
-        _, _, crop_h, max_scroll = self.layout()
-        if data == KEY_TOP:
-            self.scroll = 0
-        elif data == KEY_BOTTOM:
-            self.scroll = max_scroll
-        else:
-            step = next((v for k, v in KEYS.items() if data.startswith(k)), None)
-            if step is None:
-                return
-            self.scroll += int(step * crop_h)
+        actions = parse_input(data)
+        if not actions:
+            return
+
+        for action in actions:
+            self.apply(action)
+
+        if self.resized:
+            return  # Zoom: refresh() re-rasterizes and redraws.
 
         sys.stdout.write(self.place())
         sys.stdout.flush()
+
+    def apply(self, action):
+        img_w, img_h = struct.unpack(">II", self.png[PNG_DIMS])
+        w_src, h_src, _, _ = self.layout()
+        kind = action[0]
+
+        if kind == "pan":
+            self.x += int(action[1] * w_src)
+            self.y += int(action[2] * h_src)
+        elif kind == "top":
+            self.y = 0
+        elif kind == "bottom":
+            self.y = img_h
+        elif kind in ("zoom", "zoom_reset"):
+            zoom = 1.0 if kind == "zoom_reset" else self.zoom * action[1]
+            zoom = max(1.0, min(zoom, ZOOM_MAX))
+            if zoom == self.zoom:
+                return
+            if self.anchor is None:
+                self.anchor = ((self.x + w_src / 2) / img_w, (self.y + h_src / 2) / img_h)
+            self.zoom = zoom
+            self.resized = True  # Redraw path; vectors re-rasterize.
 
     def shutdown(self, *_):
         """Pane closed: kill producers started for it, then exit."""
