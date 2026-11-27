@@ -26,6 +26,67 @@ let
     `rex whoami --json`, then use `rex --help` and `rex COMMAND --help`.
   '';
 
+  # Shows PNG/SVG/Markdown in a reused split pane beside the agent's Rex pane.
+  # Converters ride along on PATH; the viewer inherits it.
+  rexShow = pkgs.writeShellScriptBin "rex-show" ''
+    export PATH=${
+      lib.makeBinPath [
+        pkgs.rex
+        pkgs.librsvg
+        pkgs.pandoc
+        pkgs.typst
+        pkgs.mermaid-cli
+      ]
+    }:$PATH
+    exec ${pkgs.python3}/bin/python3 ${./rex-show.py} "$@"
+  '';
+
+  rexShowSkill = pkgs.writeTextDir "SKILL.md" ''
+    ---
+    name: rex-show
+    description: Show the user graphics (charts, plots, diagrams, rendered Markdown, live dashboards) in a Rex split pane beside you. Use when a visual would explain data, structure, architecture, or results better than text, or to preview a README, while working in a Rex terminal.
+    ---
+    <!-- Managed by home-manager (common/homemanager/llms/claude). -->
+
+    `rex-show FILE` shows FILE in a split pane labeled "Graphics" right of your
+    pane (`$REX_BLOCK`), via the kitty graphics protocol. Prints the pane's
+    block ID. Later calls retarget the same pane. Close with
+    `rex block close ID` when done.
+
+    FILE may be:
+    - **PNG** or **SVG** (rasterized at pane width, stays sharp).
+    - **Markdown** (`.md`): rendered dark, with ```` ```mermaid ```` blocks as
+      diagrams. Relative image paths resolve against the file's dir. Use it to
+      explain things (write a short doc with diagrams to your scratchpad) or to
+      preview a README. First Mermaid render takes ~20s.
+
+    The pane watches FILE and redraws when it changes:
+    - **Live views**: rewrite the file in a loop (write a temp file, then
+      `os.replace` it) from a background process.
+    - **Editing docs**: the README preview updates on each save.
+    - **Live docs**: a Markdown doc embedding a live image (`![cpu](/abs/cpu.png)`)
+      redraws as the image changes (~0.4s per frame), so prose, diagrams and
+      live charts can share one pane.
+
+    Tall content scrolls. Keys go to the pane: `rex send-key -b ID KEY` with
+    j/k, down/up, space/pagedown, b/pageup, g (top), shift+g (bottom). The
+    caption line shows the scroll %, readable with `rex capture -b ID`.
+
+    Producing content (tools not installed globally; pull per call):
+    - Plots: `nix shell --impure --expr 'with import (builtins.getFlake "nixpkgs") {}; python3.withPackages (p: [p.matplotlib p.numpy])' -c python3 script.py`
+    - Diagrams: D2 (`nix shell nixpkgs#d2 -c d2 --theme 200 in.d2 out.svg`),
+      graphviz (`nix shell nixpkgs#graphviz -c dot -Tsvg in.dot -o out.svg`), or
+      Mermaid inside Markdown. Don't feed Mermaid's own SVG to rex-show; its
+      HTML labels don't rasterize.
+
+    Guidelines:
+    - Work files go in your scratchpad directory.
+    - Dark backgrounds (`plt.style.use("dark_background")`, D2 theme 200).
+    - Read the rendered PNG yourself before showing it; `rex capture` cannot
+      see images. On a render failure, the caption says so; details are in
+      `$XDG_RUNTIME_DIR/rex-show/*/viewer.log`.
+  '';
+
   # Tells the agent which Rex session/terminal it is in. Silent outside Rex.
   rexHook = {
     hooks = [
@@ -42,6 +103,7 @@ let
     hegel = "${pkgs.hegel-skill}/skills/hegel";
     i-have-adhd = "${pkgs.i-have-adhd-skill}/skills/i-have-adhd";
     rex = "${rexSkill}";
+    rex-show = "${rexShowSkill}";
   };
 
   skillFiles = lib.mapAttrs' (name: source: {
@@ -123,7 +185,7 @@ in
     };
   };
 
-  home.packages = with pkgs.llm-agents; [
-    ccstatusline
-  ];
+  home.packages = [
+    pkgs.llm-agents.ccstatusline
+  ] ++ lib.optional (builtins.elem "rex-show" skills) rexShow;
 }

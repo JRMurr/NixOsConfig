@@ -7,6 +7,7 @@ let
     "hegel"
     "i-have-adhd"
     "rex"
+    "rex-show"
   ];
 in
 {
