@@ -1,8 +1,10 @@
 """Show a PNG, SVG or Markdown file in a Rex split pane beside the caller.
 
-rex-show FILE   point the pane at FILE; create the pane if missing.
-                The pane redraws whenever FILE changes, so rewriting it
-                in a loop gives a live view.
+rex-show FILE [-- CMD...]
+    Point the pane at FILE; create the pane if missing. The pane redraws
+    whenever FILE changes, so rewriting it in a loop gives a live view.
+    CMD, if given, starts in the background with the caller's env and is
+    killed (with its process group) when the pane closes.
 
 Images taller than the pane scroll: j/k, arrows, space/PgDn, b/PgUp, g/G,
 mouse wheel. Drawn with the kitty graphics protocol.
@@ -21,6 +23,8 @@ import termios
 import tty
 
 LABEL = "Graphics"
+PRODUCERS_FILE = "producers"  # Process group IDs to kill when the pane closes.
+PRODUCER_LOG = "producer.log"
 SPLIT_RATIO = "45"
 CHUNK = 4096  # Max base64 payload per escape, per KGP spec.
 POLL_S = 0.2
@@ -135,7 +139,16 @@ def is_markdown(path):
     return path.lower().endswith(MD_EXTENSIONS)
 
 
-def show(path):
+def start_producer(cmd, state):
+    """Run cmd detached in its own process group; the viewer kills it on close."""
+    with open(os.path.join(state, PRODUCER_LOG), "ab") as log:
+        proc = subprocess.Popen(cmd, stdin=subprocess.DEVNULL, stdout=log, stderr=log,
+                                start_new_session=True)
+    with open(os.path.join(state, PRODUCERS_FILE), "a") as f:
+        f.write(f"{proc.pid}\n")
+
+
+def show(path, producer):
     anchor = os.environ.get("REX_BLOCK")
     if not anchor:
         sys.exit("rex-show: REX_BLOCK unset; not in a Rex terminal")
@@ -152,6 +165,9 @@ def show(path):
     os.replace(tmp, source_file)
 
     print(ensure_pane(anchor, source_file))
+
+    if producer:
+        start_producer(producer, os.path.dirname(source_file))
 
 
 # --- converters: any source -> PNG bytes ---------------------------------------
@@ -393,8 +409,28 @@ class Viewer:
         sys.stdout.write(self.place())
         sys.stdout.flush()
 
+    def shutdown(self, *_):
+        """Pane closed: kill producers started for it, then exit."""
+        producers = os.path.join(os.path.dirname(self.source_file), PRODUCERS_FILE)
+        try:
+            with open(producers) as f:
+                pgids = [int(line) for line in f if line.strip()]
+            os.remove(producers)
+        except OSError:
+            pgids = []
+
+        for pgid in pgids:
+            try:
+                os.killpg(pgid, signal.SIGTERM)
+            except ProcessLookupError:
+                continue
+
+        os._exit(0)
+
     def run(self):
         signal.signal(signal.SIGWINCH, lambda *_: setattr(self, "resized", True))
+        for sig in (signal.SIGHUP, signal.SIGTERM):
+            signal.signal(sig, self.shutdown)
         stdin = sys.stdin.fileno()
         tty.setcbreak(stdin)
         sys.stdout.write(ESC_HIDE_CURSOR + ESC_MOUSE_ON)
@@ -402,10 +438,15 @@ class Viewer:
         while True:
             try:
                 ready = select.select([stdin], [], [], POLL_S)[0]
+                data = os.read(stdin, 64) if ready else None
             except InterruptedError:
-                ready = []
-            if ready:
-                self.on_input(os.read(stdin, 64))
+                data = None
+            except OSError:
+                data = b""  # EIO: terminal gone.
+            if data == b"":
+                self.shutdown()
+            if data:
+                self.on_input(data)
             self.refresh()
 
 
@@ -416,10 +457,16 @@ def main():
         Viewer(sys.argv[2]).run()
         return
 
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    producer = []
+    if "--" in args:
+        split = args.index("--")
+        args, producer = args[:split], args[split + 1:]
+
+    if len(args) != 1 or (producer == [] and "--" in sys.argv):
         sys.exit(__doc__)
 
-    show(sys.argv[1])
+    show(args[0], producer)
 
 
 if __name__ == "__main__":

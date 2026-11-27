@@ -62,7 +62,10 @@ let
 
     The pane watches FILE and redraws when it changes:
     - **Live views**: rewrite the file in a loop (write a temp file, then
-      `os.replace` it) from a background process.
+      `os.replace` it) from a producer started as `rex-show FILE -- CMD...`.
+      CMD runs detached with your env and is killed when the pane closes;
+      don't background producers yourself. Output goes to
+      `$XDG_RUNTIME_DIR/rex-show/*/producer.log`.
     - **Editing docs**: the README preview updates on each save.
     - **Live docs**: a Markdown doc embedding a live image (`![cpu](/abs/cpu.png)`)
       redraws as the image changes (~0.4s per frame), so prose, diagrams and
