@@ -101,6 +101,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Rex beta, snapshot channel. Lock pins the immutable release URL.
+    rex = {
+      url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     {
@@ -230,6 +236,7 @@
         thicc-server = mkSystem [
           ./hosts/thicc-server
           inputs.vscode-server.nixosModule
+          inputs.rex.nixosModules.default
           (
             { config, pkgs, ... }:
             {

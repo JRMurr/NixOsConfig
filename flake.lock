@@ -1060,6 +1060,23 @@
         "type": "github"
       }
     },
+    "rex": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795799774,
+        "narHash": "sha256-ggGZB+0mI8KnAqIp/IcBi0kQcskxdwEYfzUu6+t0ALc=",
+        "type": "tarball",
+        "url": "https://pkgs.superlogical.com/rex/nix/snapshot/0.1.0-snapshot.2697.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -1081,6 +1098,7 @@
         "nixpkgs": "nixpkgs_10",
         "noctalia": "noctalia",
         "nurl": "nurl",
+        "rex": "rex",
         "secrets": "secrets",
         "spicetify-nix": "spicetify-nix",
         "steamos-etc": "steamos-etc",

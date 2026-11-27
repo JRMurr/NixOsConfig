@@ -19,6 +19,7 @@
     # ./happy-server.nix
     ./postgres.nix
     ./remote-builder.nix
+    ./rex.nix
   ];
 
   time.timeZone = "America/New_York";
