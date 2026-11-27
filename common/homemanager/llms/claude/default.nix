@@ -66,6 +66,10 @@ let
       CMD runs detached with your env and is killed when the pane closes;
       don't background producers yourself. Output goes to
       `$XDG_RUNTIME_DIR/rex-show/*/producer.log`.
+    - Producers are display-only. Never run real work (builds, tests,
+      servers) as a producer: closing a view must not kill it. Run the work
+      in its own pane (`rex run`/`rex split --keep-open`) or your shell,
+      writing a log; the producer only reads that log and renders.
     - **Editing docs**: the README preview updates on each save.
     - **Live docs**: a Markdown doc embedding a live image (`![cpu](/abs/cpu.png)`)
       redraws as the image changes (~0.4s per frame), so prose, diagrams and

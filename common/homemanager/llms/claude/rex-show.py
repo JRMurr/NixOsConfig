@@ -20,11 +20,14 @@ import struct
 import subprocess
 import sys
 import termios
+import time
+import traceback
 import tty
 
 LABEL = "Graphics"
 PRODUCERS_FILE = "producers"  # Process group IDs to kill when the pane closes.
 PRODUCER_LOG = "producer.log"
+PANE_CHECK_S = 2.0  # How often the viewer checks its pane still exists.
 SPLIT_RATIO = "45"
 CHUNK = 4096  # Max base64 payload per escape, per KGP spec.
 POLL_S = 0.2
@@ -174,7 +177,13 @@ def show(path, producer):
 
 def run(*cmd):
     """stdout bytes, or None on failure (stderr goes to the viewer log)."""
-    out = subprocess.run(cmd, capture_output=True)
+    try:
+        out = subprocess.run(cmd, capture_output=True)
+    except OSError as err:  # Tool missing from PATH.
+        sys.stderr.write(f"{err}\n")
+        sys.stderr.flush()
+        return None
+
     if out.returncode != 0:
         sys.stderr.write(out.stderr.decode(errors="replace"))
         sys.stderr.flush()
@@ -427,15 +436,42 @@ class Viewer:
 
         os._exit(0)
 
+    def pane_gone(self):
+        """Closing a pane in the Rex UI keeps its process alive for undo, with
+        no SIGHUP. Treat our block vanishing from the server as a close."""
+        own = os.environ.get("REX_BLOCK")
+        if not own:
+            return False
+
+        try:
+            blocks = rex("block", "ls", "--json")["blocks"]
+        except (OSError, subprocess.CalledProcessError, ValueError):
+            return False  # Server unreachable: not proof of a close.
+
+        return all(b["block_id"] != own for b in blocks)
+
     def run(self):
         signal.signal(signal.SIGWINCH, lambda *_: setattr(self, "resized", True))
         for sig in (signal.SIGHUP, signal.SIGTERM):
             signal.signal(sig, self.shutdown)
+        try:
+            self.loop()
+        except Exception:  # Never orphan producers, even on a bug.
+            traceback.print_exc()
+            self.shutdown()
+
+    def loop(self):
         stdin = sys.stdin.fileno()
         tty.setcbreak(stdin)
         sys.stdout.write(ESC_HIDE_CURSOR + ESC_MOUSE_ON)
 
+        next_check = time.monotonic() + PANE_CHECK_S
         while True:
+            if time.monotonic() >= next_check:
+                next_check = time.monotonic() + PANE_CHECK_S
+                if self.pane_gone():
+                    self.shutdown()
+
             try:
                 ready = select.select([stdin], [], [], POLL_S)[0]
                 data = os.read(stdin, 64) if ready else None
